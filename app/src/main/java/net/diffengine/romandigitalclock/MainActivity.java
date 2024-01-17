@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -14,16 +16,18 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView txtTime;
-    Handler  myHandler;
-    int      clockdelay = 1000;
-    WindowInsetsControllerCompat windowInsetsControllerCompat;
+    private TextView txtTime;
+    private Handler  myHandler;
+    private boolean  ampm;
 
-    private Runnable updatetime = new Runnable() {
+    private WindowInsetsControllerCompat windowInsetsControllerCompat;
+
+    private final Runnable updatetime = new Runnable() {
         @Override
         public void run() {
-            txtTime.setText(romantime.now(false));
-            myHandler.postDelayed(updatetime,clockdelay);
+            int updatedelay_in_ms = 1000;
+            txtTime.setText(romantime.now(ampm));
+            myHandler.postDelayed(updatetime, updatedelay_in_ms);
         }
     };
 
@@ -35,6 +39,19 @@ public class MainActivity extends AppCompatActivity {
     View.OnClickListener vOCL = new View.OnClickListener() {
         @Override
         public void onClick(View view) { showSettings(); }
+    };
+
+    private final SharedPreferences.OnSharedPreferenceChangeListener prefChgListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged (SharedPreferences sp, String key) {
+            switch( (key!=null) ? key : "null") {
+                case "chkbox_ampm":
+                    ampm = sp.getBoolean(key, false);
+                    break;
+                default:
+                    break;
+            }
+        }
     };
 
     @Override
@@ -50,15 +67,19 @@ public class MainActivity extends AppCompatActivity {
 
         txtTime = findViewById(R.id.txtTime);
         txtTime.setOnClickListener(vOCL);
-    }
 
-    protected void onResume() {
-        super.onResume();
-        windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.registerOnSharedPreferenceChangeListener(prefChgListener);
+        ampm = sp.getBoolean("chkbox_ampm", false);
     }
 
     protected void onPause() {
         windowInsetsControllerCompat.show(WindowInsetsCompat.Type.systemBars());
         super.onPause();
+    }
+
+    protected void onResume() {
+        super.onResume();
+        windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
     }
 }
