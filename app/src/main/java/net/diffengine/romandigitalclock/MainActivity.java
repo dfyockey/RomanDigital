@@ -5,25 +5,36 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView timeText;
-    Handler myHandler;
-    int clockdelay = 1000;
+    TextView txtTime;
+    Handler  myHandler;
+    int      clockdelay = 1000;
     WindowInsetsControllerCompat windowInsetsControllerCompat;
 
     private Runnable updatetime = new Runnable() {
         @Override
         public void run() {
-            timeText = findViewById(R.id.timeText);
-            timeText.setText(romantime.now(false));
+            txtTime.setText(romantime.now(false));
             myHandler.postDelayed(updatetime,clockdelay);
         }
+    };
+
+    private void showSettings() {
+        Intent showSettingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(showSettingsIntent);
+    }
+
+    View.OnClickListener vOCL = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) { showSettings(); }
     };
 
     @Override
@@ -36,11 +47,14 @@ public class MainActivity extends AppCompatActivity {
 
         myHandler = new Handler(Looper.getMainLooper());
         myHandler.post(updatetime);
+
+        txtTime = findViewById(R.id.txtTime);
+        txtTime.setOnClickListener(vOCL);
     }
 
     protected void onResume() {
-        windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
         super.onResume();
+        windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
     }
 
     protected void onPause() {
