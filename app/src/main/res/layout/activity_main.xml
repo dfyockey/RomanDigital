@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_activity_bkgnd"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
@@ -12,12 +13,12 @@
         android:id="@+id/txtTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#FF000000"
+        android:background="@color/black"
         android:gravity="center"
         android:keepScreenOn="true"
         android:maxLines="1"
         android:text=""
-        android:textColor="#F44336"
+        android:textColor="@color/clock_red"
         android:textSize="200sp"
         android:typeface="monospace"
         app:autoSizeTextType="uniform"
@@ -25,5 +26,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/SelectionMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_selection_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,9 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,12 +17,13 @@ import android.view.View;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-
     private TextView txtTime;
     private Handler  myHandler;
     private boolean  ampm;
 
     private WindowInsetsControllerCompat windowInsetsControllerCompat;
+
+    private Fragment menuFragment;
 
     private final Runnable updatetime = new Runnable() {
         @Override
@@ -31,14 +34,31 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void showSettings() {
-        Intent showSettingsIntent = new Intent(this, SettingsActivity.class);
-        startActivity(showSettingsIntent);
+    private void MainMenu(int visible) {
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+
+        if (visible == View.VISIBLE) {
+            ft.show(menuFragment);
+        } else {
+            ft.hide(menuFragment);
+        }
+
+        ft.commit();
     }
 
-    View.OnClickListener vOCL = new View.OnClickListener() {
+    View.OnClickListener bkgndOCL = new View.OnClickListener() {
         @Override
-        public void onClick(View view) { showSettings(); }
+        public void onClick(View v) {
+            MainMenu(View.INVISIBLE);
+        }
+    };
+
+    View.OnClickListener clockOCL = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            MainMenu(View.VISIBLE);
+        }
     };
 
     private final SharedPreferences.OnSharedPreferenceChangeListener prefChgListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
@@ -66,7 +86,21 @@ public class MainActivity extends AppCompatActivity {
         myHandler.post(updatetime);
 
         txtTime = findViewById(R.id.txtTime);
-        txtTime.setOnClickListener(vOCL);
+        txtTime.setOnClickListener(clockOCL);
+
+        View bkgndView = findViewById(R.id.main_activity_bkgnd);
+        bkgndView.setOnClickListener(bkgndOCL);
+
+        if (savedInstanceState == null) {
+            menuFragment = new SelectionMenu();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.SelectionMenu, menuFragment, null)
+                    .hide(menuFragment)
+                    .commit();
+        } else if (menuFragment == null) {
+            // Recover reference to menuFragment following an orientation change
+            menuFragment = getSupportFragmentManager().findFragmentById(R.id.SelectionMenu);
+        }
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.registerOnSharedPreferenceChangeListener(prefChgListener);
