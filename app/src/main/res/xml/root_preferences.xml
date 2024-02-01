@@ -3,8 +3,15 @@
 
     <CheckBoxPreference
         android:defaultValue="false"
-        android:key="chkbox_ampm"
+        android:key="chkbox_format"
+        android:title="@string/format_title"
+        app:summaryOff="@string/format_off"
+        app:summaryOn="@string/format_on" />
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:key="chkbox_ampm_separator"
         android:title="@string/ampm_title"
+        app:dependency="chkbox_format"
         app:summaryOff="@string/ampm_off"
         app:summaryOn="@string/ampm_on" />
 

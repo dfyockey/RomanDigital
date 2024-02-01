@@ -2,9 +2,14 @@
     <string name="app_name">RomanDigital</string>
     <string name="title_activity_settings">RomanDigital Settings</string>
 
+    <string name="format_title">Time Format</string>
+    <string name="format_off">24-hour clock</string>
+    <string name="format_on">12-hour clock</string>
+
     <string name="ampm_title">Time Separator (AM/PM Indicator)</string>
     <string name="ampm_off">Always show as \':\'</string>
     <string name="ampm_on">Show as \'·\' for AM and \':\' for PM</string>
+
     <string name="menuitem_settings">Settings</string>
     <string name="menuitem_about">About</string>
 </resources>

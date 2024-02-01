@@ -11,18 +11,38 @@ public class romantime {
 		return R[(i/10)+10] + R[i%10];
 	}
 
-	public static String now(boolean ampmSeperator) {
-		Calendar cal = Calendar.getInstance();
-		int h = cal.get(Calendar.HOUR);
-		String rHours	= itor( (h>0)?h:12 );
-		String rMinutes = itor(cal.get(Calendar.MINUTE));
-		String ampm     = ( (ampmSeperator && (cal.get(Calendar.AM_PM) == Calendar.AM) ) ? "·" : ":");
+	private static String getHours (Calendar cal, boolean ampm) {
+		int h = (ampm) ? cal.get(Calendar.HOUR) : cal.get(Calendar.HOUR_OF_DAY);
+		return  (ampm) ? itor( (h>0)?h:12 ) : itor(h);
+	}
 
+	private static String getSeparator (Calendar cal, boolean ampm, boolean ampmSeparator) {
+		String separator = ":";
+		if (ampm) {
+			separator = ( (ampmSeparator && (cal.get(Calendar.AM_PM) == Calendar.AM) ) ? "·" : ":");
+		}
+		return separator;
+	}
+
+	public static String now(boolean ampm, boolean ampmSeparator) {
+
+		// ampm		ampmSeparator
+		// T		T 				12 hr / ampm separator
+		// T		F 				12 hr / constant separator
+		// F		- 				24 hr / constant separator
+
+		/* GET TIME */
+		Calendar cal = Calendar.getInstance();
+		String rHours	 = getHours(cal, ampm);
+		String rMinutes  = itor(cal.get(Calendar.MINUTE));
+		String separator = getSeparator(cal, ampm, ampmSeparator);
+
+		/* ESTABLISH PADDING */
 		// Each `NBSP` in the following is a "U+00A0 NO-BREAK SPACE".
 		// These are used so as to be treated by a TextView as visible chars rather than whitespace.
-		String lpad = "     ".substring(rHours.length());
+		String lpad = ("     " + ((ampm)?"":" ")).substring(rHours.length());
 		String rpad = "        ".substring(rMinutes.length());
 
-		return lpad + rHours + ampm + rMinutes + rpad;
+		return lpad + rHours + separator + rMinutes + rpad;
 	}
 }

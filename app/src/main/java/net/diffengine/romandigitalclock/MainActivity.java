@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txtTime;
     private Handler  myHandler;
     private boolean  ampm;
+    private boolean  ampmSeparator;
 
     private WindowInsetsControllerCompat windowInsetsControllerCompat;
 
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             int updatedelay_in_ms = 1000;
-            txtTime.setText(romantime.now(ampm));
+            txtTime.setText(romantime.now(ampm, ampmSeparator));
             myHandler.postDelayed(updatetime, updatedelay_in_ms);
         }
     };
@@ -65,8 +66,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onSharedPreferenceChanged (SharedPreferences sp, String key) {
             switch( (key!=null) ? key : "null") {
-                case "chkbox_ampm":
+                case "chkbox_format":
                     ampm = sp.getBoolean(key, false);
+                    break;
+                case "chkbox_ampm_separator":
+                    ampmSeparator = sp.getBoolean(key, false);
                     break;
                 default:
                     break;
@@ -104,7 +108,8 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         sp.registerOnSharedPreferenceChangeListener(prefChgListener);
-        ampm = sp.getBoolean("chkbox_ampm", false);
+        ampm          = sp.getBoolean("chkbox_format",        false);
+        ampmSeparator = sp.getBoolean("chkbox_ampm_separator",false);
     }
 
     protected void onPause() {
