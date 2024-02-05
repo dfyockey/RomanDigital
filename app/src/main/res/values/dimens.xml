@@ -5,4 +5,7 @@
     <dimen name="menu_item_seperator">2dp</dimen>
     <dimen name="menu_item_margin">2dp</dimen>
     <dimen name="menu_item_font_size">24sp</dimen>
+
+    <dimen name="about_horiz_padding">10sp</dimen>
+    <dimen name="about_vert_padding">14sp</dimen>
 </resources>
