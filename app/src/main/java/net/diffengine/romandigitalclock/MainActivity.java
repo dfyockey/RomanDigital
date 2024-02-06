@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     private TextView txtTime;
+    private View     bkgndView;
     private Handler  myHandler;
     private boolean  ampm;
     private boolean  ampmSeparator;
@@ -72,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
                 case "chkbox_ampm_separator":
                     ampmSeparator = sp.getBoolean(key, false);
                     break;
+                case "chkbox_always_on":
+                    bkgndView.setKeepScreenOn(sp.getBoolean(key, false));
+                    break;
                 default:
                     break;
             }
@@ -92,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         txtTime = findViewById(R.id.txtTime);
         txtTime.setOnClickListener(clockOCL);
 
-        View bkgndView = findViewById(R.id.main_activity_bkgnd);
+        bkgndView = findViewById(R.id.main_activity_bkgnd);
         bkgndView.setOnClickListener(bkgndOCL);
 
         if (savedInstanceState == null) {
@@ -110,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         sp.registerOnSharedPreferenceChangeListener(prefChgListener);
         ampm          = sp.getBoolean("chkbox_format",        false);
         ampmSeparator = sp.getBoolean("chkbox_ampm_separator",false);
+        bkgndView.setKeepScreenOn(sp.getBoolean("chkbox_always_on",false));
     }
 
     protected void onPause() {

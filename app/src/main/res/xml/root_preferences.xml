@@ -1,18 +1,35 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="chkbox_format"
-        android:title="@string/format_title"
-        app:summaryOff="@string/format_off"
-        app:summaryOn="@string/format_on" />
-    <CheckBoxPreference
-        android:defaultValue="false"
-        android:key="chkbox_ampm_separator"
-        android:title="@string/ampm_title"
-        app:dependency="chkbox_format"
-        app:summaryOff="@string/ampm_off"
-        app:summaryOn="@string/ampm_on" />
+    <PreferenceCategory
+        android:title="Time"
+        app:iconSpaceReserved="false">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="chkbox_format"
+            android:title="@string/format_title"
+            app:iconSpaceReserved="false"
+            app:summaryOff="@string/format_off"
+            app:summaryOn="@string/format_on" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="chkbox_ampm_separator"
+            android:title="@string/ampm_title"
+            app:dependency="chkbox_format"
+            app:iconSpaceReserved="false"
+            app:summaryOff="@string/ampm_off"
+            app:summaryOn="@string/ampm_on" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Screen"
+        app:iconSpaceReserved="false">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="chkbox_always_on"
+            android:title="Always On"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
 
 </PreferenceScreen>

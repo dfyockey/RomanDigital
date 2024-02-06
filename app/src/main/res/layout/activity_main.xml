@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
-    android:keepScreenOn="true"
     tools:context=".MainActivity">
 
     <TextView
@@ -15,7 +14,6 @@
         android:layout_height="wrap_content"
         android:background="@color/black"
         android:gravity="center"
-        android:keepScreenOn="true"
         android:maxLines="1"
         android:text=""
         android:textColor="@color/clock_red"

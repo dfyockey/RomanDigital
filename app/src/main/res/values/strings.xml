@@ -4,11 +4,11 @@
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_about">About</string>
 
-    <string name="format_title">Time Format</string>
+    <string name="format_title">Format</string>
     <string name="format_off">24-hour clock</string>
     <string name="format_on">12-hour clock</string>
 
-    <string name="ampm_title">Time Separator (AM/PM Indicator)</string>
+    <string name="ampm_title">Separator (AM/PM Indicator)</string>
     <string name="ampm_off">Always show as \':\'</string>
     <string name="ampm_on">Show as \'·\' for AM and \':\' for PM</string>
 
