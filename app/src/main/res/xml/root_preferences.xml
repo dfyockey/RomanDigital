@@ -26,9 +26,14 @@
         app:iconSpaceReserved="false">
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="chkbox_always_on"
-            android:title="Always On"
+            android:key="chkbox_keep_on"
+            android:title="Keep screen on"
             app:iconSpaceReserved="false" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="chkbox_when_charging"
+            android:title="Only when charging"
+            app:dependency="chkbox_keep_on" />
     </PreferenceCategory>
 
 
