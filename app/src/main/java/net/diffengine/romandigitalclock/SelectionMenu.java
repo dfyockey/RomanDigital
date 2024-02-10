@@ -1,5 +1,6 @@
 package net.diffengine.romandigitalclock;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -11,12 +12,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class SelectionMenu extends Fragment {
 
-    private Fragment menu = this;
+    private final Fragment menu = this;
 
     public SelectionMenu() {
         // Required empty public constructor
@@ -32,7 +30,9 @@ public class SelectionMenu extends Fragment {
         startActivity(showSettingsIntent);
     }
 
+    /** @noinspection Convert2Lambda*/
     View.OnTouchListener menuOTL = new View.OnTouchListener() {
+        @SuppressLint("ClickableViewAccessibility")
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             switch (event.getAction()) {
@@ -51,6 +51,7 @@ public class SelectionMenu extends Fragment {
     };
 
     View.OnClickListener menuOCL = new View.OnClickListener() {
+        /** @noinspection StatementWithEmptyBody*/
         @Override
         public void onClick(View v) {
             // requireActivity will never throw an exception because this fragment is always

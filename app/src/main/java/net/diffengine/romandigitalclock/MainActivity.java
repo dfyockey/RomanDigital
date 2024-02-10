@@ -20,30 +20,58 @@ import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
     private TextView txtTime;
     private View     bkgndView;
     private Handler  myHandler;
-
-    private boolean ampm;
-    private boolean ampmSeparator;
-    private boolean keepon;
-    private boolean onlywhencharging;
-
-    private final   Context context = this;
+    private Fragment menuFragment;
 
     private WindowInsetsControllerCompat windowInsetsControllerCompat;
 
-    private Fragment menuFragment;
+    private final Context context = this;
 
-    /** @noinspection ReassignedVariable*/
-    private void setKeepScreenOn() {
-        boolean keepScreenOn = false;
-        if (keepon) {
-            if (!onlywhencharging || isCharging()) {
-                keepScreenOn = true;
-            }
+    // Storage for values of options loaded from settings
+    private static final Map<String, Boolean> opt = new HashMap<>();
+    static {
+        opt.put("chkbox_format", false);
+        opt.put("chkbox_ampm_separator", false);
+        opt.put("chkbox_keep_on", false);
+        opt.put("chkbox_when_charging", false);
+    }
+
+    // Aliases for option keys
+    private static final String ampm = "chkbox_format",
+                                ampmSeparator = "chkbox_ampm_separator",
+                                keepon = "chkbox_keep_on",
+                                onlywhencharging = "chkbox_when_charging";
+
+    //////////////////////////////////////////////////////////////////////
+
+    private boolean isCharging() {
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = context.registerReceiver(null, ifilter);
+
+        // Are we charging / charged?
+        if (batteryStatus != null) {
+            int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+            return (
+                    status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                            status == BatteryManager.BATTERY_STATUS_FULL
+            );
+        } else {
+            // Returning `true` in this case should prevent the display from coming on
+            // if it's already off, with the correct charging state being returned
+            // on the next non-null batteryStatus.
+            return true;
         }
+    }
+
+    private void setKeepScreenOn() {
+        //noinspection DataFlowIssue
+        boolean keepScreenOn = opt.get(keepon) && (!opt.get(onlywhencharging) || isCharging());
         bkgndView.setKeepScreenOn(keepScreenOn);
     }
 
@@ -52,12 +80,15 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             int updatedelay_in_ms = 200;    // Must be less than the minimum screen timeout (15sec)
 
-            txtTime.setText(romantime.now(ampm, ampmSeparator));
+            //noinspection DataFlowIssue
+            txtTime.setText( romantime.now( opt.get(ampm), opt.get(ampmSeparator) ) );
             setKeepScreenOn();
 
             myHandler.postDelayed(updatetime, updatedelay_in_ms);
         }
     };
+
+    //---------------------------------------------------------------
 
     private void MainMenu(int visible) {
         FragmentManager fm = getSupportFragmentManager();
@@ -73,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /** @noinspection Convert2Lambda*/
-    View.OnClickListener bkgndOCL = new View.OnClickListener() {
+    private final View.OnClickListener bkgndOCL = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             MainMenu(View.INVISIBLE);
@@ -81,56 +112,57 @@ public class MainActivity extends AppCompatActivity {
     };
 
     /** @noinspection Convert2Lambda*/
-    View.OnClickListener clockOCL = new View.OnClickListener() {
+    private final View.OnClickListener clockOCL = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             MainMenu(View.VISIBLE);
         }
     };
 
+    //---------------------------------------------------------------
+
     private final SharedPreferences.OnSharedPreferenceChangeListener prefChgListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+        /** @noinspection ReassignedVariable*/
         @Override
         public void onSharedPreferenceChanged (SharedPreferences sp, String key) {
-            switch( (key!=null) ? key : "null") {
-                case "chkbox_format":
-                    ampm = sp.getBoolean(key, false);
-                    break;
-                case "chkbox_ampm_separator":
-                    ampmSeparator = sp.getBoolean(key, false);
-                    break;
-                case "chkbox_keep_on":
-                    keepon = sp.getBoolean(key, false);
-                    setKeepScreenOn();
-                    //bkgndView.setKeepScreenOn(keepon);
-                    break;
-                case "chkbox_when_charging":
-                    onlywhencharging = sp.getBoolean(key, false);
-                    break;
-                default:
-                    break;
-            }
+            // Load changed setting value into option hashmap
+            key = (key!=null) ? key : "null";
+            opt.put(key, sp.getBoolean(key, false));
         }
     };
-    
-    private boolean isCharging() {
-        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent batteryStatus = context.registerReceiver(null, ifilter);
 
-        // Are we charging / charged?
-        if (batteryStatus != null) {
-            int status = batteryStatus.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-            return (
-                    status == BatteryManager.BATTERY_STATUS_CHARGING ||
-                    status == BatteryManager.BATTERY_STATUS_FULL
-            );
-        } else {
-            // Returning `true` in this case should prevent the display from coming on
-            // if it's already off, with the correct charging state being returned
-            // on the next non-null batteryStatus.
-            return true;
+    //---------------------------------------------------------------
+
+    private void setListeners() {
+        txtTime = findViewById(R.id.txtTime);
+        txtTime.setOnClickListener(clockOCL);
+
+        bkgndView = findViewById(R.id.main_activity_bkgnd);
+        bkgndView.setOnClickListener(bkgndOCL);
+    }
+
+    private void setupMainMenu(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            menuFragment = new SelectionMenu();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.SelectionMenu, menuFragment, null)
+                    .hide(menuFragment)
+                    .commit();
+        } else if (menuFragment == null) {
+            // Recover reference to menuFragment following an orientation change
+            menuFragment = getSupportFragmentManager().findFragmentById(R.id.SelectionMenu);
         }
     }
 
+    private void getSettings() {
+        // Load setting values into options hashmap
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        sp.registerOnSharedPreferenceChangeListener(prefChgListener);
+        for (String key : opt.keySet()) {
+            opt.put(key, sp.getBoolean(key, false));
+        }
+    }
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -142,31 +174,12 @@ public class MainActivity extends AppCompatActivity {
         myHandler = new Handler(Looper.getMainLooper());
         myHandler.post(updatetime);
 
-        txtTime = findViewById(R.id.txtTime);
-        txtTime.setOnClickListener(clockOCL);
-
-        bkgndView = findViewById(R.id.main_activity_bkgnd);
-        bkgndView.setOnClickListener(bkgndOCL);
-
-        if (savedInstanceState == null) {
-            menuFragment = new SelectionMenu();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.SelectionMenu, menuFragment, null)
-                    .hide(menuFragment)
-                    .commit();
-        } else if (menuFragment == null) {
-            // Recover reference to menuFragment following an orientation change
-            menuFragment = getSupportFragmentManager().findFragmentById(R.id.SelectionMenu);
-        }
-
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.registerOnSharedPreferenceChangeListener(prefChgListener);
-        ampm          = sp.getBoolean("chkbox_format",        false);
-        ampmSeparator = sp.getBoolean("chkbox_ampm_separator",false);
-        keepon        = sp.getBoolean("chkbox_keep_on",       false);
-        onlywhencharging = sp.getBoolean("chkbox_when_charging", false);
-        // No need to set Keep Screen On state here; it will be set each time updatetime is called.
+        setListeners();
+        setupMainMenu(savedInstanceState);
+        getSettings();
     }
+
+    //---------------------------------------------------------------
 
     protected void onPause() {
         windowInsetsControllerCompat.show(WindowInsetsCompat.Type.systemBars());

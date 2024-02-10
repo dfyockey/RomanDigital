@@ -16,6 +16,7 @@ public class romantime {
 		return  (ampm) ? itor( (h>0)?h:12 ) : itor(h);
 	}
 
+	/** @noinspection ReassignedVariable*/
 	private static String getSeparator (Calendar cal, boolean ampm, boolean ampmSeparator) {
 		String separator = ":";
 		if (ampm) {
