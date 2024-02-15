@@ -25,7 +25,7 @@ public class romantime {
 		return separator;
 	}
 
-	public static String now(boolean ampm, boolean ampmSeparator) {
+	public static String now(boolean ampm, boolean ampmSeparator, boolean center) {
 
 		// ampm		ampmSeparator
 		// T		T 				12 hr / ampm separator
@@ -37,13 +37,18 @@ public class romantime {
 		String rHours	 = getHours(cal, ampm);
 		String rMinutes  = itor(cal.get(Calendar.MINUTE));
 		String separator = getSeparator(cal, ampm, ampmSeparator);
+		//noinspection ReassignedVariable
+		String rtime     = rHours + separator + rMinutes;
 
-		/* ESTABLISH PADDING */
-		// Each `NBSP` in the following is a "U+00A0 NO-BREAK SPACE".
-		// These are used so as to be treated by a TextView as visible chars rather than whitespace.
-		String lpad = ("     " + ((ampm)?"":" ")).substring(rHours.length());
-		String rpad = "        ".substring(rMinutes.length());
+		if (!center) {
+			/* ADD PADDING */
+			// Each `NBSP` in the following is a "U+00A0 NO-BREAK SPACE".
+			// These are treated by a TextView as visible chars rather than whitespace.
+			String lpad = ("     " + ((ampm) ? "" : " ")).substring(rHours.length());
+			String rpad = "        ".substring(rMinutes.length());
+			rtime = lpad + rtime + rpad;
+		}
 
-		return lpad + rHours + separator + rMinutes + rpad;
+		return rtime;
 	}
 }

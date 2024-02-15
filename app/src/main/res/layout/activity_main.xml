@@ -9,21 +9,40 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/txtTime"
-        android:layout_width="wrap_content"
+        android:id="@+id/timedisplay_size_control"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/black"
         android:gravity="center"
         android:maxLines="1"
-        android:text=""
-        android:textColor="@color/clock_red"
+        android:text="@string/civ_fill"
+        android:textColor="@color/black"
         android:textSize="200sp"
         android:typeface="monospace"
+        app:autoSizeStepGranularity="1sp"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="VisualLintOverlap,TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/TimeDisplay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/black"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@color/clock_red"
+        android:textSize="200sp"
+        android:typeface="monospace"
+        app:autoSizeStepGranularity="1sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@id/timedisplay_size_control"
+        app:layout_constraintEnd_toEndOf="@id/timedisplay_size_control"
+        app:layout_constraintStart_toStartOf="@id/timedisplay_size_control"
+        app:layout_constraintTop_toTopOf="@id/timedisplay_size_control" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/SelectionMenu"
