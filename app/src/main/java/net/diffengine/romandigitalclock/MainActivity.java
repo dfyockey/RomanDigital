@@ -9,14 +9,13 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.BatteryManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.widget.TextView;
 
@@ -26,7 +25,6 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private TextView TimeDisplay;
     private View     bkgndView;
-    private Handler  myHandler;
     private Fragment menuFragment;
 
     private WindowInsetsControllerCompat windowInsetsControllerCompat;
@@ -78,16 +76,17 @@ public class MainActivity extends AppCompatActivity {
         bkgndView.setKeepScreenOn(keepScreenOn);
     }
 
-    private final Runnable updatetime = new Runnable() {
+    private void updateTimeDisplay() {
+        //noinspection DataFlowIssue
+        String now = romantime.now( opt.get(ampm), opt.get(ampmSeparator), opt.get(alignment) );
+        TimeDisplay.setText(now);
+        setKeepScreenOn();
+    }
+
+    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
-        public void run() {
-            //noinspection DataFlowIssue
-            String now = romantime.now( opt.get(ampm), opt.get(ampmSeparator), opt.get(alignment) );
-            TimeDisplay.setText(now);
-
-            setKeepScreenOn();
-
-            myHandler.postDelayed(updatetime, R.dimen.updatedelay_in_ms);
+        public void onReceive(Context context, Intent intent) {
+            updateTimeDisplay();
         }
     };
 
@@ -213,14 +212,16 @@ public class MainActivity extends AppCompatActivity {
         setListeners();
         setupMainMenu(savedInstanceState);
         getSettings();
-
-        myHandler = new Handler(Looper.getMainLooper());
-        myHandler.post(updatetime);
     }
 
     //---------------------------------------------------------------
 
     protected void onPause() {
+        try {
+            unregisterReceiver(broadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            System.out.println("Broadcast receiver already unregistered.");
+        }
         windowInsetsControllerCompat.show(WindowInsetsCompat.Type.systemBars());
         super.onPause();
     }
@@ -228,5 +229,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
+        registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+        updateTimeDisplay();
     }
 }

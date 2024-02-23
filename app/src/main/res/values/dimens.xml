@@ -8,6 +8,4 @@
 
     <dimen name="about_horiz_padding">10sp</dimen>
     <dimen name="about_vert_padding">14sp</dimen>
-
-    <dimen name="updatedelay_in_ms">200</dimen>
 </resources>
