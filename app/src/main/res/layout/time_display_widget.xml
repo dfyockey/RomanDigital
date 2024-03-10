@@ -1,7 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.RomanDigitalClock.AppWidget.Container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/transparent"
     android:theme="@style/Theme.RomanDigitalClock.AppWidgetContainer">
 
     <TextView
@@ -10,8 +12,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:background="@android:color/transparent"
         android:contentDescription="@string/appwidget_text"
-        android:text="@string/appwidget_text"
-        android:textSize="24sp"
-        android:textStyle="bold|italic" />
+        android:gravity="center_horizontal|center_vertical"
+        android:lines="1"
+        android:shadowColor="#1B1B1F"
+        android:shadowDx="3"
+        android:shadowDy="3"
+        android:shadowRadius="8"
+        android:text="VIII:XXXVIII"
+        android:textColor="#E3E2E6"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:typeface="monospace" />
 </RelativeLayout>
