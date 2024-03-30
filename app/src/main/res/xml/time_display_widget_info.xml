@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  In the following...
+    android:configure enables showing the config activity at widget install
+    android:widgetFeatures enables the Reconfigure button or Settings icon
+      when the widget is in resize mode
+-->
+
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:configure="net.diffengine.romandigitalclock.TimeDisplayWidgetConfigActivity"
+    android:widgetFeatures="reconfigurable"
     android:minWidth="250dp"
     android:minHeight="40dp"
     android:updatePeriodMillis="86400000"

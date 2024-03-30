@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +17,7 @@
             android:exported="false" >
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="net.diffengine.romandigitalclock.MINUTE_TICK" />
             </intent-filter>
 
             <meta-data
@@ -22,6 +25,15 @@
                 android:resource="@xml/time_display_widget_info" />
         </receiver>
 
+        <activity
+            android:name=".TimeDisplayWidgetConfigActivity"
+            android:exported="false"
+            android:label="Config"
+            android:theme="@style/Theme.Settings">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".AboutActivity"
             android:exported="false"

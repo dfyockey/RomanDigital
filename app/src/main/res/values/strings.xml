@@ -42,9 +42,18 @@ limitations under the License."
     <string name="source">
 "You may obtain this software in source form at
 
-    https://github.com/dfyockey/RomanDigital
+    https://github.com/dfyockey/RomanDigital"
     </string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-    <string name="app_widget_description">This is an app widget description</string>
+
+    <!-- Appwidget Strings -->
+    <string name="appwidget_text">initializing</string>
+    <string name="app_widget_description">The current time in Roman numerals</string>
+    <string name="explain_exact_time_permission">
+        The RomanDigital widget requires user permission to set exact alarms so as to accurately
+        update the time. Without this permission, the widget
+        will work but will be updated at inexact times that may be several seconds after update of
+        the system clock. Click the button below and set the option on the resulting screen to grant
+        (or deny) the required permission.
+    </string>
+    <string name="button_exact_time_permission">Open Permission Setting Screen</string>
 </resources>
