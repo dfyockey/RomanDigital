@@ -5,6 +5,7 @@ import static android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlarmManager;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,7 +22,13 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setResult(RESULT_OK);
+
+        // Prevent crash of TouchWiz on old Samsung devices at activity destruction.
+        // See https://stackoverflow.com/a/40709721
+        int id = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
+        Intent result = new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
+        setResult(RESULT_OK, result);
+
         setContentView(R.layout.activity_time_display_widget_config);
 
         btnSetPermission    = (Button) setViewListener(R.id.btnSetPermission);
