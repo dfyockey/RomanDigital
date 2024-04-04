@@ -13,7 +13,7 @@
         android:layout_marginStart="@dimen/close_x_horz_margin"
         android:layout_marginTop="@dimen/close_x_vert_margin"
         android:background="@android:color/transparent"
-        android:contentDescription="Configuration Activity Close Button"
+        android:contentDescription="@string/close_btn_description"
         android:scaleX="1.2"
         android:scaleY="1.2"
         android:src="@drawable/icon_activity_close_x_24"
@@ -30,30 +30,30 @@
         android:paddingTop="@dimen/txtblk_vert_padding"
         android:paddingRight="@dimen/txtblk_horiz_padding"
         android:paddingBottom="@dimen/txtblk_vert_padding"
-        android:text="@string/explain_exact_time_permission"
+        android:text="@string/explain_exact_alarm_permission"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/tvActivitySectionTitle1" />
 
     <Button
         android:id="@+id/btnSetPermission"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_exact_time_permission"
+        android:text="@string/button_exact_alarm_permission"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvPermissionExplaination" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/tvActivitySectionTitle1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/txtblk_horiz_padding"
         android:layout_marginTop="@dimen/txtblk_vert_padding"
-        android:text="Exact Alarm Permission Request"
+        android:text="@string/exact_alarm_section_title"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"

@@ -48,12 +48,14 @@ limitations under the License."
     <!-- Appwidget Strings -->
     <string name="appwidget_text">initializing</string>
     <string name="app_widget_description">The current time in Roman numerals</string>
-    <string name="explain_exact_time_permission">
+    <string name="exact_alarm_section_title">Exact Alarm Permission Request</string>
+    <string name="explain_exact_alarm_permission">
         The RomanDigital widget requires user permission to set exact alarms so as to accurately
         update the time. Without this permission, the widget
         will work but will be updated at inexact times that may be several seconds after update of
         the system clock. Click the button below and set the option on the resulting screen to grant
         (or deny) the required permission.
     </string>
-    <string name="button_exact_time_permission">Open Permission Setting Screen</string>
+    <string name="button_exact_alarm_permission">Open Permission Setting Screen (%1$s)</string>
+    <string name="close_btn_description">Configuration Activity Close</string>
 </resources>

@@ -67,8 +67,7 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
         } else {
             permission = "Denied";
         }
-        btnSetPermission.setText(getString(R.string.button_exact_time_permission) + " (" + permission + ")");
-
+        btnSetPermission.setText(getString(R.string.button_exact_alarm_permission, permission));
     }
 
     @Override
