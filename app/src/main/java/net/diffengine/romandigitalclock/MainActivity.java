@@ -244,6 +244,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
+
+        // Update before registering the receiver to avoid a possible conflict
+        // between the called update and an update from a received intent
         updateTimeDisplay();
         registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
     }
