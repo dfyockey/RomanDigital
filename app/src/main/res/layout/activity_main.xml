@@ -9,28 +9,6 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/timedisplay_size_control"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/black"
-        android:gravity="center"
-        android:maxLines="1"
-        android:text="@string/civ_fill"
-        android:textColor="@color/black"
-        android:textSize="200sp"
-        android:typeface="monospace"
-        android:visibility="invisible"
-        app:autoSizeStepGranularity="1sp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias=".5"
-        tools:ignore="VisualLintOverlap,TextContrastCheck" />
-
-    <TextView
         android:id="@+id/TimeDisplay"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
