@@ -83,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
     private void updateTimeDisplay() {
         String now = romantime.now( opt.get(ampm), opt.get(ampmSeparator), opt.get(alignment) );
 
+        // IMPORTANT: For the String returned by romantime.now to be correctly aligned in
+        //            TimeDisplay textview, TextDisplay.typeface MUST be set in activity_main.xml
+        //            to 'monospace' and TimeDisplay.width MUST be set to a multiple of
+        //            char_width_in_pixels equal to the String's length in characters.
+
         ViewGroup.LayoutParams layoutParams = TimeDisplay.getLayoutParams();
             layoutParams.width = now.length() * (int)char_width_in_pixels;
         TimeDisplay.setLayoutParams(layoutParams);
@@ -135,8 +140,6 @@ public class MainActivity extends AppCompatActivity {
         void run();
     }
 
-    // Setting timedisplay_size_control text insures that the view, and thus the constraint-bound
-    // TimeDisplay view, will be of a size to properly autosize the display font
     private class FormatCase implements Case {
         @Override
         public void run() {
