@@ -16,7 +16,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView TimeDisplay;
     private View     bkgndView;
     private Fragment menuFragment;
+    private float    char_width_in_pixels;
 
     private WindowInsetsControllerCompat windowInsetsControllerCompat;
 
@@ -76,9 +79,19 @@ public class MainActivity extends AppCompatActivity {
         bkgndView.setKeepScreenOn(keepScreenOn);
     }
 
+    /** @noinspection DataFlowIssue*/
     private void updateTimeDisplay() {
-        //noinspection DataFlowIssue
         String now = romantime.now( opt.get(ampm), opt.get(ampmSeparator), opt.get(alignment) );
+
+        // IMPORTANT: For the String returned by romantime.now to be correctly aligned in
+        //            TimeDisplay textview, TextDisplay.typeface MUST be set in activity_main.xml
+        //            to 'monospace' and TimeDisplay.width MUST be set to a multiple of
+        //            char_width_in_pixels equal to the String's length in characters.
+
+        ViewGroup.LayoutParams layoutParams = TimeDisplay.getLayoutParams();
+            layoutParams.width = now.length() * (int)char_width_in_pixels;
+        TimeDisplay.setLayoutParams(layoutParams);
+
         TimeDisplay.setText(now);
         setKeepScreenOn();
     }
@@ -127,14 +140,19 @@ public class MainActivity extends AppCompatActivity {
         void run();
     }
 
-    // Setting timedisplay_size_control text insures that the view, and thus the constraint-bound
-    // TimeDisplay view, will be of a size to properly autosize the display font
     private class FormatCase implements Case {
         @Override
         public void run() {
-            TextView tsc = findViewById(R.id.timedisplay_size_control);
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int display_height = displayMetrics.heightPixels;
+            int display_width = displayMetrics.widthPixels;
+
             //noinspection DataFlowIssue
-            tsc.setText( (opt.get(ampm)) ? R.string.civ_fill : R.string.mil_fill );
+            String maxtime_fill = getString((opt.get(ampm)) ? R.string.civ_fill : R.string.mil_fill);
+            int maxtime_width_in_chars = maxtime_fill.length();
+
+            char_width_in_pixels = (float)display_width / (float)maxtime_width_in_chars;
         }
     }
 
@@ -229,7 +247,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
-        registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+
+        // Update before registering the receiver to avoid a possible conflict
+        // between the called update and an update from a received intent
         updateTimeDisplay();
+        registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
     }
 }
