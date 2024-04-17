@@ -46,7 +46,7 @@ limitations under the License."
     </string>
 
     <!-- Appwidget Strings -->
-    <string name="appwidget_text">initializing</string>
+    <string name="appwidget_text">Initializing</string>
     <string name="app_widget_description">The current time in Roman numerals</string>
     <string name="exact_alarm_section_title">Exact Alarm Permission Request</string>
     <string name="explain_exact_alarm_permission">

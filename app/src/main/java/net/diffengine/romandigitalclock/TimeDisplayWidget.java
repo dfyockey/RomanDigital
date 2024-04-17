@@ -18,7 +18,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     public static final String MINUTE_TICK = "net.diffengine.romandigitalclock.MINUTE_TICK";
 
     private static RemoteViews updateTimeDisplay(Context context) {
-        CharSequence widgetText = romantime.now(true, true, false);
+        CharSequence widgetText = romantime.now(true, true, true);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
         views.setTextViewText(R.id.appwidget_text, widgetText);
         return views;
