@@ -16,8 +16,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implements View.OnClickListener {
-    Button      btnSetPermission;
     ImageButton imgbtnCloseActivity;
+
+    public TimeDisplayWidgetConfigActivity() {
+        super(R.layout.activity_time_display_widget_config);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,14 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
 
         setContentView(R.layout.activity_time_display_widget_config);
 
-        btnSetPermission    = (Button) setViewListener(R.id.btnSetPermission);
+        if (savedInstanceState == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.containerRequestFragment, ExactAlarmRequest.class, null)
+                    .commit();
+        }
+
         imgbtnCloseActivity = (ImageButton) setViewListener(R.id.imgbtnCloseActivity);
     }
 
@@ -45,13 +55,7 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
     public void onClick(View v) {
         int viewId = v.getId();
 
-        if (viewId == R.id.btnSetPermission) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                Intent reqIntent = new Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
-                reqIntent.setData(Uri.parse("package:net.diffengine.romandigitalclock"));
-                startActivity(reqIntent);
-            }
-        } else if (viewId == R.id.imgbtnCloseActivity) {
+        if (viewId == R.id.imgbtnCloseActivity) {
             finish();
         }
     }
@@ -59,22 +63,14 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
     @Override
     protected void onResume() {
         super.onResume();
-
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        String permission;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms()) {
-            permission = "Granted";
-        } else {
-            permission = "Denied";
-        }
-        btnSetPermission.setText(getString(R.string.button_exact_alarm_permission, permission));
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        // Since the Widget's alarms were probably, broadcast an intent to kickstart the Widget
+        // Since the Widget's alarms may be canceled on pause,
+        // broadcast an intent to kickstart the Widget when it resumes
         Intent kickstart = new Intent(this, TimeDisplayWidget.class);
         kickstart.setAction(TimeDisplayWidget.MINUTE_TICK);
         kickstart.setPackage(this.getPackageName());
