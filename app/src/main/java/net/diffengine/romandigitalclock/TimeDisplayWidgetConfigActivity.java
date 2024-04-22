@@ -1,18 +1,12 @@
 package net.diffengine.romandigitalclock;
 
-import static android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM;
-
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.AlarmManager;
 import android.appwidget.AppWidgetManager;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implements View.OnClickListener {
