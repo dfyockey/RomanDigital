@@ -47,7 +47,7 @@ limitations under the License."
 
     <!-- Appwidget Strings -->
     <string name="appwidget_text">XIII:XXXVIII</string>
-    <string name="app_widget_description">The current time in Roman numerals</string>
+    <string name="app_widget_description">Digital Clock with Roman Numeral Display</string>
     <string name="exact_alarm_section_title">Exact Alarm Permission Request</string>
     <string name="explain_exact_alarm_permission">
         The RomanDigital widget requires user permission to set exact alarms so as to accurately
