@@ -8,6 +8,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
+import android.util.TypedValue;
 import android.widget.RemoteViews;
 
 import java.util.Calendar;
@@ -18,7 +20,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     public static final String MINUTE_TICK = "net.diffengine.romandigitalclock.MINUTE_TICK";
 
     private static RemoteViews updateTimeDisplay(Context context) {
-        CharSequence widgetText = romantime.now(true, true, false);
+        CharSequence widgetText = romantime.now(true, true, true);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
         views.setTextViewText(R.id.appwidget_text, widgetText);
         return views;
@@ -96,5 +98,15 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
             int appWidgetId) {
         appWidgetManager.updateAppWidget(appWidgetId, updateTimeDisplay(context));
+    }
+
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
+                                          int appWidgetId, Bundle newOptions) {
+        int minwidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+        int textsize = (minwidth < 260) ? 28 : 34;
+        RemoteViews views = updateTimeDisplay(context);
+        views.setTextViewTextSize(R.id.appwidget_text, TypedValue.COMPLEX_UNIT_SP, textsize);
+        appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 }
