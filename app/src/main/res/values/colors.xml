@@ -6,6 +6,6 @@
     <color name="menu_bkgnd_color">#F3EDF7</color>
     <color name="menu_text_color">#282828</color>
     <color name="transparent_85_pct">#26FFFFFF</color>
-    <color name="widgetText">#FDFDFE</color>
+    <color name="widgetText">#E3E2E6</color>
     <color name="widgetTextShadow">#1B1B1F</color>
 </resources>
