@@ -15,9 +15,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class ExactAlarmRequest extends Fragment implements View.OnClickListener {
     Button btnSetPermission;
+    TextView tvPermissionInfo;
 
     public ExactAlarmRequest() {
         // Required empty public constructor
@@ -41,7 +43,8 @@ public class ExactAlarmRequest extends Fragment implements View.OnClickListener 
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_exact_alarm_request, container, false);
-        btnSetPermission = (Button) v.findViewById(R.id.btnSetPermission2);
+        tvPermissionInfo = v.findViewById(R.id.tvPermissionExplaination2);
+        btnSetPermission = v.findViewById(R.id.btnSetPermission2);
         btnSetPermission.setOnClickListener(this);
         return v;
     }
@@ -50,13 +53,15 @@ public class ExactAlarmRequest extends Fragment implements View.OnClickListener 
     public void onResume() {
         super.onResume();
 
-        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-        String permission;
+        AlarmManager alarmManager = (AlarmManager) requireActivity().getSystemService(Context.ALARM_SERVICE);
+
+        int info;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms()) {
-            permission = "Granted";
+            info = R.string.exact_alarm_permission_granted;
         } else {
-            permission = "Denied";
+            info = R.string.explain_exact_alarm_permission;
         }
-        btnSetPermission.setText(getString(R.string.button_exact_alarm_permission, permission));
+
+        tvPermissionInfo.setText(getString(info));
     }
 }
