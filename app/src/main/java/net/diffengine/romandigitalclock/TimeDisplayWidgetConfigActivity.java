@@ -44,7 +44,7 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
             getSupportFragmentManager()
                     .beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.containerRequestFragment, ExactAlarmRequest.class, null)
+                    .add(R.id.containerRequestFragment, ExactAlarmRequestFragment.class, null)
                     .commit();
         }
 

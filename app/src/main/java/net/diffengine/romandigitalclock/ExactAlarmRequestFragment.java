@@ -17,11 +17,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class ExactAlarmRequest extends Fragment implements View.OnClickListener {
+public class ExactAlarmRequestFragment extends Fragment implements View.OnClickListener {
     Button btnSetPermission;
     TextView tvPermissionInfo;
 
-    public ExactAlarmRequest() {
+    public ExactAlarmRequestFragment() {
         // Required empty public constructor
     }
 

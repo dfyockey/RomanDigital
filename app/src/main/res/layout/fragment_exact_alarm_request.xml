@@ -5,7 +5,7 @@
     android:id="@+id/exact_alarm_request_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ExactAlarmRequest">
+    tools:context=".ExactAlarmRequestFragment">
 
     <TextView
         android:id="@+id/tvPermissionExplaination2"
