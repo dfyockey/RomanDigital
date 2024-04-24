@@ -11,21 +11,33 @@ import android.widget.ImageButton;
 
 public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implements View.OnClickListener {
     ImageButton imgbtnCloseActivity;
+    int         appWidgetId;
 
     public TimeDisplayWidgetConfigActivity() {
         super(R.layout.activity_time_display_widget_config);
     }
 
+    private void setResultCanceled() {
+        // Enable cancellation of the configuration and,
+        // if it's being added, app widget addition to home screen.
+        // See https://developer.android.com/develop/ui/views/appwidgets/configuration#java
+        // Provision of appwidget id in the extra data should also
+        // prevent crash of TouchWiz on old Samsung devices at activity destruction.
+        // See https://stackoverflow.com/a/40709721
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+        if (extras != null) {
+            appWidgetId = extras.getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+        }
+        Intent result = new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        setResult(RESULT_CANCELED, result);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Prevent crash of TouchWiz on old Samsung devices at activity destruction.
-        // See https://stackoverflow.com/a/40709721
-        int id = getIntent().getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, 0);
-        Intent result = new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, id);
-        setResult(RESULT_OK, result);
-
+        setResultCanceled();
         setContentView(R.layout.activity_time_display_widget_config);
 
         if (savedInstanceState == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
@@ -50,6 +62,14 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
         int viewId = v.getId();
 
         if (viewId == R.id.imgbtnCloseActivity) {
+            // Enable close of activity with an OK condition
+            // See https://developer.android.com/develop/ui/views/appwidgets/configuration#java
+            /*
+                No need to update the widget here since it will be updated on receipt of
+                the kickstart intent that will be broadcast in this activity's onPause method
+            */
+            Intent resultValue = new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            setResult(RESULT_OK, resultValue);
             finish();
         }
     }
@@ -63,8 +83,8 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
     protected void onPause() {
         super.onPause();
 
-        // Since the Widget's alarms may be canceled on pause,
-        // broadcast an intent to kickstart the Widget when it resumes
+        // Since the widget's alarms may have been canceled on pause,
+        // broadcast an intent to kickstart the widget when it resumes
         Intent kickstart = new Intent(this, TimeDisplayWidget.class);
         kickstart.setAction(TimeDisplayWidget.MINUTE_TICK);
         kickstart.setPackage(this.getPackageName());
