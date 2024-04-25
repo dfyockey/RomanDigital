@@ -12,11 +12,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class SelectionMenu extends Fragment {
+public class SelectionMenuFragment extends Fragment {
 
     private final Fragment menu = this;
 
-    public SelectionMenu() {
+    public SelectionMenuFragment() {
         // Required empty public constructor
     }
 

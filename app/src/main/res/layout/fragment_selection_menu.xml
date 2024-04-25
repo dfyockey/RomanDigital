@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/menu_text_color"
     android:orientation="vertical"
-    tools:context=".SelectionMenu">
+    tools:context=".SelectionMenuFragment">
 
     <TextView
         android:id="@+id/item_settings"

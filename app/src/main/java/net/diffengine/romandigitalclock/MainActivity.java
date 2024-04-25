@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupMainMenu(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
-            menuFragment = new SelectionMenu();
+            menuFragment = new SelectionMenuFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.SelectionMenu, menuFragment, null)
                     .hide(menuFragment)

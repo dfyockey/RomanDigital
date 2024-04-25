@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/exact_alarm_request_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ExactAlarmRequestFragment">
+
+    <TextView
+        android:id="@+id/tvPermissionExplaination2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/txtblk_horiz_padding"
+        android:paddingTop="@dimen/txtblk_vert_padding"
+        android:paddingRight="@dimen/txtblk_horiz_padding"
+        android:paddingBottom="@dimen/txtblk_vert_padding"
+        android:text="@string/explain_exact_alarm_permission"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvActivitySectionTitle" />
+
+    <Button
+        android:id="@+id/btnSetPermission2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_exact_alarm_permission"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvPermissionExplaination2" />
+
+    <TextView
+        android:id="@+id/tvActivitySectionTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/txtblk_horiz_padding"
+        android:layout_marginTop="@dimen/txtblk_vert_padding"
+        android:text="@string/exact_alarm_section_title"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
