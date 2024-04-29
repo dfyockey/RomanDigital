@@ -1,6 +1,8 @@
 package net.diffengine.romandigitalclock;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceFragmentCompat;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -40,15 +42,26 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
         setResultCanceled();
         setContentView(R.layout.activity_time_display_widget_config);
 
-        if (savedInstanceState == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            getSupportFragmentManager()
+        if (savedInstanceState == null) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.containerRequestFragment, ExactAlarmRequestFragment.class, null)
-                    .commit();
+                    .setReorderingAllowed(true);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                fragmentTransaction.add(R.id.containerRequestFragment, ExactAlarmRequestFragment.class, null);
+            }
+
+            fragmentTransaction.replace(R.id.widget_settings, new SettingsFragment()).commit();
         }
 
         imgbtnCloseActivity = (ImageButton) setViewListener(R.id.imgbtnCloseActivity);
+    }
+
+    public static class SettingsFragment extends PreferenceFragmentCompat {
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.app_preferences, rootKey);
+        }
     }
 
     private View setViewListener(int id) {

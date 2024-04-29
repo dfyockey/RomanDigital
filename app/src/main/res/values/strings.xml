@@ -49,6 +49,7 @@ limitations under the License."
     <string name="appwidget_text">XIII:XXXVIII</string>
     <string name="app_widget_description">Digital Clock with Roman Numeral Display</string>
     <string name="exact_alarm_section_title">Exact Alarm Permission</string>
+    <string name="settings_section_title">Settings</string>
     <string name="explain_exact_alarm_permission">
         To accurately update the displayed time, the RomanDigital widget requires user permission to
         set exact alarms.
@@ -60,8 +61,6 @@ limitations under the License."
     <string name="exact_alarm_permission_granted">
         The RomanDigital widget currently has permission to set exact alarms so it can accurately
         update the displayed time.
-        \n\nThis permission may be revoked to minimize battery consumption by
-        clicking the button below and unsetting the option on the resulting screen.
     </string>
     <string name="button_exact_alarm_permission">Open Permission Setting Screen</string>
     <string name="close_btn_description">Configuration Activity Close</string>
