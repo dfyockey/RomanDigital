@@ -7,10 +7,13 @@ import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
+
+import androidx.preference.PreferenceManager;
 
 import java.util.Calendar;
 
@@ -20,7 +23,12 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     public static final String MINUTE_TICK = "net.diffengine.romandigitalclock.MINUTE_TICK";
 
     private static RemoteViews updateTimeDisplay(Context context) {
-        CharSequence widgetText = romantime.now(true, true, true);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean ampm          = sp.getBoolean("chkbox_format", false);
+        boolean ampmSeparator = sp.getBoolean("chkbox_ampm_separator", false);
+        boolean alignment     = sp.getBoolean("chkbox_alignment", false);
+
+        CharSequence widgetText = romantime.now(ampm, ampmSeparator, alignment);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
         views.setTextViewText(R.id.appwidget_text, widgetText);
         return views;
