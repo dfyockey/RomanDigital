@@ -12,7 +12,7 @@
     <string name="alignment_off">Align to Fixed Separator</string>
     <string name="alignment_on">Center</string>
 
-    <string name="ampm_title">Separator (AM/PM Indicator)</string>
+    <string name="ampm_title">Separator</string>
     <string name="ampm_off">Always show as \':\'</string>
     <string name="ampm_on">Show as \'·\' for AM and \':\' for PM</string>
 
