@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateTimeDisplay() {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
-        String now = romantime.now( !(opt.get(ampm)), opt.get(ampmSeparator), !(opt.get(alignment)) );
+        String now = romantime.now( opt.get(ampm), opt.get(ampmSeparator), !(opt.get(alignment)) );
 
         // IMPORTANT: For the String returned by romantime.now to be correctly aligned in
         //            TimeDisplay textview, TextDisplay.typeface MUST be set in activity_main.xml
@@ -154,13 +154,13 @@ public class MainActivity extends AppCompatActivity {
             int display_width = displayMetrics.widthPixels;
 
             //noinspection DataFlowIssue
-            String maxtime_fill = getString((opt.get(ampm) == left) ? R.string.civ_fill : R.string.mil_fill);
+            String maxtime_fill = getString((opt.get(ampm) == right) ? R.string.civ_fill : R.string.mil_fill);
             int maxtime_width_in_chars = maxtime_fill.length();
 
             char_width_in_pixels = (float)display_width / (float)maxtime_width_in_chars;
 
             // Set the separator to ':' when 24-hour format is selected
-            if ( opt.get(ampm) == right ) {
+            if ( opt.get(ampm) == left ) {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putBoolean(ampmSeparator, left);
