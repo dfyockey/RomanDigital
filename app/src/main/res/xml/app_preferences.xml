@@ -79,8 +79,8 @@
         <SwitchPreferenceCompat android:layout="@layout/a_b_switch_layout"
             android:key="chkbox_ampm_separator"
             android:defaultValue="@string/left"
-            android:title="Separate with ':'"
-            android:summary="\'·\' for AM and \':\' for PM"
+            android:title="Separate with :"
+            android:summary="· for AM and : for PM"
             android:dependency="chkbox_format"/>
     </PreferenceCategory>
 

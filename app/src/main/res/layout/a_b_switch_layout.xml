@@ -8,36 +8,39 @@
         android:id="@+id/switchWidget"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:minHeight="45dp"
+        android:minHeight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:thumbTint="@color/clock_red"
         app:thumbTintMode="src_atop"
-        app:trackTint="#888888" />
+        app:trackTint="#c8c8c8" />
 
     <TextView
         android:id="@android:id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/ab_switch_margin"
         android:text="Option 1"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         app:layout_constraintBottom_toBottomOf="@id/switchWidget"
         app:layout_constraintEnd_toStartOf="@id/switchWidget"
-        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/switchWidget"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+        app:layout_constraintTop_toTopOf="@id/switchWidget" />
 
     <TextView
         android:id="@android:id/summary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ab_switch_margin"
         android:text="Option 2"
+        android:textAppearance="?android:attr/textAppearanceSmall"
         app:layout_constraintBottom_toBottomOf="@id/switchWidget"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/switchWidget"
-        app:layout_constraintTop_toTopOf="@id/switchWidget"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+        app:layout_constraintTop_toTopOf="@id/switchWidget" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
