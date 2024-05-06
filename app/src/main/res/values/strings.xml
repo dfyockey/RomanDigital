@@ -64,4 +64,7 @@ limitations under the License."
     </string>
     <string name="button_exact_alarm_permission">Open Permission Setting Screen</string>
     <string name="close_btn_description">Configuration Activity Close</string>
+
+    <string name="left">false</string>
+    <string name="right">true</string>
 </resources>

@@ -66,17 +66,24 @@
     <PreferenceCategory
         android:title="Time"
         app:iconSpaceReserved="false">
-        <SwitchPreferenceCompat android:layout="@layout/dual_choice_switch_layout"
+        <SwitchPreferenceCompat android:layout="@layout/a_b_switch_layout"
+            android:key="chkbox_format"
+            android:defaultValue="@string/left"
             android:title="12 Hour"
             android:summary="24 Hour" />
-        <SwitchPreferenceCompat android:layout="@layout/dual_choice_switch_layout"
-            android:title="Centered"
-            android:summary="Aligned to Separator" />
-        <SwitchPreferenceCompat android:layout="@layout/dual_choice_switch_layout"
+        <SwitchPreferenceCompat android:layout="@layout/a_b_switch_layout"
+            android:key="chkbox_alignment"
+            android:defaultValue="@string/left"
+            android:title="Center"
+            android:summary="Align to Separator" />
+        <SwitchPreferenceCompat android:layout="@layout/a_b_switch_layout"
+            android:key="chkbox_ampm_separator"
+            android:defaultValue="@string/left"
             android:title="Separate with ':'"
             android:summary="\'·\' for AM and \':\' for PM" />
     </PreferenceCategory>
 
+    <!--
     <PreferenceCategory>
         <CheckBoxPreference
             android:defaultValue="false"
@@ -101,5 +108,5 @@
             app:summaryOff="@string/ampm_off"
             app:summaryOn="@string/ampm_on" />
     </PreferenceCategory>
-
+    -->
 </PreferenceScreen>

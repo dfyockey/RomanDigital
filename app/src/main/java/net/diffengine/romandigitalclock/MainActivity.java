@@ -30,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     private Fragment menuFragment;
     private float    char_width_in_pixels;
 
+    static boolean left  = false;
+    static boolean right = true;
+
     private WindowInsetsControllerCompat windowInsetsControllerCompat;
 
     private final Context context = this;
@@ -45,9 +48,9 @@ public class MainActivity extends AppCompatActivity {
     // Storage for values of options loaded from settings
     private static final Map<String, Boolean> opt = new HashMap<>();
     static {
-        opt.put(ampm, false);
-        opt.put(alignment, false);
-        opt.put(ampmSeparator, false);
+        opt.put(ampm, left);
+        opt.put(alignment, left);
+        opt.put(ampmSeparator, left);
         opt.put(keepon, false);
         opt.put(onlywhencharging, false);
     }
@@ -81,7 +84,9 @@ public class MainActivity extends AppCompatActivity {
 
     /** @noinspection DataFlowIssue*/
     private void updateTimeDisplay() {
-        String now = romantime.now( opt.get(ampm), opt.get(ampmSeparator), opt.get(alignment) );
+        // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
+        // a/b switches, where false/true states depend on chosen left/right positions
+        String now = romantime.now( !(opt.get(ampm)), opt.get(ampmSeparator), !(opt.get(alignment)) );
 
         // IMPORTANT: For the String returned by romantime.now to be correctly aligned in
         //            TimeDisplay textview, TextDisplay.typeface MUST be set in activity_main.xml
@@ -149,10 +154,18 @@ public class MainActivity extends AppCompatActivity {
             int display_width = displayMetrics.widthPixels;
 
             //noinspection DataFlowIssue
-            String maxtime_fill = getString((opt.get(ampm)) ? R.string.civ_fill : R.string.mil_fill);
+            String maxtime_fill = getString((opt.get(ampm) == left) ? R.string.civ_fill : R.string.mil_fill);
             int maxtime_width_in_chars = maxtime_fill.length();
 
             char_width_in_pixels = (float)display_width / (float)maxtime_width_in_chars;
+
+            // Set the separator to ':' when 24-hour format is selected
+            if ( opt.get(ampm) == right ) {
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putBoolean(ampmSeparator, left);
+                editor.commit();
+            }
         }
     }
 
