@@ -74,13 +74,13 @@
         <SwitchPreferenceCompat android:layout="@layout/a_b_switch_layout"
             android:key="chkbox_alignment"
             android:defaultValue="@string/left"
-            android:title="Center"
-            android:summary="Align to Separator" />
+            android:title="Align to Center"
+            android:summary="Align to Divider" />
         <SwitchPreferenceCompat android:layout="@layout/a_b_switch_layout"
             android:key="chkbox_ampm_separator"
             android:defaultValue="@string/left"
-            android:title="Separate with :"
-            android:summary="· for AM and : for PM"
+            android:title=": for All"
+            android:summary="· for AM\n: for PM"
             android:dependency="chkbox_format"/>
     </PreferenceCategory>
 
