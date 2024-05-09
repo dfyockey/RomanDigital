@@ -13,9 +13,9 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:thumbTint="@color/clock_red"
-        app:thumbTintMode="src_atop"
-        app:trackTint="#c8c8c8" />
+        app:thumbTint="@color/ab_switch_thumb"
+        app:thumbTintMode="src_in"
+        app:trackTint="@color/ab_switch_track" />
 
     <TextView
         android:id="@android:id/title"
