@@ -14,7 +14,7 @@
     <dimen name="close_x_horz_margin">20sp</dimen>
     <dimen name="close_x_vert_margin">20sp</dimen>
 
-    <dimen name="ab_switch_margin">6dp</dimen>
+    <dimen name="ab_switch_margin">0dp</dimen>
 
     <!--
 Refer to App Widget Documentation for margin information
