@@ -70,4 +70,5 @@ limitations under the License."
     <string name="option_a">Option a</string>
     <string name="option_b">Option b</string>
     <string name="app_settings_scrollview">App Settings Scrollview</string>
+    <string name="widget_settings_scrollview">Widget Settings Scrollview</string>
 </resources>
