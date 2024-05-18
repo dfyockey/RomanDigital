@@ -13,9 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
-public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implements View.OnClickListener {
-    ImageButton imgbtnCloseActivity;
-    int         appWidgetId;
+public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
+    int appWidgetId;
 
     public TimeDisplayWidgetConfigActivity() {
         super(R.layout.activity_time_display_widget_config);
@@ -56,8 +55,6 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
             fragmentTransaction.replace(R.id.widget_settings, new SettingsFragment()).commit();
         }
 
-        imgbtnCloseActivity = (ImageButton) setViewListener(R.id.imgbtnCloseActivity);
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -86,29 +83,6 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.app_preferences, rootKey);
-        }
-    }
-
-    private View setViewListener(int id) {
-        View v = findViewById(id);
-        v.setOnClickListener(this);
-        return v;
-    }
-
-    @Override
-    public void onClick(View v) {
-        int viewId = v.getId();
-
-        if (viewId == R.id.imgbtnCloseActivity) {
-            // Enable close of activity with an OK condition
-            // See https://developer.android.com/develop/ui/views/appwidgets/configuration#java
-            /*
-                No need to update the widget here since it will be updated on receipt of
-                the kickstart intent that will be broadcast in this activity's onPause method
-            */
-            Intent resultValue = new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-            setResult(RESULT_OK, resultValue);
-            finish();
         }
     }
 
