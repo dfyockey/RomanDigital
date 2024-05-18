@@ -1,5 +1,6 @@
 package net.diffengine.romandigitalclock;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceFragmentCompat;
@@ -8,6 +9,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
@@ -55,6 +57,29 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
         }
 
         imgbtnCloseActivity = (ImageButton) setViewListener(R.id.imgbtnCloseActivity);
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            // Enable close of activity with an OK condition
+            // See https://developer.android.com/develop/ui/views/appwidgets/configuration#java
+            /*
+                No need to update the widget here since it will be updated on receipt of
+                the kickstart intent that will be broadcast in this activity's onPause method
+            */
+            Intent resultValue = new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+            setResult(RESULT_OK, resultValue);
+            finish();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
