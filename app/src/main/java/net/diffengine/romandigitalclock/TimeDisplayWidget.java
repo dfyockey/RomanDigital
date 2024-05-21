@@ -28,12 +28,6 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         boolean ampmSeparator = sp.getBoolean("chkbox_ampm_separator", false);
         boolean alignment     = sp.getBoolean("chkbox_alignment", false);
 
-        if (ampmSeparator && !ampm) {
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putBoolean("chkbox_ampm_separator", false);
-            editor.commit();
-        }
-
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
         CharSequence widgetText = romantime.now(ampm, ampmSeparator, !alignment);
