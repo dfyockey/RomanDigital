@@ -1,5 +1,6 @@
 package net.diffengine.romandigitalclock;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -52,5 +53,17 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.screen_preferences, rootKey);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Kick the widget so it'll update immediately based on
+        // any preference changes made through this activity
+        Intent kickstart = new Intent(this, TimeDisplayWidget.class);
+        kickstart.setAction(TimeDisplayWidget.MINUTE_TICK);
+        kickstart.setPackage(this.getPackageName());
+        this.sendBroadcast(kickstart);
     }
 }
