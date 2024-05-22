@@ -1,11 +1,7 @@
 package net.diffengine.romandigitalclock;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.SwitchPreferenceCompat;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -54,29 +50,10 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
                 fragmentTransaction.add(R.id.containerRequestFragment, ExactAlarmRequestFragment.class, null);
             }
 
-            fragmentTransaction.replace(R.id.widget_settings, new SettingsFragment()).commit();
+            fragmentTransaction.replace(R.id.widget_settings, new SettingsActivity.SettingsFragment()).commit();
         }
 
         imgbtnCloseActivity = (ImageButton) setViewListener(R.id.imgbtnCloseActivity);
-    }
-
-    public static class SettingsFragment extends PreferenceFragmentCompat {
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.app_preferences, rootKey);
-        }
-
-        @Override
-        public boolean onPreferenceTreeClick(@NonNull Preference preference) {
-            if (preference.getKey().equals("chkbox_format")) {
-                SwitchPreferenceCompat pFormat = (SwitchPreferenceCompat)preference;
-                if (pFormat.isChecked() == false) {
-                    SwitchPreferenceCompat pSeparator = findPreference("chkbox_ampm_separator");
-                    pSeparator.setChecked(false);
-                }
-            }
-            return super.onPreferenceTreeClick(preference);
-        }
     }
 
     private View setViewListener(int id) {

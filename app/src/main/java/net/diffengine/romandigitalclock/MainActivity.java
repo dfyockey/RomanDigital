@@ -158,14 +158,6 @@ public class MainActivity extends AppCompatActivity {
             int maxtime_width_in_chars = maxtime_fill.length();
 
             char_width_in_pixels = (float)display_width / (float)maxtime_width_in_chars;
-
-            // Set the separator to ':' when 24-hour format is selected
-            if ( opt.get(ampm) == left ) {
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putBoolean(ampmSeparator, left);
-                editor.commit();
-            }
         }
     }
 

@@ -2,9 +2,12 @@ package net.diffengine.romandigitalclock;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SwitchPreferenceCompat;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -29,6 +32,18 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.app_preferences, rootKey);
+        }
+
+        @Override
+        public boolean onPreferenceTreeClick(@NonNull Preference preference) {
+            if (preference.getKey().equals("chkbox_format")) {
+                SwitchPreferenceCompat pFormat = (SwitchPreferenceCompat)preference;
+                if (pFormat.isChecked() == MainActivity.left) {
+                    SwitchPreferenceCompat pSeparator = findPreference("chkbox_ampm_separator");
+                    pSeparator.setChecked(MainActivity.left);
+                }
+            }
+            return super.onPreferenceTreeClick(preference);
         }
     }
 
