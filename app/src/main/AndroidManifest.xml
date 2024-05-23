@@ -29,7 +29,8 @@
             android:name=".TimeDisplayWidgetConfigActivity"
             android:exported="false"
             android:label="Config"
-            android:theme="@style/Theme.Settings">
+            android:theme="@style/Theme.Settings"
+            android:autoRemoveFromRecents="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
