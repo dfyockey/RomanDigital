@@ -39,7 +39,7 @@
         android:layout_marginStart="@dimen/txtblk_horiz_padding"
         android:layout_marginTop="@dimen/txtblk_vert_padding"
         android:text="@string/exact_alarm_section_title"
-        android:textColor="@color/black"
+        android:textColor="@color/fragment_title"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
