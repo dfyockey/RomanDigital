@@ -1,6 +1,7 @@
 package net.diffengine.romandigitalclock;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -17,6 +18,7 @@ import android.content.SharedPreferences;
 import android.os.BatteryManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -26,6 +28,7 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private TextView TimeDisplay;
+    private AppCompatTextView TimeDisplaySizeControl;
     private View     bkgndView;
     private Fragment menuFragment;
     private float    char_width_in_pixels;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private WindowInsetsControllerCompat windowInsetsControllerCompat;
 
     private final Context context = this;
+    private final String UPDATE_DISPLAY = "net.diffengine.romandigitalclock.UPDATE_DISPLAY";
 
     // Aliases for option keys
     private static final String
@@ -88,10 +92,19 @@ public class MainActivity extends AppCompatActivity {
         //            to 'monospace' and TimeDisplay.width MUST be set to a multiple of
         //            char_width_in_pixels equal to the String's length in characters.
 
-        ViewGroup.LayoutParams layoutParams = TimeDisplay.getLayoutParams();
-            layoutParams.width = now.length() * (int)char_width_in_pixels;
-        TimeDisplay.setLayoutParams(layoutParams);
+//        ViewGroup.LayoutParams layoutParams = TimeDisplay.getLayoutParams();
+//            layoutParams.width = now.length() * (int)char_width_in_pixels;
+//        TimeDisplay.setLayoutParams(layoutParams);
 
+        if (TimeDisplay.getVisibility() == View.INVISIBLE) {
+            if (TimeDisplaySizeControl.getTextSize() >= 200) {
+                sendBroadcast(new Intent(UPDATE_DISPLAY));
+            } else {
+                TimeDisplay.setVisibility(View.VISIBLE);
+            }
+        }
+
+        TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
         TimeDisplay.setText(now);
         setKeepScreenOn();
     }
@@ -248,9 +261,21 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
 
+        TimeDisplay.setVisibility(View.INVISIBLE);
+
+        String maxtime_fill = getString((opt.get(ampm)) ? R.string.civ_fill : R.string.mil_fill);
+        TimeDisplaySizeControl = findViewById(R.id.timedisplay_size_control);
+        TimeDisplaySizeControl.setText(maxtime_fill);
+        TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
+
         // Update before registering the receiver to avoid a possible conflict
         // between the called update and an update from a received intent
-        updateTimeDisplay();
-        registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+        //updateTimeDisplay();
+
+        IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Intent.ACTION_TIME_TICK);
+            intentFilter.addAction(UPDATE_DISPLAY);
+        registerReceiver(broadcastReceiver, intentFilter);
+        sendBroadcast(new Intent(UPDATE_DISPLAY));
     }
 }

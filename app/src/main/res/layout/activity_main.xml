@@ -8,7 +8,7 @@
     android:background="#000000"
     tools:context=".MainActivity">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/timedisplay_size_control"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
 
     <TextView
         android:id="@+id/TimeDisplay"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/black"
         android:gravity="center"
@@ -41,7 +41,7 @@
         android:textSize="200sp"
         android:typeface="monospace"
         app:autoSizeStepGranularity="1sp"
-        app:autoSizeTextType="uniform"
+        app:autoSizeTextType="none"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".5"
