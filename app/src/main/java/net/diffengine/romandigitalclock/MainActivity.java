@@ -18,10 +18,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.BatteryManager;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -32,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatTextView TimeDisplaySizeControl;
     private View     bkgndView;
     private Fragment menuFragment;
-    private float    char_width_in_pixels;
 
     private WindowInsetsControllerCompat windowInsetsControllerCompat;
 
@@ -88,14 +85,9 @@ public class MainActivity extends AppCompatActivity {
     private void updateTimeDisplay() {
         String now = romantime.now( opt.get(ampm), opt.get(ampmSeparator), opt.get(alignment) );
 
-        // IMPORTANT: For the String returned by romantime.now to be correctly aligned in
-        //            TimeDisplay textview, TextDisplay.typeface MUST be set in activity_main.xml
-        //            to 'monospace' and TimeDisplay.width MUST be set to a multiple of
-        //            char_width_in_pixels equal to the String's length in characters.
-
-//        ViewGroup.LayoutParams layoutParams = TimeDisplay.getLayoutParams();
-//            layoutParams.width = now.length() * (int)char_width_in_pixels;
-//        TimeDisplay.setLayoutParams(layoutParams);
+        // IMPORTANT:
+        // For the String returned by romantime.now to be correctly aligned in TimeDisplay textview,
+        // TextDisplay.typeface MUST be set in activity_main.xml to 'monospace'
 
         if (TimeDisplay.getVisibility() == View.INVISIBLE) {
             if (TimeDisplaySizeControl.getTextSize() >= 200) {
@@ -164,32 +156,25 @@ public class MainActivity extends AppCompatActivity {
 
     //---------------------------------------------------------------
 
-    private interface Case {
-        void run();
-    }
+//    /* Before adding specific cases below, uncomment this interface */
+//
+//    private interface Case {
+//        void run();
+//    }
 
-    private class FormatCase implements Case {
-        @Override
-        public void run() {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int display_height = displayMetrics.heightPixels;
-            int display_width = displayMetrics.widthPixels;
-
-            //noinspection DataFlowIssue
-            String maxtime_fill = getString((opt.get(ampm)) ? R.string.civ_fill : R.string.mil_fill);
-            int maxtime_width_in_chars = maxtime_fill.length();
-
-            char_width_in_pixels = (float)display_width / (float)maxtime_width_in_chars;
-        }
-    }
-
-    /* Put additional cases here and add them to optCase below */
-
-    private static final Map<String, Case> optCase = new HashMap<>();
-    {
-        optCase.put(ampm, new FormatCase());
-    }
+//    /* Put specific cases here if needed and add them to optCase below */
+//
+//    private class ExampleCase implements Case {
+//        @Override
+//        public void run() {
+//            // Add code to be run in this case here
+//        }
+//    }
+//
+//    private static final Map<String, Case> optCase = new HashMap<>();
+//    {
+//        optCase.put("preference_key", new ExampleCase());
+//    }
 
     /* Put anything to be executed for all cases in this method */
     /** @noinspection ReassignedVariable*/
@@ -198,11 +183,11 @@ public class MainActivity extends AppCompatActivity {
         key = (key!=null) ? key : "null";
         opt.put(key, sp.getBoolean(key, false));
 
-        // Run Case for key, if any
-        if (optCase.containsKey(key)) {
-            //noinspection DataFlowIssue
-            optCase.get(key).run();
-        }
+//        // Run Case for key, if any
+//        if (optCase.containsKey(key)) {
+//            //noinspection DataFlowIssue
+//            optCase.get(key).run();
+//        }
     }
 
     /** @noinspection Anonymous2MethodRef, Convert2Lambda */
