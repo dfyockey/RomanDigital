@@ -2,6 +2,7 @@ package net.diffengine.romandigitalclock;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -109,7 +110,21 @@ public class MainActivity extends AppCompatActivity {
         setKeepScreenOn();
     }
 
+    //---------------------------------------------------------------
+    /*
+        Two BroadcastReceivers are needed to allow updateReceiver, which is only intended to receive
+        a broadcast intent from this app itself, to be registered as RECEIVER_NOT_EXPORTED without
+        interfering with the receipt of the system-broadcast ACTION_TIME_TICK intent
+     */
+
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateTimeDisplay();
+        }
+    };
+
+    private final BroadcastReceiver updateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateTimeDisplay();
@@ -243,6 +258,9 @@ public class MainActivity extends AppCompatActivity {
         setListeners();
         setupMainMenu(savedInstanceState);
         getSettings();
+
+        registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+        ContextCompat.registerReceiver(context, updateReceiver, new IntentFilter(UPDATE_DISPLAY), ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     //---------------------------------------------------------------
@@ -268,14 +286,6 @@ public class MainActivity extends AppCompatActivity {
         TimeDisplaySizeControl.setText(maxtime_fill);
         TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
 
-        // Update before registering the receiver to avoid a possible conflict
-        // between the called update and an update from a received intent
-        //updateTimeDisplay();
-
-        IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(Intent.ACTION_TIME_TICK);
-            intentFilter.addAction(UPDATE_DISPLAY);
-        registerReceiver(broadcastReceiver, intentFilter);
         sendBroadcast(new Intent(UPDATE_DISPLAY));
     }
 }
