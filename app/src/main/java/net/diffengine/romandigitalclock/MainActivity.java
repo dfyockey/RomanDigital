@@ -1,6 +1,8 @@
 package net.diffengine.romandigitalclock;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -16,9 +18,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.BatteryManager;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -26,13 +27,14 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private TextView TimeDisplay;
+    private AppCompatTextView TimeDisplaySizeControl;
     private View     bkgndView;
     private Fragment menuFragment;
-    private float    char_width_in_pixels;
 
     private WindowInsetsControllerCompat windowInsetsControllerCompat;
 
     private final Context context = this;
+    private final String UPDATE_DISPLAY = "net.diffengine.romandigitalclock.UPDATE_DISPLAY";
 
     // Aliases for option keys
     private static final String
@@ -83,20 +85,38 @@ public class MainActivity extends AppCompatActivity {
     private void updateTimeDisplay() {
         String now = romantime.now( opt.get(ampm), opt.get(ampmSeparator), opt.get(alignment) );
 
-        // IMPORTANT: For the String returned by romantime.now to be correctly aligned in
-        //            TimeDisplay textview, TextDisplay.typeface MUST be set in activity_main.xml
-        //            to 'monospace' and TimeDisplay.width MUST be set to a multiple of
-        //            char_width_in_pixels equal to the String's length in characters.
+        // IMPORTANT:
+        // For the String returned by romantime.now to be correctly aligned in TimeDisplay textview,
+        // TextDisplay.typeface MUST be set in activity_main.xml to 'monospace'
 
-        ViewGroup.LayoutParams layoutParams = TimeDisplay.getLayoutParams();
-            layoutParams.width = now.length() * (int)char_width_in_pixels;
-        TimeDisplay.setLayoutParams(layoutParams);
+        if (TimeDisplay.getVisibility() == View.INVISIBLE) {
+            if (TimeDisplaySizeControl.getTextSize() >= 200) {
+                sendBroadcast(new Intent(UPDATE_DISPLAY));
+            } else {
+                TimeDisplay.setVisibility(View.VISIBLE);
+            }
+        }
 
+        TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
         TimeDisplay.setText(now);
         setKeepScreenOn();
     }
 
+    //---------------------------------------------------------------
+    /*
+        Two BroadcastReceivers are needed to allow updateReceiver, which is only intended to receive
+        a broadcast intent from this app itself, to be registered as RECEIVER_NOT_EXPORTED without
+        interfering with the receipt of the system-broadcast ACTION_TIME_TICK intent
+     */
+
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateTimeDisplay();
+        }
+    };
+
+    private final BroadcastReceiver updateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateTimeDisplay();
@@ -136,32 +156,25 @@ public class MainActivity extends AppCompatActivity {
 
     //---------------------------------------------------------------
 
-    private interface Case {
-        void run();
-    }
+//    /* Before adding specific cases below, uncomment this interface */
+//
+//    private interface Case {
+//        void run();
+//    }
 
-    private class FormatCase implements Case {
-        @Override
-        public void run() {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int display_height = displayMetrics.heightPixels;
-            int display_width = displayMetrics.widthPixels;
-
-            //noinspection DataFlowIssue
-            String maxtime_fill = getString((opt.get(ampm)) ? R.string.civ_fill : R.string.mil_fill);
-            int maxtime_width_in_chars = maxtime_fill.length();
-
-            char_width_in_pixels = (float)display_width / (float)maxtime_width_in_chars;
-        }
-    }
-
-    /* Put additional cases here and add them to optCase below */
-
-    private static final Map<String, Case> optCase = new HashMap<>();
-    {
-        optCase.put(ampm, new FormatCase());
-    }
+//    /* Put specific cases here if needed and add them to optCase below */
+//
+//    private class ExampleCase implements Case {
+//        @Override
+//        public void run() {
+//            // Add code to be run in this case here
+//        }
+//    }
+//
+//    private static final Map<String, Case> optCase = new HashMap<>();
+//    {
+//        optCase.put("preference_key", new ExampleCase());
+//    }
 
     /* Put anything to be executed for all cases in this method */
     /** @noinspection ReassignedVariable*/
@@ -170,11 +183,11 @@ public class MainActivity extends AppCompatActivity {
         key = (key!=null) ? key : "null";
         opt.put(key, sp.getBoolean(key, false));
 
-        // Run Case for key, if any
-        if (optCase.containsKey(key)) {
-            //noinspection DataFlowIssue
-            optCase.get(key).run();
-        }
+//        // Run Case for key, if any
+//        if (optCase.containsKey(key)) {
+//            //noinspection DataFlowIssue
+//            optCase.get(key).run();
+//        }
     }
 
     /** @noinspection Anonymous2MethodRef, Convert2Lambda */
@@ -235,11 +248,9 @@ public class MainActivity extends AppCompatActivity {
     //---------------------------------------------------------------
 
     protected void onPause() {
-        try {
-            unregisterReceiver(broadcastReceiver);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Broadcast receiver already unregistered.");
-        }
+        unregisterReceiver(updateReceiver);
+        unregisterReceiver(broadcastReceiver);
+
         windowInsetsControllerCompat.show(WindowInsetsCompat.Type.systemBars());
         super.onPause();
     }
@@ -248,9 +259,15 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
 
-        // Update before registering the receiver to avoid a possible conflict
-        // between the called update and an update from a received intent
-        updateTimeDisplay();
+        TimeDisplay.setVisibility(View.INVISIBLE);
+
+        String maxtime_fill = getString((opt.get(ampm)) ? R.string.civ_fill : R.string.mil_fill);
+        TimeDisplaySizeControl = findViewById(R.id.timedisplay_size_control);
+        TimeDisplaySizeControl.setText(maxtime_fill);
+        TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
+
         registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+        ContextCompat.registerReceiver(context, updateReceiver, new IntentFilter(UPDATE_DISPLAY), ContextCompat.RECEIVER_NOT_EXPORTED);
+        sendBroadcast(new Intent(UPDATE_DISPLAY));
     }
 }
