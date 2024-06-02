@@ -243,19 +243,14 @@ public class MainActivity extends AppCompatActivity {
         setListeners();
         setupMainMenu(savedInstanceState);
         getSettings();
-
-        registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
-        ContextCompat.registerReceiver(context, updateReceiver, new IntentFilter(UPDATE_DISPLAY), ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 
     //---------------------------------------------------------------
 
     protected void onPause() {
-        try {
-            unregisterReceiver(broadcastReceiver);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Broadcast receiver already unregistered.");
-        }
+        unregisterReceiver(updateReceiver);
+        unregisterReceiver(broadcastReceiver);
+
         windowInsetsControllerCompat.show(WindowInsetsCompat.Type.systemBars());
         super.onPause();
     }
@@ -271,6 +266,8 @@ public class MainActivity extends AppCompatActivity {
         TimeDisplaySizeControl.setText(maxtime_fill);
         TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
 
+        registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+        ContextCompat.registerReceiver(context, updateReceiver, new IntentFilter(UPDATE_DISPLAY), ContextCompat.RECEIVER_NOT_EXPORTED);
         sendBroadcast(new Intent(UPDATE_DISPLAY));
     }
 }
