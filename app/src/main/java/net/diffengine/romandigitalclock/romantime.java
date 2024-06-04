@@ -44,8 +44,8 @@ public class romantime {
 			/* ADD PADDING */
 			// Each `NBSP` in the following is a "U+00A0 NO-BREAK SPACE".
 			// These are treated by a TextView as visible chars rather than whitespace.
-			String lpad = ("     " + ((ampm) ? "" : " ")).substring(rHours.length());
-			String rpad = "        ".substring(rMinutes.length());
+			String lpad = ("    " + ((ampm) ? "" : " ")).substring(rHours.length());
+			String rpad = "       ".substring(rMinutes.length());
 			rtime = lpad + rtime + rpad;
 		}
 

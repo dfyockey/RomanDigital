@@ -15,7 +15,8 @@ public class SettingsActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.settings, new SettingsFragment())
+                    .replace(R.id.app_settings_frame, new SettingsFragment())
+                    .replace(R.id.screen_settings_frame, new ScreenSettingsFragment())
                     .commit();
         }
         ActionBar actionBar = getSupportActionBar();
@@ -28,6 +29,13 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.app_preferences, rootKey);
+        }
+    }
+
+    public static class ScreenSettingsFragment extends PreferenceFragmentCompat {
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.screen_preferences, rootKey);
         }
     }
 }

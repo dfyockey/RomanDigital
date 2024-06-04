@@ -1,17 +1,18 @@
 package net.diffengine.romandigitalclock;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceFragmentCompat;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageButton;
+import android.view.MenuItem;
 
-public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implements View.OnClickListener {
-    ImageButton imgbtnCloseActivity;
-    int         appWidgetId;
+public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
+    int appWidgetId;
 
     public TimeDisplayWidgetConfigActivity() {
         super(R.layout.activity_time_display_widget_config);
@@ -40,28 +41,27 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
         setResultCanceled();
         setContentView(R.layout.activity_time_display_widget_config);
 
-        if (savedInstanceState == null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            getSupportFragmentManager()
+        if (savedInstanceState == null) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction()
-                    .setReorderingAllowed(true)
-                    .add(R.id.containerRequestFragment, ExactAlarmRequestFragment.class, null)
-                    .commit();
+                    .setReorderingAllowed(true);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                fragmentTransaction.add(R.id.containerRequestFragment, ExactAlarmRequestFragment.class, null);
+            }
+
+            fragmentTransaction.replace(R.id.widget_settings, new SettingsFragment()).commit();
         }
 
-        imgbtnCloseActivity = (ImageButton) setViewListener(R.id.imgbtnCloseActivity);
-    }
-
-    private View setViewListener(int id) {
-        View v = findViewById(id);
-        v.setOnClickListener(this);
-        return v;
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override
-    public void onClick(View v) {
-        int viewId = v.getId();
-
-        if (viewId == R.id.imgbtnCloseActivity) {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
             // Enable close of activity with an OK condition
             // See https://developer.android.com/develop/ui/views/appwidgets/configuration#java
             /*
@@ -71,6 +71,16 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity implement
             Intent resultValue = new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
             setResult(RESULT_OK, resultValue);
             finish();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static class SettingsFragment extends PreferenceFragmentCompat {
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            setPreferencesFromResource(R.xml.app_preferences, rootKey);
         }
     }
 

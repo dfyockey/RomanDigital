@@ -1,0 +1,20 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="Screen"
+        app:iconSpaceReserved="false" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="chkbox_keep_on"
+            android:title="@string/keepon_title"
+            app:iconSpaceReserved="false" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="chkbox_when_charging"
+            android:title="@string/charging_title"
+            app:dependency="chkbox_keep_on"
+            app:iconSpaceReserved="false" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
