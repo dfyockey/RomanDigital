@@ -33,6 +33,17 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         CharSequence widgetText = romantime.now(ampm, ampmSeparator, !alignment);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
         views.setTextViewText(R.id.appwidget_text, widgetText);
+
+        // This needs to be here rather than in onUpdate or updateAppWidget;
+        // otherwise the widget won't properly respond to a click (i.e. tap)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            Intent intent = new Intent(context, TimeDisplayWidgetConfigActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+            // This makes the entire widget clickable if all other views on the widget have android:clickable="false"
+            views.setOnClickPendingIntent(R.id.appwidget_bkgnd, pendingIntent);
+        }
+
         return views;
     }
 
