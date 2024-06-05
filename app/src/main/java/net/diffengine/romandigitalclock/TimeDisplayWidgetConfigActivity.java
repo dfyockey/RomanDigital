@@ -69,6 +69,8 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
                 the kickstart intent that will be broadcast in this activity's onPause method
             */
             Intent resultValue = new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                resultValue.setAction(Intent.ACTION_MAIN);
+                resultValue.addCategory(Intent.CATEGORY_HOME);
             setResult(RESULT_OK, resultValue);
             finish();
             return true;
