@@ -81,6 +81,13 @@ public class MainActivity extends AppCompatActivity {
         bkgndView.setKeepScreenOn(keepScreenOn);
     }
 
+    private Intent makeIntent (String action) {
+        Intent i = new Intent();
+            i.setAction(action);
+            i.setPackage(context.getPackageName());
+        return i;
+    }
+
     /** @noinspection DataFlowIssue*/
     private void updateTimeDisplay() {
         String now = romantime.now( opt.get(ampm), opt.get(ampmSeparator), opt.get(alignment) );
@@ -91,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (TimeDisplay.getVisibility() == View.INVISIBLE) {
             if (TimeDisplaySizeControl.getTextSize() >= 200) {
-                sendBroadcast(new Intent(UPDATE_DISPLAY));
+                sendBroadcast(makeIntent(UPDATE_DISPLAY));
             } else {
                 TimeDisplay.setVisibility(View.VISIBLE);
             }
@@ -268,6 +275,6 @@ public class MainActivity extends AppCompatActivity {
 
         registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
         ContextCompat.registerReceiver(context, updateReceiver, new IntentFilter(UPDATE_DISPLAY), ContextCompat.RECEIVER_NOT_EXPORTED);
-        sendBroadcast(new Intent(UPDATE_DISPLAY));
+        sendBroadcast(makeIntent(UPDATE_DISPLAY));
     }
 }
