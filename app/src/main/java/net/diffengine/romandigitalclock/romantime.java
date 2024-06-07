@@ -44,6 +44,11 @@ public class romantime {
 			/* ADD PADDING */
 			// Each `NBSP` in the following is a "U+00A0 NO-BREAK SPACE".
 			// These are treated by a TextView as visible chars rather than whitespace.
+			//
+			// Note also that four padding spaces are needed for the ampm (i.e. 12-hour) format,
+			// even though none will then be used for VIII o'clock, because the substring method to
+			// retrieve the appropriate length of padding will throw an exception due to reading
+			// past the end of the string if only three are used. As is, it returns "" for VIII.
 			String lpad = ("    " + ((ampm) ? "" : " ")).substring(rHours.length());
 			String rpad = "       ".substring(rMinutes.length());
 			rtime = lpad + rtime + rpad;
