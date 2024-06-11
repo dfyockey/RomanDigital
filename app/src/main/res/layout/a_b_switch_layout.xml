@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switchWidget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:clickable="false"
+        android:minHeight="54dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:thumbTint="@color/ab_switch_thumb"
+        app:thumbTintMode="src_in"
+        app:trackTint="@color/ab_switch_track" />
+
+    <TextView
+        android:id="@android:id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/ab_switch_margin"
+        android:text="@string/option_a"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        app:layout_constraintBottom_toBottomOf="@id/switchWidget"
+        app:layout_constraintEnd_toStartOf="@id/switchWidget"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/switchWidget" />
+
+    <TextView
+        android:id="@android:id/summary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ab_switch_margin"
+        android:text="@string/option_b"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
+        app:layout_constraintBottom_toBottomOf="@id/switchWidget"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/switchWidget"
+        app:layout_constraintTop_toTopOf="@id/switchWidget" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

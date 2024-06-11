@@ -28,9 +28,22 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         boolean ampmSeparator = sp.getBoolean("chkbox_ampm_separator", false);
         boolean alignment     = sp.getBoolean("chkbox_alignment", false);
 
-        CharSequence widgetText = romantime.now(ampm, ampmSeparator, alignment);
+        // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
+        // a/b switches, where false/true states depend on chosen left/right positions
+        CharSequence widgetText = romantime.now(ampm, ampmSeparator, !alignment);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
         views.setTextViewText(R.id.appwidget_text, widgetText);
+
+        // This needs to be here rather than in onUpdate or updateAppWidget;
+        // otherwise the widget won't properly respond to a click (i.e. tap)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            Intent intent = new Intent(context, TimeDisplayWidgetConfigActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+            // This makes the entire widget clickable if all other views on the widget have android:clickable="false"
+            views.setOnClickPendingIntent(R.id.appwidget_bkgnd, pendingIntent);
+        }
+
         return views;
     }
 

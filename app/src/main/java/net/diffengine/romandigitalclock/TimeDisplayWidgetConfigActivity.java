@@ -3,7 +3,6 @@ package net.diffengine.romandigitalclock;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.PreferenceFragmentCompat;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -50,7 +49,7 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
                 fragmentTransaction.add(R.id.containerRequestFragment, ExactAlarmRequestFragment.class, null);
             }
 
-            fragmentTransaction.replace(R.id.widget_settings, new SettingsFragment()).commit();
+            fragmentTransaction.replace(R.id.widget_settings, new SettingsActivity.SettingsFragment()).commit();
         }
 
         ActionBar actionBar = getSupportActionBar();

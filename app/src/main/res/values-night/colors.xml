@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="abswitch_thumb">#F3C2BF</color>
+    <color name="abswitch_thumb_disabled">#686868</color>
+    <color name="abswitch_track">#F44336</color>
+    <color name="abswitch_track_disabled">#484848</color>
+    <color name="fragment_title">@color/white</color>
+</resources>

@@ -31,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
     private View     bkgndView;
     private Fragment menuFragment;
 
+    static boolean left  = false;
+    static boolean right = true;
+
     private WindowInsetsControllerCompat windowInsetsControllerCompat;
 
     private final Context context = this;
@@ -47,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
     // Storage for values of options loaded from settings
     private static final Map<String, Boolean> opt = new HashMap<>();
     static {
-        opt.put(ampm, false);
-        opt.put(alignment, false);
-        opt.put(ampmSeparator, false);
+        opt.put(ampm, left);
+        opt.put(alignment, left);
+        opt.put(ampmSeparator, left);
         opt.put(keepon, false);
         opt.put(onlywhencharging, false);
     }
@@ -90,7 +93,9 @@ public class MainActivity extends AppCompatActivity {
 
     /** @noinspection DataFlowIssue*/
     private void updateTimeDisplay() {
-        String now = romantime.now( opt.get(ampm), opt.get(ampmSeparator), opt.get(alignment) );
+        // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
+        // a/b switches, where false/true states depend on chosen left/right positions
+        String now = romantime.now( opt.get(ampm), opt.get(ampmSeparator), !(opt.get(alignment)) );
 
         // IMPORTANT:
         // For the String returned by romantime.now to be correctly aligned in TimeDisplay textview,

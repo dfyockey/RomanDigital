@@ -1,9 +1,91 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <!--
     <PreferenceCategory
         android:title="Time"
         app:iconSpaceReserved="false">
+            <Preference
+                android:key="single_line_title"
+                android:title="@string/format_title"
+                app:allowDividerBelow="false"
+                app:iconSpaceReserved="false"
+                app:singleLineTitle="true" />
+            <SwitchPreference
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:defaultValue="false"
+                android:summary="12 hour"
+                app:layout="@layout/thin_switch" />
+            <SwitchPreference
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:defaultValue="false"
+                app:summary="24 hour"
+                app:layout="@layout/thin_switch" />
+    </PreferenceCategory>
+    -->
+
+<!--
+        <ListPreference
+            android:key="list_format"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="12"
+            android:title="Format..."
+            android:entries="@array/format_options"
+            android:entryValues="@array/format_values"
+            android:persistent="false"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false" />
+
+        <ListPreference
+            android:key="list_alignment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="0"
+            android:title="Alignment..."
+            android:entries="@array/alignment_options"
+            android:entryValues="@array/alignment_values"
+            android:persistent="false"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false" />
+
+        <ListPreference
+            android:key="list_separator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:defaultValue="0"
+            android:title="@string/ampm_title"
+            android:entries="@array/separator_options"
+            android:entryValues="@array/separator_values"
+            android:persistent="false"
+            app:useSimpleSummaryProvider="true"
+            app:iconSpaceReserved="false" />
+-->
+    <PreferenceCategory
+        android:title="Time"
+        app:iconSpaceReserved="false">
+        <SwitchPreferenceCompat android:layout="@layout/a_b_switch_layout"
+            android:key="chkbox_format"
+            android:defaultValue="@string/right"
+            android:title="24 Hour"
+            android:summary="12 Hour" />
+        <SwitchPreferenceCompat android:layout="@layout/a_b_switch_layout"
+            android:key="chkbox_alignment"
+            android:defaultValue="@string/left"
+            android:title="Align to Center"
+            android:summary="Align to Divider" />
+        <SwitchPreferenceCompat android:layout="@layout/a_b_switch_layout"
+            android:key="chkbox_ampm_separator"
+            android:defaultValue="@string/left"
+            android:title=": for All"
+            android:summary="· for AM\n: for PM"
+            android:dependency="chkbox_format"/>
+    </PreferenceCategory>
+
+    <!--
+    <PreferenceCategory>
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="chkbox_format"
@@ -27,5 +109,5 @@
             app:summaryOff="@string/ampm_off"
             app:summaryOn="@string/ampm_on" />
     </PreferenceCategory>
-
+    -->
 </PreferenceScreen>
