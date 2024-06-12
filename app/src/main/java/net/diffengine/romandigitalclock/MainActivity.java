@@ -91,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         return i;
     }
 
+    int text_resize_attempt_count = 0;
+
     /** @noinspection DataFlowIssue*/
     private void updateTimeDisplay() {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
@@ -101,15 +103,22 @@ public class MainActivity extends AppCompatActivity {
         // For the String returned by romantime.now to be correctly aligned in TimeDisplay textview,
         // TextDisplay.typeface MUST be set in activity_main.xml to 'monospace'
 
+        float pxCurrentControlTextSize = TimeDisplaySizeControl.getTextSize();
+
         if (TimeDisplay.getVisibility() == View.INVISIBLE) {
-            if (TimeDisplaySizeControl.getTextSize() >= 200) {
+            float pxDefaultControlTextSize = getResources().getDimension(R.dimen.timedisplay_size_control_default_textsize);
+
+            // Check of updateCount prevents infinitely sending broadcasts if an unforeseen
+            // occurrence keeps pxCurrentControlTextSize from falling below pxDefaultControlTextSize
+            // within a reasonable number of tries
+            if ( pxCurrentControlTextSize >= pxDefaultControlTextSize && text_resize_attempt_count++ < R.dimen.text_resize_attempt_limit ) {
                 sendBroadcast(makeIntent(UPDATE_DISPLAY));
             } else {
                 TimeDisplay.setVisibility(View.VISIBLE);
             }
         }
 
-        TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
+        TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, pxCurrentControlTextSize);
         TimeDisplay.setText(now);
         setKeepScreenOn();
     }
@@ -280,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
 
         registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
         ContextCompat.registerReceiver(context, updateReceiver, new IntentFilter(UPDATE_DISPLAY), ContextCompat.RECEIVER_NOT_EXPORTED);
+        text_resize_attempt_count = 0;
         sendBroadcast(makeIntent(UPDATE_DISPLAY));
     }
 }
