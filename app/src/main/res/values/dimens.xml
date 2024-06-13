@@ -15,7 +15,7 @@
     <dimen name="close_x_vert_margin">20sp</dimen>
 
     <dimen name="timedisplay_margin">15dp</dimen>
-    <dimen name="timedisplay_size_control_default_textsize">200sp</dimen>
+    <dimen name="timedisplay_size_control_default_textsize">300sp</dimen>
     <dimen name="text_resize_attempt_limit">3</dimen>
     
     <dimen name="ab_switch_margin">0dp</dimen>
