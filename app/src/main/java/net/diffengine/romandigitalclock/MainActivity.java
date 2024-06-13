@@ -108,10 +108,15 @@ public class MainActivity extends AppCompatActivity {
         if (TimeDisplay.getVisibility() == View.INVISIBLE) {
             float pxDefaultControlTextSize = getResources().getDimension(R.dimen.timedisplay_size_control_default_textsize);
 
-            // Check of updateCount prevents infinitely sending broadcasts if an unforeseen
-            // occurrence keeps pxCurrentControlTextSize from falling below pxDefaultControlTextSize
-            // within a reasonable number of tries
-            if ( pxCurrentControlTextSize >= pxDefaultControlTextSize && text_resize_attempt_count++ < R.dimen.text_resize_attempt_limit ) {
+            /*/////
+            //  Check of updateCount prevents infinitely sending broadcasts if an unforeseen
+            //  occurrence keeps pxCurrentControlTextSize from falling below
+            //  pxDefaultControlTextSize within a reasonable number of tries.
+            //
+            //  Casting of the px values to int prevents problems in the comparison if a fractional
+            //  pixel value is generated in calculation of pxDefaultControlTextSize.
+            *//////
+            if ( (int)pxCurrentControlTextSize >= (int)pxDefaultControlTextSize && text_resize_attempt_count++ < R.dimen.text_resize_attempt_limit ) {
                 sendBroadcast(makeIntent(UPDATE_DISPLAY));
             } else {
                 TimeDisplay.setVisibility(View.VISIBLE);
