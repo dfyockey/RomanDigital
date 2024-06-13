@@ -30,7 +30,8 @@
             android:exported="false"
             android:label="@string/title_widget_settings"
             android:theme="@style/Theme.Settings"
-            android:autoRemoveFromRecents="true">
+            android:autoRemoveFromRecents="true"
+            android:taskAffinity="">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
             </intent-filter>
