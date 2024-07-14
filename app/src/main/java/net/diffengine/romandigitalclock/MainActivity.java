@@ -271,6 +271,27 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private void showActivity(Class<?> cls) {
+        Intent showActivityIntent = new Intent(context, cls);
+        startActivity(showActivityIntent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        boolean returnState = true;
+        int itemId = item.getItemId();
+
+        if(itemId == R.id.item_settings) {
+            showActivity(SettingsActivity.class);
+        } else if (itemId == R.id.item_about) {
+            showActivity(AboutActivity.class);
+        } else {
+            returnState = super.onOptionsItemSelected(item);
+        }
+
+        return returnState;
+    };
+
     private void setListeners() {
         TimeDisplay = findViewById(R.id.TimeDisplay);
         TimeDisplay.setOnClickListener(clockOCL);
