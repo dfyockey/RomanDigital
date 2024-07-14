@@ -1,8 +1,11 @@
 package net.diffengine.romandigitalclock;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -10,17 +13,31 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
+import androidx.appcompat.widget.Toolbar;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
+import androidx.appcompat.widget.ActionMenuView;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -164,11 +181,21 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
     /** @noinspection Convert2Lambda*/
     private final View.OnClickListener bkgndOCL = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            MainMenu(View.INVISIBLE);
+            //MainMenu(View.INVISIBLE);
+//            View vToolbar = findViewById(R.id.my_toolbar);
+//            vToolbar.setVisibility(View.INVISIBLE);
+            getSupportActionBar().hide();
         }
     };
 
@@ -176,9 +203,13 @@ public class MainActivity extends AppCompatActivity {
     private final View.OnClickListener clockOCL = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            MainMenu(View.VISIBLE);
+            //MainMenu(View.VISIBLE);
+//            View vToolbar = findViewById(R.id.my_toolbar);
+//            vToolbar.setVisibility(View.VISIBLE);
+            getSupportActionBar().show();
         }
     };
+
 
     //---------------------------------------------------------------
 
@@ -228,12 +259,26 @@ public class MainActivity extends AppCompatActivity {
 
     //---------------------------------------------------------------
 
+    private final View.OnClickListener timedisplayOCL = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            PopupMenu popup = new PopupMenu(context, v);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                popup.setForceShowIcon(true);
+            }
+            popup.getMenuInflater().inflate(R.menu.main_menu, popup.getMenu());
+            popup.show();
+        }
+    };
+
     private void setListeners() {
         TimeDisplay = findViewById(R.id.TimeDisplay);
         TimeDisplay.setOnClickListener(clockOCL);
 
         bkgndView = findViewById(R.id.main_activity_bkgnd);
         bkgndView.setOnClickListener(bkgndOCL);
+
+//        TimeDisplay.setOnClickListener(timedisplayOCL);
     }
 
     private void setupMainMenu(Bundle savedInstanceState) {
@@ -268,6 +313,49 @@ public class MainActivity extends AppCompatActivity {
 
         setListeners();
         setupMainMenu(savedInstanceState);
+
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+
+        // VERY Important!
+        // Needed so the menu resource is loaded into the toolbar!
+        myToolbar.inflateMenu(R.menu.main_menu);
+
+        setSupportActionBar(myToolbar);
+        getSupportActionBar().hide();
+
+        int childCount = myToolbar.getChildCount();
+        for (int i = 0; i < childCount; ++i) {
+            View view = myToolbar.getChildAt(i);
+            if (view instanceof ActionMenuView) {
+                ActionMenuView actionMenuView = (ActionMenuView)view;
+                Menu actionMenu = actionMenuView.getMenu();
+                for (int j = 0; j < actionMenu.size(); ++j) {
+                    MenuItem menuItem = actionMenu.getItem(j);
+                    Drawable icon = menuItem.getIcon();
+                    DrawableCompat.setTint(DrawableCompat.wrap(icon), getResources().getColor(R.color.clock_red));
+                }
+            }
+        }
+
+//        View toolbarMenu = myToolbar.findViewById(R.id.toolbar_menu);
+//        //Menu toolbarMenu = myToolbar.getMenu();
+//        //Toast.makeText(context, new Integer(toolbarMenu.size()).toString(), Toast.LENGTH_SHORT).show();
+//
+//        android.content.res.Resources res = getResources();
+//
+//        //MenuItem menuItem = myToolbar.findViewById(R.id.item_settings);
+//        MenuItem menuItem = toolbarMenu.findViewById(R.id.item_settings);
+//
+//        Drawable drawableGear = menuItem.getIcon();
+//        DrawableCompat.setTint(DrawableCompat.wrap(drawableGear), res.getColor(R.color.clock_red));
+
+        //VectorDrawableCompat gear = VectorDrawableCompat.create(res, R.drawable.ic_settings_24dp, null);
+        //gear.setColorFilter(res.getColor(R.color.clock_red), PorterDuff.Mode.DST);
+
+        //View itemGear = myToolbar.findViewById(R.id.item_settings);
+
+        //menuGear.setIcon(gear);
+
         getSettings();
     }
 
