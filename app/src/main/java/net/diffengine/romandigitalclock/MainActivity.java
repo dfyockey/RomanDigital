@@ -1,10 +1,9 @@
 package net.diffengine.romandigitalclock;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -13,8 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
-import androidx.appcompat.widget.Toolbar;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import androidx.appcompat.widget.ActionMenuView;
 
 import android.content.BroadcastReceiver;
@@ -22,22 +19,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -193,9 +185,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             //MainMenu(View.INVISIBLE);
-//            View vToolbar = findViewById(R.id.my_toolbar);
-//            vToolbar.setVisibility(View.INVISIBLE);
-            getSupportActionBar().hide();
+            View vToolbar = findViewById(R.id.my_toolbar);
+            //vToolbar.setVisibility(View.INVISIBLE);
+//            getSupportActionBar().hide();
+
+            if (vToolbar.isShown()) {
+                vToolbar.setVisibility(View.INVISIBLE);
+            } else {
+                vToolbar.setVisibility(View.VISIBLE);
+            }
         }
     };
 
@@ -206,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
             //MainMenu(View.VISIBLE);
 //            View vToolbar = findViewById(R.id.my_toolbar);
 //            vToolbar.setVisibility(View.VISIBLE);
-            getSupportActionBar().show();
+//            getSupportActionBar().show();
         }
     };
 
@@ -294,7 +292,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setListeners() {
         TimeDisplay = findViewById(R.id.TimeDisplay);
-        TimeDisplay.setOnClickListener(clockOCL);
+        //TimeDisplay.setOnClickListener(clockOCL);
 
         bkgndView = findViewById(R.id.main_activity_bkgnd);
         bkgndView.setOnClickListener(bkgndOCL);
@@ -323,7 +321,7 @@ public class MainActivity extends AppCompatActivity {
             execCase(sp, key);
         }
     }
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -336,13 +334,13 @@ public class MainActivity extends AppCompatActivity {
         setupMainMenu(savedInstanceState);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        myToolbar.setVisibility(View.INVISIBLE);
 
         // VERY Important!
         // Needed so the menu resource is loaded into the toolbar!
         myToolbar.inflateMenu(R.menu.main_menu);
 
-        setSupportActionBar(myToolbar);
-        getSupportActionBar().hide();
+        //setSupportActionBar(myToolbar);
 
         int childCount = myToolbar.getChildCount();
         for (int i = 0; i < childCount; ++i) {
@@ -357,6 +355,24 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+        myToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                boolean returnState = true;
+                int itemId = item.getItemId();
+
+                if(itemId == R.id.item_settings) {
+                    showActivity(SettingsActivity.class);
+                } else if (itemId == R.id.item_about) {
+                    showActivity(AboutActivity.class);
+                } else {
+                    returnState = false;
+                }
+
+                return returnState;
+            }
+        });
 
 //        View toolbarMenu = myToolbar.findViewById(R.id.toolbar_menu);
 //        //Menu toolbarMenu = myToolbar.getMenu();
@@ -378,6 +394,9 @@ public class MainActivity extends AppCompatActivity {
         //menuGear.setIcon(gear);
 
         getSettings();
+
+
+        //getSupportActionBar().hide();
     }
 
     //---------------------------------------------------------------

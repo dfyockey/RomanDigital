@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000000"
+    android:clickable="true"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -14,6 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/timedisplay_margin"
         android:background="@color/black"
+        android:clickable="false"
         android:gravity="center"
         android:maxLines="1"
         android:text="@string/civ_fill"
@@ -38,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/timedisplay_margin"
         android:background="@color/black"
+        android:clickable="false"
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@color/clock_red"
@@ -66,6 +69,7 @@
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
