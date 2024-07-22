@@ -5,8 +5,8 @@
     android:id="@+id/main_activity_bkgnd"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
-    android:clickable="true"
+    android:background="@android:color/black"
+    android:fitsSystemWindows="false"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.AppCompatTextView

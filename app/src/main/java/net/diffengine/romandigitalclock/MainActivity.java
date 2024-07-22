@@ -28,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
@@ -191,8 +192,10 @@ public class MainActivity extends AppCompatActivity {
 
             if (vToolbar.isShown()) {
                 vToolbar.setVisibility(View.INVISIBLE);
+                windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
             } else {
                 vToolbar.setVisibility(View.VISIBLE);
+                windowInsetsControllerCompat.show(WindowInsetsCompat.Type.systemBars());
             }
         }
     };
@@ -327,7 +330,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Make MainActivity window extend beneath the System Bars to the edges of the screen.
+        // From info at https://stackoverflow.com/questions/49190381/fullscreen-app-with-displaycutout
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            layoutParams.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
+
         windowInsetsControllerCompat = WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+
+        // System Bars Behavior needs to be set as follows to prevent opening a Quick Settings Panel
+        // on at least some Android versions when swiping down from the screen top while the System
+        // Bars are hidden, thereby allowing the swipe to shoe the System Bars instead:
         windowInsetsControllerCompat.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
 
         setListeners();
@@ -336,21 +350,57 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         myToolbar.setVisibility(View.INVISIBLE);
 
+        // Noted at https://medium.com/javarevisited/how-to-get-status-bar-height-in-android-programmatically-c127ad4f8a5d
+        int statusBarHeight = getResources().getDimensionPixelSize(
+                getResources().getIdentifier("status_bar_height", "dimen", "android"));
+
+        int navBarHeight = getResources().getDimensionPixelSize(
+                getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
+
+//        ViewGroup.LayoutParams layoutParams = myToolbar.getLayoutParams();
+//        int height = layoutParams.height + statusBarHeight;
+//        layoutParams.height = height;
+//        myToolbar.setLayoutParams(layoutParams);
+
+        int titleMarginTop = myToolbar.getTitleMarginTop();
+        myToolbar.setTitleMarginTop( titleMarginTop + statusBarHeight );
+
+//        int orientation = getResources().getConfiguration().orientation;
+//        if ( orientation == Configuration.ORIENTATION_LANDSCAPE ) {
+//            myToolbar.setPadding(navBarHeight, 0, navBarHeight, 0);
+//        }
+
+        //myToolbar.setPadding(0, statusBarHeight, 0, 0);
+
+        // Set padding at top and bottom of layout to push the Toolbar down
+        // while keeping the TimeDisplay centered on the screen
+//        ConstraintLayout main = findViewById(R.id.main_activity_bkgnd);
+//        main.setPadding(0, statusBarHeight, 0, statusBarHeight);
+
+
         // VERY Important!
         // Needed so the menu resource is loaded into the toolbar!
         myToolbar.inflateMenu(R.menu.main_menu);
 
         //setSupportActionBar(myToolbar);
 
+        // Loop through Views contained in myToolbar as suggested at
+        // https://snow.dog/blog/how-to-dynamicaly-change-android-toolbar-icons-color (which is
+        // Apache 2.0 licensed at https://gist.github.com/chomi3/7e088760ef7bca10430e), but set
+        // icon colors by setting their Tint as suggested at
+        // https://stackoverflow.com/questions/11376516/change-drawable-color-programmatically
         int childCount = myToolbar.getChildCount();
         for (int i = 0; i < childCount; ++i) {
             View view = myToolbar.getChildAt(i);
             if (view instanceof ActionMenuView) {
                 ActionMenuView actionMenuView = (ActionMenuView)view;
+                actionMenuView.setPadding(0, statusBarHeight, 0, 0);
                 Menu actionMenu = actionMenuView.getMenu();
                 for (int j = 0; j < actionMenu.size(); ++j) {
                     MenuItem menuItem = actionMenu.getItem(j);
                     Drawable icon = menuItem.getIcon();
+                    // Icon needs to be "wrapped" to facilitate use across different API levels.
+                    // See https://developer.android.com/reference/androidx/core/graphics/drawable/DrawableCompat#wrap(android.graphics.drawable.Drawable)
                     DrawableCompat.setTint(DrawableCompat.wrap(icon), getResources().getColor(R.color.clock_red));
                 }
             }
@@ -404,8 +454,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         unregisterReceiver(updateReceiver);
         unregisterReceiver(broadcastReceiver);
-
-        windowInsetsControllerCompat.show(WindowInsetsCompat.Type.systemBars());
+        findViewById(R.id.my_toolbar).setVisibility(View.INVISIBLE);
         super.onPause();
     }
 
@@ -414,6 +463,11 @@ public class MainActivity extends AppCompatActivity {
         windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
 
         TimeDisplay.setVisibility(View.INVISIBLE);
+        Toolbar vToolbar = findViewById(R.id.my_toolbar);
+        vToolbar.setVisibility(View.INVISIBLE);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            vToolbar.setElevation(20F);
+//        }
 
         String maxtime_fill = getString((opt.get(ampm)) ? R.string.civ_fill : R.string.mil_fill);
         TimeDisplaySizeControl = findViewById(R.id.timedisplay_size_control);

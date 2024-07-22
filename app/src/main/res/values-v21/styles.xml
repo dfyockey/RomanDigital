@@ -10,4 +10,14 @@
         <item name="android:background">@drawable/app_widget_inner_view_background</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
+
+    <!-- Set backgrounds of status bar and navigation bar to transparent -->
+    <style name="Theme.RomanDigitalClock" parent="Base.Theme.RomanDigitalClock">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
 </resources>
