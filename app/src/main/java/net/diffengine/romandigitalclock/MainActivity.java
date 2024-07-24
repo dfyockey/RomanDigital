@@ -1,10 +1,14 @@
 package net.diffengine.romandigitalclock;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -19,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -28,9 +33,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -325,6 +334,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void modToolbarMenu(Toolbar myToolbar, int statusBarHeight) {
+        // Loop through Views contained in myToolbar as suggested at
+        // https://snow.dog/blog/how-to-dynamicaly-change-android-toolbar-icons-color (which is
+        // Apache 2.0 licensed at https://gist.github.com/chomi3/7e088760ef7bca10430e), but set
+        // icon colors by setting their Tint as suggested at
+        // https://stackoverflow.com/questions/11376516/change-drawable-color-programmatically
+        int childCount = myToolbar.getChildCount();
+        for (int i = 0; i < childCount; ++i) {
+            View view = myToolbar.getChildAt(i);
+            if (view instanceof ActionMenuView) {
+                ActionMenuView actionMenuView = (ActionMenuView) view;
+                actionMenuView.setPadding(0, statusBarHeight, 0, 0);
+                Menu actionMenu = actionMenuView.getMenu();
+                for (int j = 0; j < actionMenu.size(); ++j) {
+                    MenuItem menuItem = actionMenu.getItem(j);
+                    Drawable icon = menuItem.getIcon();
+                    // Icon needs to be "wrapped" to facilitate use across different API levels.
+                    // See https://developer.android.com/reference/androidx/core/graphics/drawable/DrawableCompat#wrap(android.graphics.drawable.Drawable)
+                    DrawableCompat.setTint(DrawableCompat.wrap(icon), getResources().getColor(R.color.clock_red));
+                }
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -350,20 +383,51 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         myToolbar.setVisibility(View.INVISIBLE);
 
-        // Noted at https://medium.com/javarevisited/how-to-get-status-bar-height-in-android-programmatically-c127ad4f8a5d
-        int statusBarHeight = getResources().getDimensionPixelSize(
-                getResources().getIdentifier("status_bar_height", "dimen", "android"));
+//        // Noted at https://medium.com/javarevisited/how-to-get-status-bar-height-in-android-programmatically-c127ad4f8a5d
+//        int statusBarHeight = getResources().getDimensionPixelSize(
+//                getResources().getIdentifier("status_bar_height", "dimen", "android"));
 
-        int navBarHeight = getResources().getDimensionPixelSize(
-                getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
+        // Adapted from https://developer.android.com/develop/ui/views/layout/edge-to-edge#system-bars-insets.
+        // But they @#&$%! forgot to mention that this needs to be in the onCreate method!!!
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_activity_bkgnd), new OnApplyWindowInsetsListener() {
+            @NonNull
+            @Override
+            public WindowInsetsCompat onApplyWindowInsets(@NonNull View v, @NonNull WindowInsetsCompat windowInsets) {
+                Insets insets = windowInsets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars());
+
+                int statusBarHeight = insets.top;
+                int defaultTitleMarginTop = new Toolbar(context).getTitleMarginTop();
+                myToolbar.setTitleMarginTop(defaultTitleMarginTop + statusBarHeight);
+
+                modToolbarMenu(myToolbar, statusBarHeight);
+
+                return WindowInsetsCompat.CONSUMED;
+            }
+        });
+
+
+//        // Method 2: Using Display Metrics
+//        Rect rectangle = new Rect();
+//        Window window = getWindow();
+//        window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
+//        int statusBarHeight2 = rectangle.top;
+//        Toast.makeText(context, new Integer(statusBarHeight2).toString(), Toast.LENGTH_SHORT).show();
+
+//        // Noted at https://medium.com/javarevisited/how-to-get-status-bar-height-in-android-programmatically-c127ad4f8a5d
+//        Rect rectangle = new Rect();
+//        getWindow().getDecorView().getWindowVisibleDisplayFrame(rectangle);
+//        int statusBarHeight = rectangle.top;
+
+//        int navBarHeight = getResources().getDimensionPixelSize(
+//                getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
 
 //        ViewGroup.LayoutParams layoutParams = myToolbar.getLayoutParams();
 //        int height = layoutParams.height + statusBarHeight;
 //        layoutParams.height = height;
 //        myToolbar.setLayoutParams(layoutParams);
 
-        int titleMarginTop = myToolbar.getTitleMarginTop();
-        myToolbar.setTitleMarginTop( titleMarginTop + statusBarHeight );
+//        int titleMarginTop = myToolbar.getTitleMarginTop();
+//        myToolbar.setTitleMarginTop( titleMarginTop + statusBarHeight);
 
 //        int orientation = getResources().getConfiguration().orientation;
 //        if ( orientation == Configuration.ORIENTATION_LANDSCAPE ) {
@@ -383,28 +447,6 @@ public class MainActivity extends AppCompatActivity {
         myToolbar.inflateMenu(R.menu.main_menu);
 
         //setSupportActionBar(myToolbar);
-
-        // Loop through Views contained in myToolbar as suggested at
-        // https://snow.dog/blog/how-to-dynamicaly-change-android-toolbar-icons-color (which is
-        // Apache 2.0 licensed at https://gist.github.com/chomi3/7e088760ef7bca10430e), but set
-        // icon colors by setting their Tint as suggested at
-        // https://stackoverflow.com/questions/11376516/change-drawable-color-programmatically
-        int childCount = myToolbar.getChildCount();
-        for (int i = 0; i < childCount; ++i) {
-            View view = myToolbar.getChildAt(i);
-            if (view instanceof ActionMenuView) {
-                ActionMenuView actionMenuView = (ActionMenuView)view;
-                actionMenuView.setPadding(0, statusBarHeight, 0, 0);
-                Menu actionMenu = actionMenuView.getMenu();
-                for (int j = 0; j < actionMenu.size(); ++j) {
-                    MenuItem menuItem = actionMenu.getItem(j);
-                    Drawable icon = menuItem.getIcon();
-                    // Icon needs to be "wrapped" to facilitate use across different API levels.
-                    // See https://developer.android.com/reference/androidx/core/graphics/drawable/DrawableCompat#wrap(android.graphics.drawable.Drawable)
-                    DrawableCompat.setTint(DrawableCompat.wrap(icon), getResources().getColor(R.color.clock_red));
-                }
-            }
-        }
 
         myToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
