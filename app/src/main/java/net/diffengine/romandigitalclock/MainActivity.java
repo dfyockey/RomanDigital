@@ -300,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return returnState;
-    };
+    }
 
     private void setListeners() {
         TimeDisplay = findViewById(R.id.TimeDisplay);
@@ -334,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void modToolbarMenu(Toolbar myToolbar, int statusBarHeight) {
+    private void modToolbarMenu(Toolbar myToolbar, Insets insets) {
         // Loop through Views contained in myToolbar as suggested at
         // https://snow.dog/blog/how-to-dynamicaly-change-android-toolbar-icons-color (which is
         // Apache 2.0 licensed at https://gist.github.com/chomi3/7e088760ef7bca10430e), but set
@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
             View view = myToolbar.getChildAt(i);
             if (view instanceof ActionMenuView) {
                 ActionMenuView actionMenuView = (ActionMenuView) view;
-                actionMenuView.setPadding(0, statusBarHeight, 0, 0);
+                actionMenuView.setPadding(0, insets.top, insets.right, 0);
                 Menu actionMenu = actionMenuView.getMenu();
                 for (int j = 0; j < actionMenu.size(); ++j) {
                     MenuItem menuItem = actionMenu.getItem(j);
@@ -395,11 +395,15 @@ public class MainActivity extends AppCompatActivity {
             public WindowInsetsCompat onApplyWindowInsets(@NonNull View v, @NonNull WindowInsetsCompat windowInsets) {
                 Insets insets = windowInsets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars());
 
-                int statusBarHeight = insets.top;
-                int defaultTitleMarginTop = new Toolbar(context).getTitleMarginTop();
-                myToolbar.setTitleMarginTop(defaultTitleMarginTop + statusBarHeight);
+                // Setting myToolbar's Title Margin values by adding insets to its existing settings
+                // causes the values to get ever larger. To avoid this, create a temporary Toolbar
+                // and get the default Toolbar Title Margin values, add the insets thereto, and set
+                // the margins to that sum.
+                Toolbar tmpToolbar = new Toolbar(context);
+                myToolbar.setTitleMarginTop( tmpToolbar.getTitleMarginTop() + insets.top);
+                myToolbar.setTitleMarginStart( tmpToolbar.getTitleMarginStart() + insets.left);
 
-                modToolbarMenu(myToolbar, statusBarHeight);
+                modToolbarMenu(myToolbar, insets);
 
                 return WindowInsetsCompat.CONSUMED;
             }
