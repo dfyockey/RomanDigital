@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
             View view = myToolbar.getChildAt(i);
             if (view instanceof ActionMenuView) {
                 ActionMenuView actionMenuView = (ActionMenuView) view;
-                actionMenuView.setPadding(0, insets.top, insets.right, 0);
+                actionMenuView.setPadding(0, 0, insets.right, 0);
                 Menu actionMenu = actionMenuView.getMenu();
                 for (int j = 0; j < actionMenu.size(); ++j) {
                     MenuItem menuItem = actionMenu.getItem(j);
@@ -400,8 +400,11 @@ public class MainActivity extends AppCompatActivity {
                 // and get the default Toolbar Title Margin values, add the insets thereto, and set
                 // the margins to that sum.
                 Toolbar tmpToolbar = new Toolbar(context);
-                myToolbar.setTitleMarginTop( tmpToolbar.getTitleMarginTop() + insets.top);
                 myToolbar.setTitleMarginStart( tmpToolbar.getTitleMarginStart() + insets.left);
+
+                ViewGroup.MarginLayoutParams lpToolbar = (ViewGroup.MarginLayoutParams) myToolbar.getLayoutParams();
+                lpToolbar.topMargin = insets.top;
+                myToolbar.setLayoutParams(lpToolbar);
 
                 modToolbarMenu(myToolbar, insets);
 
