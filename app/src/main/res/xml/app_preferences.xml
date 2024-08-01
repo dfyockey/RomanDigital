@@ -68,9 +68,9 @@
         app:iconSpaceReserved="false">
         <SwitchPreferenceCompat android:layout="@layout/a_b_switch_layout"
             android:key="chkbox_format"
-            android:defaultValue="@string/right"
-            android:title="24 Hour"
-            android:summary="12 Hour" />
+            android:defaultValue="@string/left"
+            android:title="12 Hour"
+            android:summary="24 Hour" />
         <SwitchPreferenceCompat android:layout="@layout/a_b_switch_layout"
             android:key="chkbox_alignment"
             android:defaultValue="@string/left"
@@ -80,8 +80,7 @@
             android:key="chkbox_ampm_separator"
             android:defaultValue="@string/left"
             android:title=": for All"
-            android:summary="· for AM\n: for PM"
-            android:dependency="chkbox_format"/>
+            android:summary="· for AM\n: for PM" />
     </PreferenceCategory>
 
     <!--
