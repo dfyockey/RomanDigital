@@ -20,14 +20,19 @@ RomanDigital includes several common clock app features, including:
 * Centered display
 * Option to keep display on (when app is in foreground) and related option to do so only when charging
 * Display in either portrait or landscape
-* Tap on screen displays app and system controls ![Landscape screenshot of phone showing system bars and RomanDigital app displaying time as IV:XIV with toolbar containing gear and info icons](/.github/images/Screenshot_20240726_0_RomanDigital.jpg)
+* Tap on screen displays app and system controls:
+
+![Landscape screenshot of phone showing system bars and RomanDigital app displaying time as IV:XIV with toolbar containing gear and info icons](/.github/images/Screenshot_20240726_0_RomanDigital.jpg)
 
 RomanDigital further includes features believed to be unique over other Roman digital clock apps
 known to exist or to have existed, including:
 * Choice between centered display and display aligned with a fixed separator
 * AM/PM indicator integrated into the time display, such that the separator is displayed as "·" for AM and ":" for PM
 * Display in the largest possible text for the device screen width (excepting a narrow margin) regardless of whether display is centered or fixed
-* A widget for providing a Roman digital clock display on a device's Home screen ![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240806_144411_One_UI_Home.jpg)
+* A widget for providing a Roman digital clock display on a device's Home screen:
+
+![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240806_144411_One_UI_Home.jpg)
+
 * It's open source :)
 
 ## Requirements
