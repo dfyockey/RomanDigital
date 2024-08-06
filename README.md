@@ -44,28 +44,37 @@ will lag the system clock by several seconds.
 ## FAQ (Foremost Anticipated Questions)
 
 > Q: "There's no alarm feature, so why the need to set exact alarms?"
+> 
 > A: The great and powerful Google has not seen fit to enable widgets to receive the ACTION_TIME_TICK intent broadcast thru the system each minute. Setting an alarm for exactly at the time of each next minute is the only straightforward way (that I know of) for a widget to get a tick each minute. 
 
 > Q: "Will there ever be an alarm feature?"
+> 
 > A: Maybe. But I'd be using Arabic numbers in the UI to set alarms because using Roman numerals would up the chances of setting the wrong time.  
 
 > Q: "Why is the exact alarm permission request so awkward? Why not just have a switch right on the Settings screen?"
+> 
 > A: Because of the way Google set it up. They require you, the user, to go to the system's permission setting screen and switch the switch there yourself. Fortunately, an app can at least have a button to click to take you to that screen. Otherwise, you'd have to dig around in the settings and find the right permission yourself.
 
 > Q: "Why can't I change the font/text color/background color/widget background transparency/etc?"
+> 
 > A: One day perhaps...
 
 > Q: "Why no seconds?"
+> 
 > A: Android's standard clock display doesn't include seconds, digital wall and desk clocks don't necessarily include them, and they would crowd the display and look inelegant. Besides, most people (myself included) would have trouble reading a lengthy Roman numeral within a second.
 
 > Q: "Why no date?"
+> 
 > A: Because it would look inelegant.
 
 > Q: "Why no version for a watch?"
+> 
 > A: Because I don't have one to test on. Yet. I'd rather not rely *entirely* on virtual devices for testing.
 
 > Q: "How about for an Android automotive display?"
+> 
 > A: Seems like it should work on an automotive display since it's basically a tablet, right? But I don't know since I have don't have such a display to test on.
 
 > Q: "Why Java? Why not Kotlin?"
+> 
 > A: Because I haven't taken up Kotlin yet. Figured I'd learn a bit about the Android API first.
