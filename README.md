@@ -10,7 +10,7 @@ around collecting dust to serve as a wall or desk clock. A broader purpose is to
 perhaps help popularize — a simple clock of a style different from the
 common analog Arabic, analog Roman, and digital Arabic styles.
 
-![Landscape screenshot of phone showing RomanDigital app displaying time as VIII:LVII](https://raw.githubusercontent.com/dfyockey/RomanDigital/main/.github/images/Screenshot_20240703_205732_RomanDigital.jpg)
+![Landscape screenshot of phone showing RomanDigital app displaying time as VIII:LVII](https://raw.githubusercontent.com/dfyockey/RomanDigital/master/.github/images/Screenshot_20240703_205732_RomanDigital.jpg)
 
 ## Features
 
@@ -20,14 +20,14 @@ RomanDigital includes several common clock app features, including:
 * Centered display
 * Option to keep display on (when app is in foreground) and related option to do so only when charging
 * Display in either portrait or landscape
-* Tap on screen displays app and system controls ![Landscape screenshot of phone showing system bars and RomanDigital app displaying time as IV:XIV with toolbar containing gear and info icons](https://raw.githubusercontent.com/dfyockey/RomanDigital/main/.github/images/Screenshot_20240726_0_RomanDigital.jpg)
+* Tap on screen displays app and system controls ![Landscape screenshot of phone showing system bars and RomanDigital app displaying time as IV:XIV with toolbar containing gear and info icons](https://raw.githubusercontent.com/dfyockey/RomanDigital/master/.github/images/Screenshot_20240726_0_RomanDigital.jpg)
 
 RomanDigital further includes features believed to be unique over other Roman digital clock apps
 known to exist or to have existed, including:
 * Choice between centered display and display aligned with a fixed separator
 * AM/PM indicator integrated into the time display, such that the separator is displayed as "·" for AM and ":" for PM
 * Display in the largest possible text for the device screen width (excepting a narrow margin) regardless of whether display is centered or fixed
-* A widget for providing a Roman digital clock display on a device's Home screen ![Portrait screenshot of phone Home screen showing RomanDigital widget](https://raw.githubusercontent.com/dfyockey/RomanDigital/main/.github/images/Screenshot_20240806_144411_One_UI_Home.jpg)
+* A widget for providing a Roman digital clock display on a device's Home screen ![Portrait screenshot of phone Home screen showing RomanDigital widget](https://raw.githubusercontent.com/dfyockey/RomanDigital/master/.github/images/Screenshot_20240806_144411_One_UI_Home.jpg)
 * It's open source :)
 
 ## Requirements
@@ -78,3 +78,7 @@ will lag the system clock by several seconds.
 > Q: "Why Java? Why not Kotlin?"
 > 
 > A: Because I haven't taken up Kotlin yet. Figured I'd learn a bit about the Android API first.
+
+> Q: "This is a fairly new repository, so why is the main branch called 'master' rather than 'main'?"
+> 
+> A: Because I created the repository locally rather than on GitHub and forgot that client-side git hadn't yet changed the default main branch name from 'master' to 'main'. I should really change it soon because it looks *sooooo* 20th Century.
