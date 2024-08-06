@@ -33,7 +33,7 @@ known to exist or to have existed, including:
 
 ![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240806_144411_One_UI_Home.jpg)
 
-* It's open source :)
+* And... It's open source :)
 
 ## Requirements
 
