@@ -27,7 +27,7 @@ known to exist or to have existed, including:
 * Choice between centered display and display aligned with a fixed separator
 * AM/PM indicator integrated into the time display, such that the separator is displayed as "·" for AM and ":" for PM
 * Display in the largest possible text for the device screen width (excepting a narrow margin) regardless of whether display is centered or fixed
-* A widget for providing a Roman digital clock display on a device's Home screen ![Portrait screenshot of phone Home screen showing RomanDigital widget](https://raw.githubusercontent.com/dfyockey/RomanDigital/master/.github/images/Screenshot_20240806_144411_One_UI_Home.jpg)
+* A widget for providing a Roman digital clock display on a device's Home screen ![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240806_144411_One_UI_Home.jpg)
 * It's open source :)
 
 ## Requirements
