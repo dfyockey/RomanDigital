@@ -10,7 +10,7 @@ around collecting dust to serve as a wall or desk clock. A broader purpose is to
 perhaps help popularize — a simple clock of a style different from the
 common analog Arabic, analog Roman, and digital Arabic styles.
 
-![Landscape screenshot of phone showing RomanDigital app displaying time as VIII:LVII](https://raw.githubusercontent.com/dfyockey/conky-FoldingAtHome-status/main/.github/images/Screenshot_20240703_205732_RomanDigital.jpg)
+![Landscape screenshot of phone showing RomanDigital app displaying time as VIII:LVII](https://raw.githubusercontent.com/dfyockey/RomanDigital/main/.github/images/Screenshot_20240703_205732_RomanDigital.jpg)
 
 ## Features
 
@@ -20,14 +20,14 @@ RomanDigital includes several common clock app features, including:
 * Centered display
 * Option to keep display on (when app is in foreground) and related option to do so only when charging
 * Display in either portrait or landscape
-* Tap on screen displays app and system controls ![Landscape screenshot of phone showing system bars and RomanDigital app displaying time as IV:XIV with toolbar containing gear and info icons](https://raw.githubusercontent.com/dfyockey/conky-FoldingAtHome-status/main/.github/images/Screenshot_20240726_0_RomanDigital.jpg)
+* Tap on screen displays app and system controls ![Landscape screenshot of phone showing system bars and RomanDigital app displaying time as IV:XIV with toolbar containing gear and info icons](https://raw.githubusercontent.com/dfyockey/RomanDigital/main/.github/images/Screenshot_20240726_0_RomanDigital.jpg)
 
 RomanDigital further includes features believed to be unique over other Roman digital clock apps
 known to exist or to have existed, including:
 * Choice between centered display and display aligned with a fixed separator
 * AM/PM indicator integrated into the time display, such that the separator is displayed as "·" for AM and ":" for PM
 * Display in the largest possible text for the device screen width (excepting a narrow margin) regardless of whether display is centered or fixed
-* A widget for providing a Roman digital clock display on a device's Home screen ![Portrait screenshot of phone Home screen showing RomanDigital widget](https://raw.githubusercontent.com/dfyockey/conky-FoldingAtHome-status/main/.github/images/Screenshot_20240806_144411_One_UI_Home.jpg)
+* A widget for providing a Roman digital clock display on a device's Home screen ![Portrait screenshot of phone Home screen showing RomanDigital widget](https://raw.githubusercontent.com/dfyockey/RomanDigital/main/.github/images/Screenshot_20240806_144411_One_UI_Home.jpg)
 * It's open source :)
 
 ## Requirements
@@ -45,7 +45,7 @@ will lag the system clock by several seconds.
 
 > Q: "There's no alarm feature, so why the need to set exact alarms?"
 > 
-> A: The great and powerful Google has not seen fit to enable widgets to receive the ACTION_TIME_TICK intent broadcast thru the system each minute. Setting an alarm for exactly at the time of each next minute is the only straightforward way (that I know of) for a widget to get a tick each minute. 
+> A: The great and powerful Google has not seen fit to enable widgets to receive the ACTION_TIME_TICK intent broadcast thru the system each minute. Setting an alarm for exactly the time of each next minute is the only straightforward way (that I know of) for a widget to get a tick each minute. 
 
 > Q: "Will there ever be an alarm feature?"
 > 
@@ -53,7 +53,7 @@ will lag the system clock by several seconds.
 
 > Q: "Why is the exact alarm permission request so awkward? Why not just have a switch right on the Settings screen?"
 > 
-> A: Because of the way Google set it up. They require you, the user, to go to the system's permission setting screen and switch the switch there yourself. Fortunately, an app can at least have a button to click to take you to that screen. Otherwise, you'd have to dig around in the settings and find the right permission yourself.
+> A: Because of the way Google set it up. They require you, the user, to go to the system's permission setting screen and switch the switch there yourself. Fortunately, an app can at least provide a button to take you to that screen. Otherwise, you'd have to dig around in the settings and find the right permission yourself.
 
 > Q: "Why can't I change the font/text color/background color/widget background transparency/etc?"
 > 
