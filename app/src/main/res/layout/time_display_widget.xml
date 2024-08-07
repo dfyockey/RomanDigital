@@ -25,7 +25,6 @@
         android:paddingLeft="0dp"
         android:paddingEnd="0dp"
         android:paddingRight="0dp"
-        android:shadowColor="@color/widgetTextShadow"
         android:shadowDx="-2"
         android:shadowDy="3"
         android:shadowRadius="8"
