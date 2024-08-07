@@ -31,6 +31,5 @@
         android:text="@string/appwidget_text"
         android:textColor="@color/widgetText"
         android:textSize="34sp"
-        android:textStyle="bold"
         android:typeface="monospace" />
 </RelativeLayout>

@@ -4,5 +4,7 @@
     <color name="abswitch_thumb_disabled">#686868</color>
     <color name="abswitch_track">#F44336</color>
     <color name="abswitch_track_disabled">#484848</color>
+    <color name="transparent_85_pct">#26000000</color>
+    <color name="widgetText">#FAFAFA</color>
     <color name="fragment_title">@color/white</color>
 </resources>
