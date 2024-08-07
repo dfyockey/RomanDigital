@@ -62,7 +62,7 @@ will lag the system clock by several seconds.
 
 > Q: "Why can't I change the font/text color/background color/widget background transparency/etc?"
 > 
-> A: One day perhaps...
+> A: Haven't gotten to them yet.
 
 > Q: "Why no seconds?"
 > 
