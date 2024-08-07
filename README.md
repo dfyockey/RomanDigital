@@ -31,7 +31,7 @@ known to exist or to have existed, including:
 * Display in the largest possible text for the device screen width (excepting a narrow margin) regardless of whether display is centered or fixed
 * A widget for providing a Roman digital clock display on a device's Home screen:
 
-![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240806_144411_One_UI_Home.jpg)
+![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240807_133709_One UI Home.jpg)
 
 * And... It's open source :)
 
