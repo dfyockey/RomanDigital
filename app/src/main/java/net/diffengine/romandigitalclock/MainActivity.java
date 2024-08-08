@@ -518,7 +518,7 @@ public class MainActivity extends AppCompatActivity {
 //            vToolbar.setElevation(20F);
 //        }
 
-        String maxtime_fill = getString((opt.get(ampm)) ? R.string.civ_fill : R.string.mil_fill);
+        String maxtime_fill = getString((opt.get(ampm) == left) ? R.string.civ_fill : R.string.mil_fill);
         TimeDisplaySizeControl = findViewById(R.id.timedisplay_size_control);
         TimeDisplaySizeControl.setText(maxtime_fill);
         TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
