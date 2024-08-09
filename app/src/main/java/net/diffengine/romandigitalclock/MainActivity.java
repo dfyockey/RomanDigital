@@ -12,9 +12,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 import androidx.appcompat.widget.ActionMenuView;
 
@@ -48,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView TimeDisplay;
     private AppCompatTextView TimeDisplaySizeControl;
     private View     bkgndView;
-    private Fragment menuFragment;
 
     static boolean left  = false;
     static boolean right = true;
@@ -169,19 +165,6 @@ public class MainActivity extends AppCompatActivity {
     };
 
     //---------------------------------------------------------------
-
-    private void MainMenu(int visible) {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-
-        if (visible == View.VISIBLE) {
-            ft.show(menuFragment);
-        } else {
-            ft.hide(menuFragment);
-        }
-
-        ft.commit();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -312,19 +295,6 @@ public class MainActivity extends AppCompatActivity {
 //        TimeDisplay.setOnClickListener(timedisplayOCL);
     }
 
-    private void setupMainMenu(Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            menuFragment = new SelectionMenuFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.SelectionMenu, menuFragment, null)
-                    .hide(menuFragment)
-                    .commit();
-        } else if (menuFragment == null) {
-            // Recover reference to menuFragment following an orientation change
-            menuFragment = getSupportFragmentManager().findFragmentById(R.id.SelectionMenu);
-        }
-    }
-
     private void getSettings() {
         // Load setting values into options hashmap and setup initial state based thereon
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
@@ -378,7 +348,6 @@ public class MainActivity extends AppCompatActivity {
         windowInsetsControllerCompat.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
 
         setListeners();
-        setupMainMenu(savedInstanceState);
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         myToolbar.setVisibility(View.INVISIBLE);
