@@ -10,7 +10,7 @@ around collecting dust to serve as a wall or desk clock. A broader purpose is to
 clock of a style different from the common analog Arabic, analog Roman, and digital Arabic styles,
 and thereby perhaps help to popularize that style.
 
-![Landscape screenshot of phone showing RomanDigital app displaying time as VIII:LVII](/.github/images/Screenshot_20240703_205732_RomanDigital_2.jpg)
+![Landscape screenshot of phone showing RomanDigital app displaying time as VIII:LVII](/.github/images/Screenshot_20240809_205721_RomanDigital.jpg)
 
 ## Features
 
@@ -22,7 +22,7 @@ RomanDigital includes several common clock app features, including:
 * Display in either portrait or landscape
 * Tap on screen displays app and system controls:
 
-![Landscape screenshot of phone showing system bars and RomanDigital app displaying time as IV:XIV with toolbar containing gear and info icons](/.github/images/Screenshot_20240726_0_RomanDigital_2.jpg)
+![Landscape screenshot of phone showing system bars and RomanDigital app displaying time as IV:XIV with toolbar containing gear and info icons](/.github/images/Screenshot_20240809_161416_RomanDigital.jpg)
 
 RomanDigital further includes features believed to be unique over other Roman digital clock apps
 known to exist or to have existed, including:
