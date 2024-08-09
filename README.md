@@ -27,7 +27,10 @@ RomanDigital includes several common clock app features, including:
 RomanDigital further includes features believed to be unique over other Roman digital clock apps
 known to exist or to have existed, including:
 * Choice between centered display and display aligned with a fixed separator
-* AM/PM indicator integrated into the time display, such that the separator is displayed as "·" for AM and ":" for PM ![Landscape screenshot of phone showing RomanDigital app displaying time as XI·XXXIV](/.github/images/Screenshot_20240809_113408_RomanDigital.jpg)
+* AM/PM indicator integrated into the time display, such that the separator is displayed as "·" for AM and ":" for PM
+
+![Landscape screenshot of phone showing RomanDigital app displaying time as XI·XXXIV](/.github/images/Screenshot_20240809_113408_RomanDigital.jpg)
+
 * Display in the largest possible text for the device screen width (excepting a narrow margin) regardless of whether display is centered or fixed
 * A widget for providing a Roman digital clock display on a device's Home screen:
 
