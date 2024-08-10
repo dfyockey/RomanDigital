@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -31,12 +30,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowInsets;
 import android.view.WindowManager;
-import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -177,10 +172,7 @@ public class MainActivity extends AppCompatActivity {
     private final View.OnClickListener bkgndOCL = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            //MainMenu(View.INVISIBLE);
             View vToolbar = findViewById(R.id.my_toolbar);
-            //vToolbar.setVisibility(View.INVISIBLE);
-//            getSupportActionBar().hide();
 
             if (vToolbar.isShown()) {
                 vToolbar.setVisibility(View.INVISIBLE);
@@ -191,18 +183,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-
-    /** @noinspection Convert2Lambda*/
-    private final View.OnClickListener clockOCL = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            //MainMenu(View.VISIBLE);
-//            View vToolbar = findViewById(R.id.my_toolbar);
-//            vToolbar.setVisibility(View.VISIBLE);
-//            getSupportActionBar().show();
-        }
-    };
-
 
     //---------------------------------------------------------------
 
@@ -252,18 +232,6 @@ public class MainActivity extends AppCompatActivity {
 
     //---------------------------------------------------------------
 
-    private final View.OnClickListener timedisplayOCL = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            PopupMenu popup = new PopupMenu(context, v);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                popup.setForceShowIcon(true);
-            }
-            popup.getMenuInflater().inflate(R.menu.main_menu, popup.getMenu());
-            popup.show();
-        }
-    };
-
     private void showActivity(Class<?> cls) {
         Intent showActivityIntent = new Intent(context, cls);
         startActivity(showActivityIntent);
@@ -287,12 +255,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setListeners() {
         TimeDisplay = findViewById(R.id.TimeDisplay);
-        //TimeDisplay.setOnClickListener(clockOCL);
 
         bkgndView = findViewById(R.id.main_activity_bkgnd);
         bkgndView.setOnClickListener(bkgndOCL);
-
-//        TimeDisplay.setOnClickListener(timedisplayOCL);
     }
 
     private void getSettings() {
@@ -344,17 +309,13 @@ public class MainActivity extends AppCompatActivity {
 
         // System Bars Behavior needs to be set as follows to prevent opening a Quick Settings Panel
         // on at least some Android versions when swiping down from the screen top while the System
-        // Bars are hidden, thereby allowing the swipe to shoe the System Bars instead:
+        // Bars are hidden, thereby allowing the swipe to show the System Bars instead:
         windowInsetsControllerCompat.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
 
         setListeners();
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         myToolbar.setVisibility(View.INVISIBLE);
-
-//        // Noted at https://medium.com/javarevisited/how-to-get-status-bar-height-in-android-programmatically-c127ad4f8a5d
-//        int statusBarHeight = getResources().getDimensionPixelSize(
-//                getResources().getIdentifier("status_bar_height", "dimen", "android"));
 
         // Adapted from https://developer.android.com/develop/ui/views/layout/edge-to-edge#system-bars-insets.
         // But they @#&$%! forgot to mention that this needs to be in the onCreate method!!!
@@ -381,48 +342,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-//        // Method 2: Using Display Metrics
-//        Rect rectangle = new Rect();
-//        Window window = getWindow();
-//        window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
-//        int statusBarHeight2 = rectangle.top;
-//        Toast.makeText(context, new Integer(statusBarHeight2).toString(), Toast.LENGTH_SHORT).show();
-
-//        // Noted at https://medium.com/javarevisited/how-to-get-status-bar-height-in-android-programmatically-c127ad4f8a5d
-//        Rect rectangle = new Rect();
-//        getWindow().getDecorView().getWindowVisibleDisplayFrame(rectangle);
-//        int statusBarHeight = rectangle.top;
-
-//        int navBarHeight = getResources().getDimensionPixelSize(
-//                getResources().getIdentifier("navigation_bar_height", "dimen", "android"));
-
-//        ViewGroup.LayoutParams layoutParams = myToolbar.getLayoutParams();
-//        int height = layoutParams.height + statusBarHeight;
-//        layoutParams.height = height;
-//        myToolbar.setLayoutParams(layoutParams);
-
-//        int titleMarginTop = myToolbar.getTitleMarginTop();
-//        myToolbar.setTitleMarginTop( titleMarginTop + statusBarHeight);
-
-//        int orientation = getResources().getConfiguration().orientation;
-//        if ( orientation == Configuration.ORIENTATION_LANDSCAPE ) {
-//            myToolbar.setPadding(navBarHeight, 0, navBarHeight, 0);
-//        }
-
-        //myToolbar.setPadding(0, statusBarHeight, 0, 0);
-
-        // Set padding at top and bottom of layout to push the Toolbar down
-        // while keeping the TimeDisplay centered on the screen
-//        ConstraintLayout main = findViewById(R.id.main_activity_bkgnd);
-//        main.setPadding(0, statusBarHeight, 0, statusBarHeight);
-
-
         // VERY Important!
         // Needed so the menu resource is loaded into the toolbar!
         myToolbar.inflateMenu(R.menu.main_menu);
-
-        //setSupportActionBar(myToolbar);
 
         myToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -442,29 +364,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        View toolbarMenu = myToolbar.findViewById(R.id.toolbar_menu);
-//        //Menu toolbarMenu = myToolbar.getMenu();
-//        //Toast.makeText(context, new Integer(toolbarMenu.size()).toString(), Toast.LENGTH_SHORT).show();
-//
-//        android.content.res.Resources res = getResources();
-//
-//        //MenuItem menuItem = myToolbar.findViewById(R.id.item_settings);
-//        MenuItem menuItem = toolbarMenu.findViewById(R.id.item_settings);
-//
-//        Drawable drawableGear = menuItem.getIcon();
-//        DrawableCompat.setTint(DrawableCompat.wrap(drawableGear), res.getColor(R.color.clock_red));
-
-        //VectorDrawableCompat gear = VectorDrawableCompat.create(res, R.drawable.ic_settings_24dp, null);
-        //gear.setColorFilter(res.getColor(R.color.clock_red), PorterDuff.Mode.DST);
-
-        //View itemGear = myToolbar.findViewById(R.id.item_settings);
-
-        //menuGear.setIcon(gear);
-
         getSettings();
-
-
-        //getSupportActionBar().hide();
     }
 
     //---------------------------------------------------------------
@@ -483,9 +383,6 @@ public class MainActivity extends AppCompatActivity {
         TimeDisplay.setVisibility(View.INVISIBLE);
         Toolbar vToolbar = findViewById(R.id.my_toolbar);
         vToolbar.setVisibility(View.INVISIBLE);
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            vToolbar.setElevation(20F);
-//        }
 
         String maxtime_fill = getString((opt.get(ampm) == left) ? R.string.civ_fill : R.string.mil_fill);
         TimeDisplaySizeControl = findViewById(R.id.timedisplay_size_control);
