@@ -20,26 +20,37 @@
 
 package net.diffengine.romandigitalclock;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
+import androidx.appcompat.widget.ActionMenuView;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.util.HashMap;
@@ -49,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView TimeDisplay;
     private AppCompatTextView TimeDisplaySizeControl;
     private View     bkgndView;
-    private Fragment menuFragment;
 
     static boolean left  = false;
     static boolean right = true;
@@ -117,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateTimeDisplay() {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
-        String now = romantime.now( opt.get(ampm), opt.get(ampmSeparator), !(opt.get(alignment)) );
+        String now = romantime.now( !opt.get(ampm), opt.get(ampmSeparator), !opt.get(alignment) );
 
         // IMPORTANT:
         // For the String returned by romantime.now to be correctly aligned in TimeDisplay textview,
@@ -171,32 +181,26 @@ public class MainActivity extends AppCompatActivity {
 
     //---------------------------------------------------------------
 
-    private void MainMenu(int visible) {
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-
-        if (visible == View.VISIBLE) {
-            ft.show(menuFragment);
-        } else {
-            ft.hide(menuFragment);
-        }
-
-        ft.commit();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
     }
 
     /** @noinspection Convert2Lambda*/
     private final View.OnClickListener bkgndOCL = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            MainMenu(View.INVISIBLE);
-        }
-    };
+            View vToolbar = findViewById(R.id.my_toolbar);
 
-    /** @noinspection Convert2Lambda*/
-    private final View.OnClickListener clockOCL = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            MainMenu(View.VISIBLE);
+            if (vToolbar.isShown()) {
+                vToolbar.setVisibility(View.INVISIBLE);
+                windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
+            } else {
+                vToolbar.setVisibility(View.VISIBLE);
+                windowInsetsControllerCompat.show(WindowInsetsCompat.Type.systemBars());
+            }
         }
     };
 
@@ -248,25 +252,32 @@ public class MainActivity extends AppCompatActivity {
 
     //---------------------------------------------------------------
 
+    private void showActivity(Class<?> cls) {
+        Intent showActivityIntent = new Intent(context, cls);
+        startActivity(showActivityIntent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        boolean returnState = true;
+        int itemId = item.getItemId();
+
+        if(itemId == R.id.item_settings) {
+            showActivity(SettingsActivity.class);
+        } else if (itemId == R.id.item_about) {
+            showActivity(AboutActivity.class);
+        } else {
+            returnState = super.onOptionsItemSelected(item);
+        }
+
+        return returnState;
+    }
+
     private void setListeners() {
         TimeDisplay = findViewById(R.id.TimeDisplay);
-        TimeDisplay.setOnClickListener(clockOCL);
 
         bkgndView = findViewById(R.id.main_activity_bkgnd);
         bkgndView.setOnClickListener(bkgndOCL);
-    }
-
-    private void setupMainMenu(Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            menuFragment = new SelectionMenuFragment();
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.SelectionMenu, menuFragment, null)
-                    .hide(menuFragment)
-                    .commit();
-        } else if (menuFragment == null) {
-            // Recover reference to menuFragment following an orientation change
-            menuFragment = getSupportFragmentManager().findFragmentById(R.id.SelectionMenu);
-        }
     }
 
     private void getSettings() {
@@ -277,17 +288,102 @@ public class MainActivity extends AppCompatActivity {
             execCase(sp, key);
         }
     }
-    
+
+    private void modToolbarMenu(Toolbar myToolbar, Insets insets) {
+        // Loop through Views contained in myToolbar as suggested at
+        // https://snow.dog/blog/how-to-dynamicaly-change-android-toolbar-icons-color (which is
+        // Apache 2.0 licensed at https://gist.github.com/chomi3/7e088760ef7bca10430e), but set
+        // icon colors by setting their Tint as suggested at
+        // https://stackoverflow.com/questions/11376516/change-drawable-color-programmatically
+        int childCount = myToolbar.getChildCount();
+        for (int i = 0; i < childCount; ++i) {
+            View view = myToolbar.getChildAt(i);
+            if (view instanceof ActionMenuView) {
+                ActionMenuView actionMenuView = (ActionMenuView) view;
+                actionMenuView.setPadding(0, 0, insets.right, 0);
+                Menu actionMenu = actionMenuView.getMenu();
+                for (int j = 0; j < actionMenu.size(); ++j) {
+                    MenuItem menuItem = actionMenu.getItem(j);
+                    Drawable icon = menuItem.getIcon();
+                    // Icon needs to be "wrapped" to facilitate use across different API levels.
+                    // See https://developer.android.com/reference/androidx/core/graphics/drawable/DrawableCompat#wrap(android.graphics.drawable.Drawable)
+                    DrawableCompat.setTint(DrawableCompat.wrap(icon), getResources().getColor(R.color.clock_red));
+                }
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Make MainActivity window extend beneath the System Bars to the edges of the screen.
+        // From info at https://stackoverflow.com/questions/49190381/fullscreen-app-with-displaycutout
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            layoutParams.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+        }
+
         windowInsetsControllerCompat = WindowCompat.getInsetsController(getWindow(), getWindow().getDecorView());
+
+        // System Bars Behavior needs to be set as follows to prevent opening a Quick Settings Panel
+        // on at least some Android versions when swiping down from the screen top while the System
+        // Bars are hidden, thereby allowing the swipe to show the System Bars instead:
         windowInsetsControllerCompat.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
 
         setListeners();
-        setupMainMenu(savedInstanceState);
+
+        Toolbar myToolbar = findViewById(R.id.my_toolbar);
+        myToolbar.setVisibility(View.INVISIBLE);
+
+        // Adapted from https://developer.android.com/develop/ui/views/layout/edge-to-edge#system-bars-insets.
+        // But they @#&$%! forgot to mention that this needs to be in the onCreate method!!!
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_activity_bkgnd), new OnApplyWindowInsetsListener() {
+            @NonNull
+            @Override
+            public WindowInsetsCompat onApplyWindowInsets(@NonNull View v, @NonNull WindowInsetsCompat windowInsets) {
+                Insets insets = windowInsets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars());
+
+                // Setting myToolbar's Title Margin values by adding insets to its existing settings
+                // causes the values to get ever larger. To avoid this, create a temporary Toolbar
+                // and get the default Toolbar Title Margin values, add the insets thereto, and set
+                // the margins to that sum.
+                Toolbar tmpToolbar = new Toolbar(context);
+                myToolbar.setTitleMarginStart( tmpToolbar.getTitleMarginStart() + insets.left);
+
+                ViewGroup.MarginLayoutParams lpToolbar = (ViewGroup.MarginLayoutParams) myToolbar.getLayoutParams();
+                lpToolbar.topMargin = insets.top;
+                myToolbar.setLayoutParams(lpToolbar);
+
+                modToolbarMenu(myToolbar, insets);
+
+                return WindowInsetsCompat.CONSUMED;
+            }
+        });
+
+        // VERY Important!
+        // Needed so the menu resource is loaded into the toolbar!
+        myToolbar.inflateMenu(R.menu.main_menu);
+
+        myToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                boolean returnState = true;
+                int itemId = item.getItemId();
+
+                if(itemId == R.id.item_settings) {
+                    showActivity(SettingsActivity.class);
+                } else if (itemId == R.id.item_about) {
+                    showActivity(AboutActivity.class);
+                } else {
+                    returnState = false;
+                }
+
+                return returnState;
+            }
+        });
+
         getSettings();
     }
 
@@ -296,8 +392,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         unregisterReceiver(updateReceiver);
         unregisterReceiver(broadcastReceiver);
-
-        windowInsetsControllerCompat.show(WindowInsetsCompat.Type.systemBars());
+        findViewById(R.id.my_toolbar).setVisibility(View.INVISIBLE);
         super.onPause();
     }
 
@@ -306,8 +401,10 @@ public class MainActivity extends AppCompatActivity {
         windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
 
         TimeDisplay.setVisibility(View.INVISIBLE);
+        Toolbar vToolbar = findViewById(R.id.my_toolbar);
+        vToolbar.setVisibility(View.INVISIBLE);
 
-        String maxtime_fill = getString((opt.get(ampm)) ? R.string.civ_fill : R.string.mil_fill);
+        String maxtime_fill = getString((opt.get(ampm) == left) ? R.string.civ_fill : R.string.mil_fill);
         TimeDisplaySizeControl = findViewById(R.id.timedisplay_size_control);
         TimeDisplaySizeControl.setText(maxtime_fill);
         TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());

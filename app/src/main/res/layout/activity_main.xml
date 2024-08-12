@@ -29,7 +29,8 @@
     android:id="@+id/main_activity_bkgnd"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000"
+    android:background="@android:color/black"
+    android:fitsSystemWindows="false"
     tools:context=".MainActivity">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -38,6 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/timedisplay_margin"
         android:background="@color/black"
+        android:clickable="false"
         android:gravity="center"
         android:maxLines="1"
         android:text="@string/civ_fill"
@@ -62,6 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/timedisplay_margin"
         android:background="@color/black"
+        android:clickable="false"
         android:gravity="center"
         android:maxLines="1"
         android:textColor="@color/clock_red"
@@ -75,15 +78,18 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias=".5" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/SelectionMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout="@layout/fragment_selection_menu" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="RomanDigital"
+        app:titleTextColor="@color/clock_red" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
