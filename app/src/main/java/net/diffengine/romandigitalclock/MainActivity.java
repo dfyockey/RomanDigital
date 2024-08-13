@@ -52,6 +52,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -77,15 +78,7 @@ public class MainActivity extends AppCompatActivity {
             keepon = "chkbox_keep_on",
             onlywhencharging = "chkbox_when_charging";
 
-    // Storage for values of options loaded from settings
-    private static final Map<String, Boolean> opt = new HashMap<>();
-    static {
-        opt.put(ampm, left);
-        opt.put(alignment, left);
-        opt.put(ampmSeparator, left);
-        opt.put(keepon, false);
-        opt.put(onlywhencharging, false);
-    }
+    private SharedPreferences prefs;
 
     //////////////////////////////////////////////////////////////////////
 
@@ -108,9 +101,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private boolean getPref(String key) {
+        return prefs.getBoolean(key, false);
+    }
+
     private void setKeepScreenOn() {
         //noinspection DataFlowIssue
-        boolean keepScreenOn = opt.get(keepon) && (!opt.get(onlywhencharging) || isCharging());
+//        boolean kon = getPref(keepon);
+//        boolean owc = !getPref(onlywhencharging);
+//        boolean ich = isCharging();
+//        boolean keepScreenOn = kon && (owc || ich);
+//        Toast.makeText(context, "keepon = " + new Boolean(kon).toString() + ", !onlywhencharging = " + new Boolean(owc).toString() + ", inCharging() = " + new Boolean(ich).toString(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "keepScreenOn = " + new Boolean(keepScreenOn).toString(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(context, "bkgndView.keepScreenOn = " + new Boolean(bkgndView.getKeepScreenOn()).toString(), Toast.LENGTH_SHORT).show();
+
+        boolean keepScreenOn = getPref(keepon) && (!getPref(onlywhencharging) || isCharging());
         bkgndView.setKeepScreenOn(keepScreenOn);
     }
 
@@ -127,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateTimeDisplay() {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
-        String now = romantime.now( !opt.get(ampm), opt.get(ampmSeparator), !opt.get(alignment) );
+        String now = romantime.now( !getPref(ampm), getPref(ampmSeparator), !getPref(alignment) );
 
         // IMPORTANT:
         // For the String returned by romantime.now to be correctly aligned in TimeDisplay textview,
@@ -181,13 +186,6 @@ public class MainActivity extends AppCompatActivity {
 
     //---------------------------------------------------------------
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
     /** @noinspection Convert2Lambda*/
     private final View.OnClickListener bkgndOCL = new View.OnClickListener() {
         @Override
@@ -206,71 +204,9 @@ public class MainActivity extends AppCompatActivity {
 
     //---------------------------------------------------------------
 
-//    /* Before adding specific cases below, uncomment this interface */
-//
-//    private interface Case {
-//        void run();
-//    }
-
-//    /* Put specific cases here if needed and add them to optCase below */
-//
-//    private class ExampleCase implements Case {
-//        @Override
-//        public void run() {
-//            // Add code to be run in this case here
-//        }
-//    }
-//
-//    private static final Map<String, Case> optCase = new HashMap<>();
-//    {
-//        optCase.put("preference_key", new ExampleCase());
-//    }
-
-    /* Put anything to be executed for all cases in this method */
-    /** @noinspection ReassignedVariable*/
-    private void execCase(SharedPreferences sp, String key) {
-        // Load changed setting value into option hashmap
-        key = (key!=null) ? key : "null";
-        opt.put(key, sp.getBoolean(key, false));
-
-//        // Run Case for key, if any
-//        if (optCase.containsKey(key)) {
-//            //noinspection DataFlowIssue
-//            optCase.get(key).run();
-//        }
-    }
-
-    /** @noinspection Anonymous2MethodRef, Convert2Lambda */
-    // HashMaps opt and optCase are used in supporting methods above to respond
-    // to preference changes in lieu of using a lengthy switch statement here
-    private final SharedPreferences.OnSharedPreferenceChangeListener prefChgListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged (SharedPreferences sp, String key) {
-            execCase(sp, key);
-        }
-    };
-
-    //---------------------------------------------------------------
-
     private void showActivity(Class<?> cls) {
         Intent showActivityIntent = new Intent(context, cls);
         startActivity(showActivityIntent);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        boolean returnState = true;
-        int itemId = item.getItemId();
-
-        if(itemId == R.id.item_settings) {
-            showActivity(SettingsActivity.class);
-        } else if (itemId == R.id.item_about) {
-            showActivity(AboutActivity.class);
-        } else {
-            returnState = super.onOptionsItemSelected(item);
-        }
-
-        return returnState;
     }
 
     private void setListeners() {
@@ -278,15 +214,6 @@ public class MainActivity extends AppCompatActivity {
 
         bkgndView = findViewById(R.id.main_activity_bkgnd);
         bkgndView.setOnClickListener(bkgndOCL);
-    }
-
-    private void getSettings() {
-        // Load setting values into options hashmap and setup initial state based thereon
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        sp.registerOnSharedPreferenceChangeListener(prefChgListener);
-        for (String key : opt.keySet()) {
-            execCase(sp, key);
-        }
     }
 
     private void modToolbarMenu(Toolbar myToolbar, Insets insets) {
@@ -384,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        getSettings();
+        prefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
     //---------------------------------------------------------------
@@ -404,7 +331,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar vToolbar = findViewById(R.id.my_toolbar);
         vToolbar.setVisibility(View.INVISIBLE);
 
-        String maxtime_fill = getString((opt.get(ampm) == left) ? R.string.civ_fill : R.string.mil_fill);
+        String maxtime_fill = getString((getPref(ampm) == left) ? R.string.civ_fill : R.string.mil_fill);
         TimeDisplaySizeControl = findViewById(R.id.timedisplay_size_control);
         TimeDisplaySizeControl.setText(maxtime_fill);
         TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
