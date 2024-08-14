@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
         bkgndView.setOnClickListener(bkgndOCL);
     }
 
-    private void modToolbarMenu(Toolbar myToolbar, Insets insets) {
+    private void modToolbarMenu(Toolbar myToolbar) {
         // Loop through Views contained in myToolbar as suggested at
         // https://snow.dog/blog/how-to-dynamicaly-change-android-toolbar-icons-color (which is
         // Apache 2.0 licensed at https://gist.github.com/chomi3/7e088760ef7bca10430e), but set
@@ -272,7 +272,7 @@ public class MainActivity extends AppCompatActivity {
                 lpToolbar.rightMargin = insets.right;
                 myToolbar.setLayoutParams(lpToolbar);
 
-                modToolbarMenu(myToolbar, insets);
+                modToolbarMenu(myToolbar);
 
                 return WindowInsetsCompat.CONSUMED;
             }
