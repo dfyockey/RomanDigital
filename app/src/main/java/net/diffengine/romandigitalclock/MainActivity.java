@@ -221,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
             View view = myToolbar.getChildAt(i);
             if (view instanceof ActionMenuView) {
                 ActionMenuView actionMenuView = (ActionMenuView) view;
-                actionMenuView.setPadding(0, 0, insets.right, 0);
                 Menu actionMenu = actionMenuView.getMenu();
                 for (int j = 0; j < actionMenu.size(); ++j) {
                     MenuItem menuItem = actionMenu.getItem(j);
@@ -266,15 +265,11 @@ public class MainActivity extends AppCompatActivity {
             public WindowInsetsCompat onApplyWindowInsets(@NonNull View v, @NonNull WindowInsetsCompat windowInsets) {
                 Insets insets = windowInsets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars());
 
-                // Setting myToolbar's Title Margin values by adding insets to its existing settings
-                // causes the values to get ever larger. To avoid this, create a temporary Toolbar
-                // and get the default Toolbar Title Margin values, add the insets thereto, and set
-                // the margins to that sum.
-                Toolbar tmpToolbar = new Toolbar(context);
-                myToolbar.setTitleMarginStart( tmpToolbar.getTitleMarginStart() + insets.left);
-
+                // Set Toolbar margins to avoid overlapping with insets
                 ViewGroup.MarginLayoutParams lpToolbar = (ViewGroup.MarginLayoutParams) myToolbar.getLayoutParams();
-                lpToolbar.topMargin = insets.top;
+                lpToolbar.topMargin   = insets.top;
+                lpToolbar.leftMargin  = insets.left;
+                lpToolbar.rightMargin = insets.right;
                 myToolbar.setLayoutParams(lpToolbar);
 
                 modToolbarMenu(myToolbar, insets);
