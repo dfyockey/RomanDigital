@@ -164,25 +164,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //---------------------------------------------------------------
-    /*
-        Two BroadcastReceivers are needed to allow updateReceiver, which is only intended to receive
-        a broadcast intent from this app itself, to be registered as RECEIVER_NOT_EXPORTED without
-        interfering with the receipt of the system-broadcast ACTION_TIME_TICK intent
-     */
 
-    private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+    private class BroadcastReceiverEx extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateTimeDisplay();
         }
-    };
+    }
 
-    private final BroadcastReceiver updateReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            updateTimeDisplay();
-        }
-    };
+    // Receiver instance to be registered as exported for receiving system-broadcast ACTION_TIME_TICK intent
+    private final BroadcastReceiverEx broadcastReceiver = new BroadcastReceiverEx();
+
+    // Receiver instance to be registered as RECEIVER_NOT_EXPORTED for receiving app-broadcast UPDATE_DISPLAY intent
+    private final BroadcastReceiverEx updateReceiver = new BroadcastReceiverEx();
 
     //---------------------------------------------------------------
 
