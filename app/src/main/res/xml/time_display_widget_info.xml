@@ -45,7 +45,6 @@
     android:description="@string/app_widget_description"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen"
-    android:previewLayout="@layout/time_display_widget"
     android:targetCellHeight="1"
        android:targetCellWidth="4"
     android:initialKeyguardLayout="@layout/time_display_widget"
