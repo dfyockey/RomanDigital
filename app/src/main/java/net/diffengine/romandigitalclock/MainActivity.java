@@ -46,16 +46,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     private TextView TimeDisplay;
@@ -107,14 +102,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void setKeepScreenOn() {
         //noinspection DataFlowIssue
-//        boolean kon = getPref(keepon);
-//        boolean owc = !getPref(onlywhencharging);
-//        boolean ich = isCharging();
-//        boolean keepScreenOn = kon && (owc || ich);
-//        Toast.makeText(context, "keepon = " + new Boolean(kon).toString() + ", !onlywhencharging = " + new Boolean(owc).toString() + ", inCharging() = " + new Boolean(ich).toString(), Toast.LENGTH_SHORT).show();
-//        Toast.makeText(context, "keepScreenOn = " + new Boolean(keepScreenOn).toString(), Toast.LENGTH_LONG).show();
-//        Toast.makeText(context, "bkgndView.keepScreenOn = " + new Boolean(bkgndView.getKeepScreenOn()).toString(), Toast.LENGTH_SHORT).show();
-
         boolean keepScreenOn = getPref(keepon) && (!getPref(onlywhencharging) || isCharging());
         bkgndView.setKeepScreenOn(keepScreenOn);
     }
