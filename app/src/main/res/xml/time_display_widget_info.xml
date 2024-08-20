@@ -34,6 +34,7 @@
 -->
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:configure="net.diffengine.romandigitalclock.TimeDisplayWidgetConfigActivity"
     android:widgetFeatures="reconfigurable"
     android:minWidth="250dp"
@@ -49,4 +50,4 @@
     android:targetCellHeight="1"
        android:targetCellWidth="4"
     android:initialKeyguardLayout="@layout/time_display_widget"
-/>
+    tools:ignore="UnusedAttribute" />
