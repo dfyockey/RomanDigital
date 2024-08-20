@@ -22,6 +22,7 @@ package net.diffengine.romandigitalclock;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -49,6 +50,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    /** @noinspection SpellCheckingInspection*/
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -59,9 +61,15 @@ public class SettingsActivity extends AppCompatActivity {
             //
             SwitchPreferenceCompat pFormat = findPreference("chkbox_format");
             SwitchPreferenceCompat pSeparator = findPreference("chkbox_ampm_separator");
-            if (pFormat.isChecked() == MainActivity.right) {
-                pSeparator.setChecked(MainActivity.left);
-                pSeparator.setEnabled(false);
+            try {
+                //noinspection DataFlowIssue
+                if (pFormat.isChecked() == MainActivity.right) {
+                    //noinspection DataFlowIssue
+                    pSeparator.setChecked(MainActivity.left);
+                    pSeparator.setEnabled(false);
+                }
+            } catch (NullPointerException e) {
+                Toast.makeText(getContext(), "Error auto-setting\nseparator switch!", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -74,11 +82,17 @@ public class SettingsActivity extends AppCompatActivity {
                 // by the normal preference dependency attribute.
                 SwitchPreferenceCompat pFormat = (SwitchPreferenceCompat)preference;
                 SwitchPreferenceCompat pSeparator = findPreference("chkbox_ampm_separator");
-                if (pFormat.isChecked() == MainActivity.right) {
-                    pSeparator.setChecked(MainActivity.left);
-                    pSeparator.setEnabled(false);
-                } else {
-                    pSeparator.setEnabled(true);
+                try {
+                    if (pFormat.isChecked() == MainActivity.right) {
+                        //noinspection DataFlowIssue
+                        pSeparator.setChecked(MainActivity.left);
+                        pSeparator.setEnabled(false);
+                    } else {
+                        //noinspection DataFlowIssue
+                        pSeparator.setEnabled(true);
+                    }
+                } catch (NullPointerException e) {
+                    Toast.makeText(getContext(), "Error responding to\nformat switch click!", Toast.LENGTH_LONG).show();
                 }
             }
             return super.onPreferenceTreeClick(preference);

@@ -52,6 +52,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+/** @noinspection Convert2Lambda, SpellCheckingInspection */
 public class MainActivity extends AppCompatActivity {
     private TextView TimeDisplay;
     private AppCompatTextView TimeDisplaySizeControl;
@@ -101,11 +102,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setKeepScreenOn() {
-        //noinspection DataFlowIssue
         boolean keepScreenOn = getPref(keepon) && (!getPref(onlywhencharging) || isCharging());
         bkgndView.setKeepScreenOn(keepScreenOn);
     }
 
+    /** @noinspection SameParameterValue*/
+    // Not inlined since this method will likely be useful for a later added feature
     private Intent makeIntent (String action) {
         Intent i = new Intent();
             i.setAction(action);
@@ -115,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
     int text_resize_attempt_count = 0;
 
-    /** @noinspection DataFlowIssue*/
     private void updateTimeDisplay() {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
@@ -167,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
 
     //---------------------------------------------------------------
 
-    /** @noinspection Convert2Lambda*/
     private final View.OnClickListener bkgndOCL = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -214,7 +214,9 @@ public class MainActivity extends AppCompatActivity {
                     Drawable icon = menuItem.getIcon();
                     // Icon needs to be "wrapped" to facilitate use across different API levels.
                     // See https://developer.android.com/reference/androidx/core/graphics/drawable/DrawableCompat#wrap(android.graphics.drawable.Drawable)
-                    DrawableCompat.setTint(DrawableCompat.wrap(icon), getResources().getColor(R.color.clock_red));
+                    if (icon != null) {
+                        DrawableCompat.setTint(DrawableCompat.wrap(icon), getResources().getColor(R.color.clock_red));
+                    }
                 }
             }
         }

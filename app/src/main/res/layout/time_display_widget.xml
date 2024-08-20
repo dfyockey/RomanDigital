@@ -24,11 +24,18 @@
 -->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/appwidget_bkgnd"
     style="@style/Widget.RomanDigitalClock.AppWidget.Container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.RomanDigitalClock.AppWidgetContainer">
+
+    <!--
+        Poor text contrast in the following TextView is irrelevant because the widget background
+        specified by the applied style attribute above is semitransparent, so real text contrast
+        will be determined by the device's home screen background as set by the user.
+    -->
 
     <TextView
         android:id="@+id/appwidget_text"
@@ -56,5 +63,6 @@
         android:text="@string/appwidget_text"
         android:textColor="@color/widgetText"
         android:textSize="34sp"
-        android:typeface="monospace" />
+        android:typeface="monospace"
+        tools:ignore="TextContrastCheck" />
 </RelativeLayout>

@@ -42,6 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <!-- Start of Masthead -->
+
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="0dp"
@@ -67,7 +69,9 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView" />
+                app:layout_constraintTop_toBottomOf="@id/textView" />
+
+            <!-- add version info TextView here -->
 
             <View
                 android:id="@+id/divider"
@@ -76,7 +80,17 @@
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                app:layout_constraintTop_toBottomOf="@id/textView3" />
+
+            <!-- End of Masthead -->
+
+            <!--
+                Start of Content
+
+                Note: constraintStart_toStartOf of the following TextViews except @id/textView4 are
+                set to the same @id/textView4's Start so that all content TextViews float
+                horizontally as a block centered on the screen.
+            -->
 
             <TextView
                 android:id="@+id/textView2"
@@ -89,10 +103,10 @@
                 android:text="@string/copyright"
                 android:typeface="sans"
                 app:layout_constraintStart_toStartOf="@+id/textView4"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                app:layout_constraintTop_toBottomOf="@id/textView3" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
@@ -106,7 +120,7 @@
                 android:typeface="sans"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@id/textView2" />
 
             <View
                 android:id="@+id/divider2"
@@ -116,7 +130,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+                app:layout_constraintTop_toBottomOf="@id/textView4" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -129,8 +143,14 @@
                 android:paddingRight="@dimen/txtblk_horiz_padding"
                 android:paddingBottom="@dimen/txtblk_vert_padding"
                 android:text="@string/source"
-                app:layout_constraintStart_toStartOf="@+id/textView4"
-                app:layout_constraintTop_toBottomOf="@+id/divider2" />
+                android:textSize="14sp"
+                android:typeface="sans"
+                app:layout_constraintStart_toStartOf="@id/textView4"
+                app:layout_constraintTop_toBottomOf="@id/divider2"
+                tools:ignore="TextContrastCheck" />
+
+            <!-- End of Content -->
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

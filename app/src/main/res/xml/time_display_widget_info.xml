@@ -26,9 +26,10 @@
   In the following...
     android:configure enables showing the config activity at widget install
     android:widgetFeatures enables the Reconfigure button or Settings icon
-      when the widget is in resize mode
+      when the widget is in resize mode where provided by the system
+      (depends on Android version)
     android:targetCellWidth and android:minWidth define the initial widget
-      width when it is added to the home screen, while android:minResize
+      width when it is added to the home screen, while android:minResizeWidth
       defines the minimum width to which the widget can be resized
 -->
 

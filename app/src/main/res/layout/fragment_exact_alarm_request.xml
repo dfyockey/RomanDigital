@@ -54,10 +54,10 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvPermissionExplaination2" />
+        app:layout_constraintTop_toBottomOf="@id/tvPermissionExplaination2" />
 
     <TextView
-        android:id="@+id/tvActivitySectionTitle"
+        android:id="@id/tvActivitySectionTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/txtblk_horiz_padding"

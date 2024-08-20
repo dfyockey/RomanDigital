@@ -53,6 +53,7 @@ public class ExactAlarmRequestFragment extends Fragment implements View.OnClickL
     public void onClick (View v) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             Intent reqIntent = new Intent(ACTION_REQUEST_SCHEDULE_EXACT_ALARM);
+            //noinspection SpellCheckingInspection
             reqIntent.setData(Uri.parse("package:net.diffengine.romandigitalclock"));
             startActivity(reqIntent);
         }

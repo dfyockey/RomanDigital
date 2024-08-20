@@ -32,11 +32,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
+import android.widget.Toast;
 
 import androidx.preference.PreferenceManager;
 
 import java.util.Calendar;
 
+/** @noinspection SpellCheckingInspection*/
 public class TimeDisplayWidget extends AppWidgetProvider {
     static AlarmManager alarmManager;
     static PendingIntent alarmPendingIntent;
@@ -79,10 +81,15 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         String action = intent.getAction();
-        if (action.equals(MINUTE_TICK)) {
-            onTick(context);
-        } else if (action.equals(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED)) {
-            setAlarm(context);
+        try {
+            //noinspection DataFlowIssue
+            if (action.equals(MINUTE_TICK)) {
+                onTick(context);
+            } else if (action.equals(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED)) {
+                setAlarm(context);
+            }
+        } catch (NullPointerException e) {
+            Toast.makeText(context, "Error processing received\ntime-related signal!\nTime may be inaccurate until next signal.", Toast.LENGTH_LONG).show();
         }
     }
 

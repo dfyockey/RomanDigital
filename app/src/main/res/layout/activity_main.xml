@@ -33,6 +33,18 @@
     android:fitsSystemWindows="false"
     tools:context=".MainActivity">
 
+    <!--
+        The following AppCompatTextView, while being invisible, is very important because it is used
+        to dynamically determine the text size to be set in the TimeDisplay TextView, especially for
+        a centered time display.
+
+        android:textSize in the AppCompatTextView is set to the large value of 300sp to allow for
+        automatic scaling down of the text as needed to fit the screen width regardless of device or
+        orientation, excepting very large or small screens (e.g. TV, laptop, watch, etc.) on which
+        this app has not been tested. The TimeDisplay TextView textSize is irrelevant since it is
+        determined dynamically in accordance with AppCompatTextView's autosized text size.
+    -->
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/timedisplay_size_control"
         android:layout_width="0dp"

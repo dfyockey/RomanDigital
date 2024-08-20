@@ -22,6 +22,7 @@ package net.diffengine.romandigitalclock;
 
 import java.util.Calendar;
 
+/** @noinspection SpellCheckingInspection*/
 public class romantime {
 	private static String itor(int i) {
 		String[] R = {

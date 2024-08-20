@@ -25,67 +25,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!--
-    <PreferenceCategory
-        android:title="Time"
-        app:iconSpaceReserved="false">
-            <Preference
-                android:key="single_line_title"
-                android:title="@string/format_title"
-                app:allowDividerBelow="false"
-                app:iconSpaceReserved="false"
-                app:singleLineTitle="true" />
-            <SwitchPreference
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:defaultValue="false"
-                android:summary="12 hour"
-                app:layout="@layout/thin_switch" />
-            <SwitchPreference
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:defaultValue="false"
-                app:summary="24 hour"
-                app:layout="@layout/thin_switch" />
-    </PreferenceCategory>
+        The android:layout attribute is used in the following PreferenceCategory
+        SwitchPreferenceCompat preferences rather than android:widgetLayout so as to apply
+        the specified layout to each entire preference rather than to just its switch.
     -->
-
-<!--
-        <ListPreference
-            android:key="list_format"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:defaultValue="12"
-            android:title="Format..."
-            android:entries="@array/format_options"
-            android:entryValues="@array/format_values"
-            android:persistent="false"
-            app:useSimpleSummaryProvider="true"
-            app:iconSpaceReserved="false" />
-
-        <ListPreference
-            android:key="list_alignment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:defaultValue="0"
-            android:title="Alignment..."
-            android:entries="@array/alignment_options"
-            android:entryValues="@array/alignment_values"
-            android:persistent="false"
-            app:useSimpleSummaryProvider="true"
-            app:iconSpaceReserved="false" />
-
-        <ListPreference
-            android:key="list_separator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:defaultValue="0"
-            android:title="@string/ampm_title"
-            android:entries="@array/separator_options"
-            android:entryValues="@array/separator_values"
-            android:persistent="false"
-            app:useSimpleSummaryProvider="true"
-            app:iconSpaceReserved="false" />
--->
     <PreferenceCategory
         android:title="Time"
         app:iconSpaceReserved="false">
@@ -106,30 +49,4 @@
             android:summary="· for AM\n: for PM" />
     </PreferenceCategory>
 
-    <!--
-    <PreferenceCategory>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="chkbox_format"
-            android:title="@string/format_title"
-            app:iconSpaceReserved="false"
-            app:summaryOff="@string/format_off"
-            app:summaryOn="@string/format_on" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="chkbox_alignment"
-            android:title="@string/alignment_title"
-            app:iconSpaceReserved="false"
-            app:summaryOff="@string/alignment_off"
-            app:summaryOn="@string/alignment_on" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="chkbox_ampm_separator"
-            android:title="@string/ampm_title"
-            app:dependency="chkbox_format"
-            app:iconSpaceReserved="false"
-            app:summaryOff="@string/ampm_off"
-            app:summaryOn="@string/ampm_on" />
-    </PreferenceCategory>
-    -->
 </PreferenceScreen>
