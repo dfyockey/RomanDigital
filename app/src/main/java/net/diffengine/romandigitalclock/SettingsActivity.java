@@ -50,7 +50,6 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    /** @noinspection SpellCheckingInspection*/
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
