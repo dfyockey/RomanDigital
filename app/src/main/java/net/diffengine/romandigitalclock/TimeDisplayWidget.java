@@ -46,9 +46,9 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 
     private static RemoteViews updateTimeDisplay(Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean ampm          = sp.getBoolean("chkbox_format", false);
-        boolean ampmSeparator = sp.getBoolean("chkbox_ampm_separator", false);
-        boolean alignment     = sp.getBoolean("chkbox_alignment", false);
+        boolean ampm          = sp.getBoolean("switch_format", false);
+        boolean ampmSeparator = sp.getBoolean("switch_separator", false);
+        boolean alignment     = sp.getBoolean("switch_alignment", false);
 
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions

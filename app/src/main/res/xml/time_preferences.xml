@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
 /*
- * app_preferences.xml
+ * time_preferences.xml
  * - This file is part of the Android app RomanDigital
  *   and is an xml resource
  *
@@ -33,17 +33,17 @@
         android:title="Time"
         app:iconSpaceReserved="false">
         <SwitchPreferenceCompat android:layout="@layout/a_b_switch_layout"
-            android:key="chkbox_format"
+            android:key="switch_format"
             android:defaultValue="@string/left"
             android:title="12 Hour"
             android:summary="24 Hour" />
         <SwitchPreferenceCompat android:layout="@layout/a_b_switch_layout"
-            android:key="chkbox_alignment"
+            android:key="switch_alignment"
             android:defaultValue="@string/left"
             android:title="Align to Center"
             android:summary="Align to Divider" />
         <SwitchPreferenceCompat android:layout="@layout/a_b_switch_layout"
-            android:key="chkbox_ampm_separator"
+            android:key="switch_separator"
             android:defaultValue="@string/left"
             android:title=": for All"
             android:summary="· for AM\n: for PM" />

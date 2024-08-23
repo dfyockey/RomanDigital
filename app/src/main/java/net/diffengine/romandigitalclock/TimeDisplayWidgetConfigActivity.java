@@ -100,7 +100,7 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.app_preferences, rootKey);
+            setPreferencesFromResource(R.xml.time_preferences, rootKey);
         }
     }
 

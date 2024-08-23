@@ -54,13 +54,13 @@ public class SettingsActivity extends AppCompatActivity {
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.app_preferences, rootKey);
+            setPreferencesFromResource(R.xml.time_preferences, rootKey);
 
             // At start of the activity, ensure that the separator switch is disabled and set to
             // left if the format switch is set to right (i.e. 24 hour format).
             //
-            SwitchPreferenceCompat pFormat = findPreference("chkbox_format");
-            SwitchPreferenceCompat pSeparator = findPreference("chkbox_ampm_separator");
+            SwitchPreferenceCompat pFormat = findPreference("switch_format");
+            SwitchPreferenceCompat pSeparator = findPreference("switch_separator");
             try {
                 //noinspection DataFlowIssue
                 if (pFormat.isChecked() == MainActivity.right) {
@@ -75,13 +75,13 @@ public class SettingsActivity extends AppCompatActivity {
 
         @Override
         public boolean onPreferenceTreeClick(@NonNull Preference preference) {
-            if (preference.getKey().equals("chkbox_format")) {
+            if (preference.getKey().equals("switch_format")) {
                 // Set separator switch enable and check states based on whether format switch state
                 // is left or right (i.e. whether format is 12 or 24 hour). Implementation in code
                 // of the enable/disable operation is needed because it is opposite to that provided
                 // by the normal preference dependency attribute.
                 SwitchPreferenceCompat pFormat = (SwitchPreferenceCompat)preference;
-                SwitchPreferenceCompat pSeparator = findPreference("chkbox_ampm_separator");
+                SwitchPreferenceCompat pSeparator = findPreference("switch_separator");
                 try {
                     if (pFormat.isChecked() == MainActivity.right) {
                         //noinspection DataFlowIssue

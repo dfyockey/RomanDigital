@@ -68,11 +68,11 @@ public class MainActivity extends AppCompatActivity {
 
     // Aliases for option keys
     private static final String
-            ampm = "chkbox_format",
-            alignment = "chkbox_alignment",
-            ampmSeparator = "chkbox_ampm_separator",
-            keepon = "chkbox_keep_on",
-            onlywhencharging = "chkbox_when_charging";
+            ampm = "switch_format",
+            alignment = "switch_alignment",
+            ampmSeparator = "switch_separator",
+            keepon = "switch_keep_on",
+            onlywhencharging = "switch_when_charging";
 
     private SharedPreferences prefs;
 
