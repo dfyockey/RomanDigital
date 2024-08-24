@@ -8,10 +8,10 @@ android {
 
     defaultConfig {
         applicationId = "net.diffengine.romandigitalclock"
-        minSdk = 19
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
-        versionName = "1.0"
+        versionName = "@string/app_version"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
