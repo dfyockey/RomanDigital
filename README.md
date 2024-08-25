@@ -40,28 +40,36 @@ known to exist or to have existed, including:
 
 ## Requirements
 
-RomanDigital requires Android 5.1 or greater and is designed to run on a phone or tablet. Running on
+RomanDigital requires Android 5.0 or greater and is designed to run on a phone or tablet. Running on
 a laptop, desktop pc, TV, or watch will likely result in a time display that's "unoptimized for the
 given device's screen size"; in other words, "too small" or "too large".
 
-When the widget is installed on the Home screen, the app will request permission to set exact alarms.
-In order for the widget to be able to provide accurate time on Android 14 or greater, the user needs
-to grant this permission. Otherwise, the widget will still work, but the time it displays
-will lag the system clock by several seconds.
+When the widget is installed on the Home screen of a device running Android 14 or greater, the app
+will request permission to set exact alarms. In order for the widget to be able to provide accurate
+time on such a device, the user needs to grant this permission. Otherwise, the widget will still
+work, but the time it displays will lag the system clock by several seconds.
+
+## Known Device Limitations
+
+The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is based on Android 5.1,
+but the widget will not. It seems that the Fire's modifications to Android prevent installation of
+*any* app widget. This was confirmed using both the Fire's own launcher and
+[Nova Launcher](https://novalauncher.com/) (free version). RomanDigital has not been tested on other
+Fire versions.
 
 ## FAQ (Foremost Anticipated Questions)
 
 > Q: "There's no alarm feature, so why the need to set exact alarms?"
 > 
-> A: The great and powerful Google has not seen fit to enable widgets to receive the ACTION_TIME_TICK intent broadcast thru the system each minute. Setting an alarm for exactly the time of each next minute is the only straightforward way (that I know of) for a widget to get a tick each minute. 
+> A: The Android API doesn't enable widgets to receive the ACTION_TIME_TICK intent broadcast thru the system each minute. Setting an alarm for the exact time of each next minute is the only straightforward way (that I know of) for a widget to get a tick each minute. 
 
 > Q: "Will there ever be an alarm feature?"
 > 
-> A: Maybe. But I'd be using Arabic numbers in the UI to set alarms because using Roman numerals would up the chances of setting the wrong time.  
+> A: Maybe, but it's not high on the priority list at this point.  
 
-> Q: "Why is the exact alarm permission request so awkward? Why not just have a switch right on the Settings screen?"
+> Q: (Android 14 or greater) "Why is the exact alarm permission request so awkward? Why not just have a switch right on the Settings screen?"
 > 
-> A: Because of the way Google set it up. They require you, the user, to go to the system's permission setting screen and switch the switch there yourself. Fortunately, an app can at least provide a button to take you to that screen. Otherwise, you'd have to dig around in the settings and find the right permission yourself.
+> A: Because of the way Google set it up. They the user to go to the system's permission setting screen and switch the switch there themselves. A permission to use exact alarms could be set without asking for user permission, but at the risk of an app store blocking or removing the app if they think the permission is being misused. 
 
 > Q: "Why can't I change the font/text color/background color/widget background transparency/etc?"
 > 
@@ -69,19 +77,15 @@ will lag the system clock by several seconds.
 
 > Q: "Why no seconds?"
 > 
-> A: Android's standard clock display doesn't include seconds, digital wall and desk clocks don't necessarily include them, and they would crowd the display and look inelegant. Besides, most people (myself included) would have trouble reading a lengthy Roman numeral within a second.
+> A: They would crowd the display and look inelegant. Besides, most people (myself included) would likely have trouble reading a lengthy Roman numeral within a second.
 
 > Q: "Why no date?"
 > 
-> A: Because it's just a simple clock, and it would look inelegant.
+> A: Because it's just a simple clock. At least for now. 
 
 > Q: "Why no version for a watch?"
 > 
 > A: Because I don't have one to test on. Yet. I'd rather not rely *entirely* on virtual devices for testing.
-
-> Q: "How about for an Android automotive display?"
-> 
-> A: Seems like it should work on an automotive display since it's basically a tablet, right? But I don't know since I have don't have such a display to test on.
 
 > Q: "Why Java? Why not Kotlin?"
 > 
@@ -91,6 +95,6 @@ will lag the system clock by several seconds.
 > 
 > A: Because I created the repository locally rather than on GitHub and forgot that client-side git hadn't yet changed the default main branch name from 'master' to 'main'. I should really change it soon because it looks *sooooo* 20th Century.
 
-> Q: "XIII:XXXVII... I get it... ;)  Was that intentional?"
+> Q: "XIII:XXXVII... 13:37... ;)  Was that intentional?"
 > 
-> A: "Nope. I realized just as I was taking the screenshot. Only a total dweeb would deliberatly do something like that. IMHO."
+> A: Nope. I realized just as I was taking the screenshot. Leet of you to notice. Only a total dweeb would deliberately do something like that, right?
