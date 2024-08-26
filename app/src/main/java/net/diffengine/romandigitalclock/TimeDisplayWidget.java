@@ -83,7 +83,8 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         String action = intent.getAction();
         try {
             //noinspection DataFlowIssue
-            if (action.equals(MINUTE_TICK)) {
+            if (action.equals(MINUTE_TICK) || action.equals(Intent.ACTION_TIMEZONE_CHANGED) || action.equals(Intent.ACTION_TIME_CHANGED)) {
+                // Treating changes in system time as a minute tick insures immediate update of time display on such changes
                 onTick(context);
             } else if (action.equals(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED)) {
                 setAlarm(context);
