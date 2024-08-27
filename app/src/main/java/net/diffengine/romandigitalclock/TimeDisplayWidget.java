@@ -85,7 +85,9 @@ public class TimeDisplayWidget extends AppWidgetProvider {
             //noinspection DataFlowIssue
             if (
                     action.equals(MINUTE_TICK) ||
-                    // remember: the following AlarmManager intent is only sent when the permission is granted, not when the permission is revoked
+                    // note: the following AlarmManager intent is only sent when the permission is granted,
+                    //       not when the permission is revoked, and should only occur in Android 12 or 12L
+                    //       due to use of USE_EXACT_ALARM permission.
                     (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms() && action.equals(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED)) ||
                     action.equals(Intent.ACTION_TIMEZONE_CHANGED) ||
                     action.equals(Intent.ACTION_TIME_CHANGED)
@@ -95,7 +97,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                 onTick(context);
             }
         } catch (NullPointerException e) {
-            Toast.makeText(context, "Error processing received\ntime-related signal!\nTime may be inaccurate until next signal.", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Error processing received time-related signal.\nTime may be inaccurate until next signal.", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -133,6 +135,8 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         if ( Build.VERSION.SDK_INT <= Build.VERSION_CODES.R || alarmManager.canScheduleExactAlarms() ) {
             alarmManager.setExact(AlarmManager.RTC, targetTime, alarmPendingIntent);
         } else {
+            // While USE_EXACT_ALARM should make this superfluous, I imagine it could be used if
+            // canScheduleExactAlarms() is somehow set to false, e.g. by the system running in low-power mode.
             alarmManager.set(AlarmManager.RTC, targetTime, alarmPendingIntent);
         }
     }

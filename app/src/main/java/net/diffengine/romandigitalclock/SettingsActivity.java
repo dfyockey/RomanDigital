@@ -68,7 +68,7 @@ public class SettingsActivity extends AppCompatActivity {
                     pSeparator.setEnabled(false);
                 }
             } catch (NullPointerException e) {
-                Toast.makeText(getContext(), "Error auto-setting\nseparator switch!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Error auto-setting separator switch.", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -91,7 +91,7 @@ public class SettingsActivity extends AppCompatActivity {
                         pSeparator.setEnabled(true);
                     }
                 } catch (NullPointerException e) {
-                    Toast.makeText(getContext(), "Error responding to\nformat switch click!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Error responding to format switch click.", Toast.LENGTH_LONG).show();
                 }
             }
             return super.onPreferenceTreeClick(preference);

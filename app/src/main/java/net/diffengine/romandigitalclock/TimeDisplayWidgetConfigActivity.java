@@ -27,7 +27,6 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -65,10 +64,6 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction()
                     .setReorderingAllowed(true);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-                fragmentTransaction.add(R.id.containerRequestFragment, ExactAlarmRequestFragment.class, null);
-            }
 
             fragmentTransaction.replace(R.id.widget_settings, new SettingsActivity.SettingsFragment()).commit();
         }
