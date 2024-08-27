@@ -24,7 +24,7 @@ RomanDigital includes several common clock app features, including:
 
 ![Landscape screenshot of phone showing system bars and RomanDigital app displaying time as IV:XIV with toolbar containing gear and info icons](/.github/images/Screenshot_20240809_161416_RomanDigital.jpg)
 
-RomanDigital further includes features believed to be unique over other Roman digital clock apps
+RomanDigital further includes features believed to be unique over other Roman digital clock Android apps
 known to exist or to have existed, including:
 * Choice between centered display and display aligned with a fixed separator
 * AM/PM indicator integrated into the time display, such that the separator is displayed as "·" for AM and ":" for PM:
@@ -36,7 +36,7 @@ known to exist or to have existed, including:
 
 ![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240807_133709_One_UI_Home.jpg)
 
-* And... It's open source :)
+And... RomanDigital is Apache 2.0 licensed open source :)
 
 ## Requirements
 
@@ -44,12 +44,7 @@ RomanDigital requires Android 5.0 or greater and is designed to run on a phone o
 a laptop, desktop pc, TV, or watch will likely result in a time display that's "unoptimized for the
 given device's screen size"; in other words, "too small" or "too large".
 
-When the widget is installed on the Home screen of a device running Android 14 or greater, the app
-will request permission to set exact alarms. In order for the widget to be able to provide accurate
-time on such a device, the user needs to grant this permission. Otherwise, the widget will still
-work, but the time it displays will lag the system clock by several seconds.
-
-## Known Device Limitations
+## Known Issues
 
 The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is based on Android 5.1,
 but the widget will not. It seems that the Fire's modifications to Android prevent installation of
@@ -57,19 +52,25 @@ but the widget will not. It seems that the Fire's modifications to Android preve
 [Nova Launcher](https://novalauncher.com/) (free version). RomanDigital has not been tested on other
 Fire versions.
 
+## Permissions
+
+The USE_EXACT_ALARM permission is set by this app. This permission is necessary on Android 13 and
+greater to enable the widget to provide an accurate time display. The permission cannot be disabled.
+
+The SCHEDULE_EXACT_ALARM permission set by this app and is necessary on Android 12 for the same
+reason as the USE_EXACT_ALARM permission discussed above. This permission can be disable in the
+_Alarms & Reminders_ section of the system settings. Disabling this permission will cause inaccuracy
+in the widget's time display.
+
 ## FAQ (Foremost Anticipated Questions)
 
-> Q: "There's no alarm feature, so why the need to set exact alarms?"
+> Q: "There's no alarm feature, so why the need to set exact alarms? What's this got to do with an accurate time display?"
 > 
-> A: The Android API doesn't enable widgets to receive the ACTION_TIME_TICK intent broadcast thru the system each minute. Setting an alarm for the exact time of each next minute is the only straightforward way (that I know of) for a widget to get a tick each minute. 
+> A: The Android API doesn't enable widgets to receive the ACTION_TIME_TICK intent broadcast thru the system each minute. Setting an alarm for the exact time of each next minute at the end of a minute is the only straightforward way (that I know of) for the app's widget to know when to update the time display.
 
 > Q: "Will there ever be an alarm feature?"
 > 
 > A: Maybe, but it's not high on the priority list at this point.  
-
-> Q: (Android 14 or greater) "Why is the exact alarm permission request so awkward? Why not just have a switch right on the Settings screen?"
-> 
-> A: Because of the way Google set it up. They the user to go to the system's permission setting screen and switch the switch there themselves. A permission to use exact alarms could be set without asking for user permission, but at the risk of an app store blocking or removing the app if they think the permission is being misused. 
 
 > Q: "Why can't I change the font/text color/background color/widget background transparency/etc?"
 > 
