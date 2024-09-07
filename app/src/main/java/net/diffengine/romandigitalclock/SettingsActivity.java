@@ -22,7 +22,6 @@ package net.diffengine.romandigitalclock;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -51,48 +50,42 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
+
+        private void setSeparatorEnableState(SwitchPreferenceCompat pFormat) {
+            SwitchPreferenceCompat pSeparator = findPreference("switch_separator");
+            if (pFormat.isChecked() == MainActivity.right) {
+                //noinspection DataFlowIssue
+                pSeparator.setChecked(MainActivity.left);
+                pSeparator.setEnabled(false);
+            } else {
+                //noinspection DataFlowIssue
+                pSeparator.setEnabled(true);
+            }
+        }
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.time_preferences, rootKey);
-
+            //
             // At start of the activity, ensure that the separator switch is disabled and set to
             // left if the format switch is set to right (i.e. 24 hour format).
             //
             SwitchPreferenceCompat pFormat = findPreference("switch_format");
-            SwitchPreferenceCompat pSeparator = findPreference("switch_separator");
-            try {
-                //noinspection DataFlowIssue
-                if (pFormat.isChecked() == MainActivity.right) {
-                    //noinspection DataFlowIssue
-                    pSeparator.setChecked(MainActivity.left);
-                    pSeparator.setEnabled(false);
-                }
-            } catch (NullPointerException e) {
-                Toast.makeText(getContext(), "Error auto-setting separator switch.", Toast.LENGTH_LONG).show();
-            }
+            //noinspection DataFlowIssue
+            setSeparatorEnableState(pFormat);
         }
 
         @Override
         public boolean onPreferenceTreeClick(@NonNull Preference preference) {
             if (preference.getKey().equals("switch_format")) {
+                //
                 // Set separator switch enable and check states based on whether format switch state
                 // is left or right (i.e. whether format is 12 or 24 hour). Implementation in code
                 // of the enable/disable operation is needed because it is opposite to that provided
                 // by the normal preference dependency attribute.
+                //
                 SwitchPreferenceCompat pFormat = (SwitchPreferenceCompat)preference;
-                SwitchPreferenceCompat pSeparator = findPreference("switch_separator");
-                try {
-                    if (pFormat.isChecked() == MainActivity.right) {
-                        //noinspection DataFlowIssue
-                        pSeparator.setChecked(MainActivity.left);
-                        pSeparator.setEnabled(false);
-                    } else {
-                        //noinspection DataFlowIssue
-                        pSeparator.setEnabled(true);
-                    }
-                } catch (NullPointerException e) {
-                    Toast.makeText(getContext(), "Error responding to format switch click.", Toast.LENGTH_LONG).show();
-                }
+                setSeparatorEnableState(pFormat);
             }
             return super.onPreferenceTreeClick(preference);
         }
