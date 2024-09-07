@@ -32,7 +32,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import androidx.preference.PreferenceManager;
 
@@ -81,23 +80,25 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         String action = intent.getAction();
-        try {
-            //noinspection DataFlowIssue
-            if (
-                    action.equals(MINUTE_TICK) ||
-                    // note: the following AlarmManager intent is only sent when the permission is granted,
-                    //       not when the permission is revoked, and should only occur in Android 12 or 12L
-                    //       due to use of USE_EXACT_ALARM permission.
-                    (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && alarmManager.canScheduleExactAlarms() && action.equals(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED)) ||
-                    action.equals(Intent.ACTION_TIMEZONE_CHANGED) ||
-                    action.equals(Intent.ACTION_TIME_CHANGED)
-            ) {
-                // Treating a change in any of exact alarm permission, system time, or system timezone
-                // as a minute tick insures immediate update of time display on such changes
-                onTick(context);
-            }
-        } catch (NullPointerException e) {
-            Toast.makeText(context, "Error processing received time-related signal.\nTime may be inaccurate until next signal.", Toast.LENGTH_LONG).show();
+        if (
+            action != null &&
+            (
+                action.equals(MINUTE_TICK) ||
+                action.equals(Intent.ACTION_TIMEZONE_CHANGED) ||
+                action.equals(Intent.ACTION_TIME_CHANGED) ||
+                //
+                // Update time if date changes in case there's a switch between STD Time and DST
+                action.equals(Intent.ACTION_DATE_CHANGED) ||
+                //
+                // The following AlarmManager intent is only sent when the permission is granted,
+                // not when the permission is revoked, and should only occur in Android 12 or 12L
+                // due to use of USE_EXACT_ALARM permission.
+                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && action.equals(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED))
+            )
+        ) {
+            // Treating a change in any of exact alarm permission, system time, or system timezone
+            // as a minute tick insures immediate update of time display on such changes
+            onTick(context);
         }
     }
 
