@@ -101,7 +101,7 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 >
 > * I get nothing if you click on the "Lock Screen Widgets and Drawer" link and/or buy the app, and my purchase and use of it is not meant as an endorsement; there may be other such apps that would work as well or better.
 >
-> * The image on the lock screen is from the Valve Corporation game "Portal"; I got through both "Portal" and "Portal 2", and I'm still alive :winking_face:  My personal use of the image is not in any way an endorsement of my app by Valve Corporation, but it is an endorsement by me of "Portal" and "Portal 2" as being great games :slightly_smiling_face:
+> * The image on the lock screen is from the Valve Corporation game "Portal"; I got through both "Portal" and "Portal 2", and I'm still alive :wink:  My personal use of the image is not in any way an endorsement of my app by Valve Corporation, but it is an endorsement by me of "Portal" and "Portal 2" as being great games :slightly_smiling_face:
 
 > Q: "Why no version specifically for a watch?"
 > 
