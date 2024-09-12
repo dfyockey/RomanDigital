@@ -32,7 +32,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
-import android.widget.Toast;
 
 import androidx.preference.PreferenceManager;
 
@@ -55,16 +54,20 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
         views.setTextViewText(R.id.appwidget_text, widgetText);
+        Intent intent;
 
         // This needs to be here rather than in onUpdate or updateAppWidget;
         // otherwise the widget won't properly respond to a click (i.e. tap)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
-            Intent intent = new Intent(context, TimeDisplayWidgetConfigActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-
-            // This makes the entire widget clickable if all other views on the widget have android:clickable="false"
-            views.setOnClickPendingIntent(R.id.appwidget_bkgnd, pendingIntent);
+            intent = new Intent(context, TimeDisplayWidgetConfigActivity.class);
+        } else {
+            intent = new Intent(context, MainActivity.class);
         }
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
+        // This makes the entire widget clickable if all other views on the widget have android:clickable="false"
+        views.setOnClickPendingIntent(R.id.appwidget_bkgnd, pendingIntent);
 
         return views;
     }
@@ -81,15 +84,25 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         String action = intent.getAction();
-        try {
-            //noinspection DataFlowIssue
-            if (action.equals(MINUTE_TICK)) {
-                onTick(context);
-            } else if (action.equals(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED)) {
-                setAlarm(context);
-            }
-        } catch (NullPointerException e) {
-            Toast.makeText(context, "Error processing received\ntime-related signal!\nTime may be inaccurate until next signal.", Toast.LENGTH_LONG).show();
+        if (
+            action != null &&
+            (
+                action.equals(MINUTE_TICK) ||
+                action.equals(Intent.ACTION_TIMEZONE_CHANGED) ||
+                action.equals(Intent.ACTION_TIME_CHANGED) ||
+                //
+                // Update time if date changes in case there's a switch between STD Time and DST
+                action.equals(Intent.ACTION_DATE_CHANGED) ||
+                //
+                // The following AlarmManager intent is only sent when the permission is granted,
+                // not when the permission is revoked, and should only occur in Android 12 or 12L
+                // due to use of USE_EXACT_ALARM permission.
+                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && action.equals(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED))
+            )
+        ) {
+            // Treating a change in any of exact alarm permission, system time, or system timezone
+            // as a minute tick insures immediate update of time display on such changes
+            onTick(context);
         }
     }
 
@@ -127,6 +140,8 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         if ( Build.VERSION.SDK_INT <= Build.VERSION_CODES.R || alarmManager.canScheduleExactAlarms() ) {
             alarmManager.setExact(AlarmManager.RTC, targetTime, alarmPendingIntent);
         } else {
+            // While USE_EXACT_ALARM should make this superfluous, I imagine it could be used if
+            // canScheduleExactAlarms() is somehow set to false, e.g. by the system running in low-power mode.
             alarmManager.set(AlarmManager.RTC, targetTime, alarmPendingIntent);
         }
     }
