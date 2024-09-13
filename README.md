@@ -114,7 +114,3 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 > Q: "Can the app and widgets be set to different time zones?"
 >
 > A: Not at this point because only one global set of preferences is used. But providing independent preferences for the app and each widget is something I'd like to get to pretty soon.
-
-> Q: "This is a fairly new repository, so why's the main branch called 'master' rather than 'main'?"
-> 
-> A: Because I created the repository locally rather than on GitHub and forgot that client-side git hadn't yet changed the default main branch name from 'master' to 'main'. I should really change it soon because it looks *sooooo* 20th Century.
