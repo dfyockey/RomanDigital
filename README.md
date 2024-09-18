@@ -9,7 +9,7 @@ Roman numerals. It can be used to repurpose an old Android device that's
 sitting around collecting dust, or to provide a clock of unique style on
 a current phone or tablet.
 
-![Landscape screenshot of phone showing RomanDigital app displaying time as VIII:LVII](/.github/images/Screenshot_20240809_205721_RomanDigital.jpg)
+![Landscape screenshot of phone showing RomanDigital app displaying time as VIII:LVII](/.github/images/Screenshot_20240809_205721_RomanDigital.png)
 
 ## Features
 
@@ -21,7 +21,7 @@ RomanDigital includes several common clock app features, including:
 * Display in either portrait or landscape
 * Tap on screen displays app and system controls:
 
-![Landscape screenshot of phone showing system bars and RomanDigital app displaying time as IV:XIV with toolbar containing gear and info icons](/.github/images/Screenshot_20240809_161416_RomanDigital.jpg)
+![Landscape screenshot of phone showing system bars and RomanDigital app displaying time as IV:XIV with toolbar containing gear and info icons](/.github/images/Screenshot_20240809_161416_RomanDigital.png)
 
 RomanDigital further includes features believed to be unique over other
 known Roman digital clock Android apps, including:
@@ -29,7 +29,7 @@ known Roman digital clock Android apps, including:
 * Choice between centered display and display aligned with a fixed separator
 * AM/PM indicator integrated into the time display, such that the separator is displayed as "·" for AM and ":" for PM:
 
-![Landscape screenshot of phone showing RomanDigital app displaying time as XI·XXXIV](/.github/images/Screenshot_20240809_113408_RomanDigital.jpg)
+![Landscape screenshot of phone showing RomanDigital app displaying time as XI·XXXIV](/.github/images/Screenshot_20240809_113408_RomanDigital.png)
 
 * Option to only keep display on when device is charging
 * Adaptive display providing the largest possible monospace text for the device screen width (excepting a narrow margin)
