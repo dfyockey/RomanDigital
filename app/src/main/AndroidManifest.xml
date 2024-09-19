@@ -35,8 +35,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/rd_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.RomanDigitalClock"
-        tools:targetApi="31" >
+        android:theme="@style/Theme.RomanDigitalClock" >
         <receiver
             android:name=".TimeDisplayWidget"
             android:exported="false" >
