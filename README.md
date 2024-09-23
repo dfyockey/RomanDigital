@@ -1,6 +1,6 @@
 # RomanDigital
 
-Android Digital Clock App with Roman Numeral Display
+Android Digital Clock App and Widget with Roman Numeral Display
 
 ## Description
 
@@ -10,6 +10,10 @@ sitting around collecting dust, or to provide a clock of unique style on
 a current phone or tablet.
 
 ![Landscape screenshot of phone showing RomanDigital app displaying time as VIII:LVII](/.github/images/Screenshot_20240809_205721_RomanDigital.png)
+
+Further, RomanDigital includes a widget that can be added to a device's Home screen.
+
+![Portion of a portrait screenshot of a phone Home page showing RomanDigital widget displaying time as XVII:XV, the screenshot portion having a torn-paper-effect bottom edge](/.github/images/Torn_Screenshot_20240913_171548_One_UI_Home.png)
 
 ## Features
 
@@ -26,14 +30,14 @@ RomanDigital includes several common clock app features, including:
 RomanDigital further includes features believed to be unique over other
 known Roman digital clock Android apps, including:
 
-* Choice between centered display and display aligned with a fixed separator
-* AM/PM indicator integrated into the time display, such that the separator is displayed as "·" for AM and ":" for PM:
+* Choice between centered display and display aligned with a fixed divider
+* AM/PM indicator integrated into the time display, such that the divider is displayed as "·" for AM and ":" for PM:
 
 ![Landscape screenshot of phone showing RomanDigital app displaying time as XI·XXXIV](/.github/images/Screenshot_20240809_113408_RomanDigital.png)
 
 * Option to only keep display on when device is charging
 * Adaptive display providing the largest possible monospace text for the device screen width (excepting a narrow margin)
-* A widget for providing a Roman digital clock display on a device's Home screen:
+* A widget for providing on a device's Home screen a Roman digital clock display that mirrors the settings of the app clock display:
 
 ![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240910_174429_One_UI_Home_scaled.jpg)
 
