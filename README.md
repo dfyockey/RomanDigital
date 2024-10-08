@@ -99,13 +99,11 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 >
 > A: Maybe. I was able to on my Samsung Galaxy A14 5G by purchasing the awkwardly-named [Lockscreen Widgets and Drawer](https://play.google.com/store/apps/details?id=tk.zwander.lockscreenwidgets) app for the low, low price of $1.49. YMMV. Here's what my lock screen looks like:
 
-![Portrait screenshot of phone lock screen showing RomanDigital widget](/.github/images/Screenshot_20240910_174514_One_UI_Home_scaled.jpg)
+![Portrait screenshot of phone lock screen showing RomanDigital widget](/.github/images/Screenshot_20241008_143851_One_UI_Home_scaled.jpg)
 
-> Notes:
->
-> * I get nothing if you click on the "Lock Screen Widgets and Drawer" link and/or buy the app, and my purchase and use of it is not meant as an endorsement; there may be other such apps that would work as well or better.
->
-> * The image on the lock screen is from the Valve Corporation game "Portal". My personal use of the image is not in any way an endorsement of my app by Valve Corporation. But it is an endorsement by me of "Portal" and it's sequal "Portal 2" as being great games :slightly_smiling_face:
+> Note:
+> 
+> * I get nothing if you click on the "Lock Screen Widgets and Drawer" link and/or buy the app, and my purchase and use of it are not meant as an endorsement. There may be other such apps that would work as well or better.
 
 > Q: "Why no version specifically for a watch?"
 > 
