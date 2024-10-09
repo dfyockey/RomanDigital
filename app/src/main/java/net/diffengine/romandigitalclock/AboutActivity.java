@@ -24,6 +24,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -31,6 +32,10 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_activity);
+
+        TextView tv = findViewById(R.id.tvVersion);
+
+        tv.setText(getString(R.string.app_version_label, getString(R.string.app_version)));
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {

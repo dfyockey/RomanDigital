@@ -10,7 +10,7 @@ android {
         applicationId = "net.diffengine.romandigitalclock"
         minSdk = 21
         targetSdk = 34
-        versionCode = 1
+        versionCode = 2
         versionName = "@string/app_version"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
