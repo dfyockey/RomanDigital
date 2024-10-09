@@ -1,0 +1,3 @@
+Changed:
+* Default size of the app widget to its smallest size to facilitate installation of the widget on a crowded Home screen
+* Preview image used in widget pickers to one with a size matching the new default size
