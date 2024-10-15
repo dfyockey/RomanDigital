@@ -6,7 +6,15 @@ The format of this changelog is based on [Keep a Changelog](https://keepachangel
 
 This project aims to adhere to [Semantic Versioning](https://server.org).
 
-Regarding project commits as of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, usage in the project's commits are not necessarily so limited.
+Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
+
+## [1.1.1]
+
+### Changed
+
+* Location of versionName definition from strings.xml to app/build.gradle.kts; this facilitates building with systems (e.g. F-Droid) for which definition from a string reference is problematic.
+* AboutActivity to fetch versionName for display from app/build.gradle.kts rather than from a string reference.
+* Fastlane full_description to improve readability of reference to the README.md file.
 
 ## [1.1.0]
 

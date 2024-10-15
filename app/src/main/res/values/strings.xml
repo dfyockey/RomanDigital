@@ -25,7 +25,6 @@
     <string name="app_name">RomanDigital</string>
     <string name="app_subtitle">A Digital Clock with Roman Numeral Display</string>
     <string name="app_version_label">Version %1$s</string>
-    <string name="app_version">1.1.0</string>
 
     <string name="title_activity_settings">Settings</string>
     <string name="title_activity_about">About</string>

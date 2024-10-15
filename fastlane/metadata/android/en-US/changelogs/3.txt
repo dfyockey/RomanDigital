@@ -1,0 +1,2 @@
+Changed:
+* Internal location of versionName definition to facilitate inclusion on F-Droid.

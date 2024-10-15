@@ -35,7 +35,10 @@ public class AboutActivity extends AppCompatActivity {
 
         TextView tv = findViewById(R.id.tvVersion);
 
-        tv.setText(getString(R.string.app_version_label, getString(R.string.app_version)));
+        // BuildConfig full package name is to prevent any possible future confusion with org.acra.BuildConfig
+        String appversion = net.diffengine.romandigitalclock.BuildConfig.VERSION_NAME;
+
+        tv.setText(getString(R.string.app_version_label, appversion));
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
