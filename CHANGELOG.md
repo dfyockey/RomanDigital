@@ -8,7 +8,13 @@ This project aims to adhere to [Semantic Versioning](https://server.org).
 
 Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
 
-## [1.1.1]
+## [1.1.2] - 2024-10-19
+
+### Fixed
+
+* App clock text being too large (Issue #14) when user has selected a font in their Android settings that effects app fonts and that does not provide a monospace font. (Note: While this fix enables use of variable-width fonts, the "Align to Divider" option functionality does not work correctly for such fonts.)
+
+## [1.1.1] - 2024-10-15
 
 ### Changed
 
@@ -16,7 +22,7 @@ Regarding project commits: As of 2024-08-23, this project aims to adhere to the 
 * AboutActivity to fetch versionName for display from app/build.gradle.kts rather than from a string reference.
 * Fastlane full_description to improve readability of reference to the README.md file.
 
-## [1.1.0]
+## [1.1.0] - 2024-10-09
 
 ### Added
 
