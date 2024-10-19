@@ -10,7 +10,7 @@ RomanDigital includes features expected in an ordinary digital clock app, such a
 <li>Display in either portrait or landscape</li>
 </ul>
 
-For more detailed information, please see the README.md file accompanying the RomanDigital source code.
+For more detailed information including a FAQ list, please see the README.md file accompanying the RomanDigital source code.
 
 Source code for RomanDigital is available at:
 https://github.com/dfyockey/RomanDigital

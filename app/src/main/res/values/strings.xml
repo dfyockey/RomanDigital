@@ -44,8 +44,12 @@
     <string name="keepon_title">Keep screen on</string>
     <string name="charging_title">     Only when charging</string>
 
+    <!--
     <string name="civ_fill">            </string>
     <string name="mil_fill">             </string>
+    -->
+    <string name="civ_fill">XXXXXXXXXXXX</string>
+    <string name="mil_fill">XXXXXXXXXXXXX</string>
 
     <string name="menuitem_settings">Settings</string>
     <string name="menuitem_about">About</string>

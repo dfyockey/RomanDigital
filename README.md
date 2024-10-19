@@ -49,7 +49,7 @@ RomanDigital requires Android 5.0 or greater and is designed to run on a phone o
 
 ## Widget Settings
 
-When the widget is added to the Home screen, an activity is provided to allow selection of
+When the widget is added to the Home screen, an activity is displayed to allow selection of
 settings. This activity can be accessed later in one of two ways depending on the Android version.
 On Android 11 and earlier, a tap on the widget brings up the activity. On Android 12 and later, the
 activity is accessed by a long press on the widget and a tap on the settings or reconfigure button
@@ -63,17 +63,27 @@ accurate time display. The permission cannot be disabled without modifying the s
 
 The SCHEDULE_EXACT_ALARM permission is also set by this app and is
 necessary on Android 12 for the same reason as the USE_EXACT_ALARM
-permission discussed above. This permission can be disable in the
+permission discussed above. This permission can be disabled in the
 _Alarms & Reminders_ section of the system settings. Disabling this
 permission will cause inaccuracy in the widget's time display.
 
+Android versions 11 and lower allow setting of exact alarms by default.
+
 ## Known Issues
 
-After updating the app, e.g. from compiled source in Android Studio, a widget that had previously been added to the home screen may stop updating. It may be 'kickstarted' by simply opening and then closing the widget's settings screen.
+After updating the app, a widget that had previously been added to the home screen may stop updating. It may be 'kickstarted' by simply opening and then closing the widget's settings screen. For a bit more info on this, see the first FAQ question below.
 
 The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is based on Android 5.1, but the widget will not. RomanDigital has not been tested on other Fire versions.
 
 ## FAQ (Foremost Anticipated Questions)
+
+> Q: "I just updated RomanDigital, and now the widget doesn't work! What happened?"
+>
+> A: The widget "ticks" are scheduled in advance for technical reasons, and the widget that's part of the updated app likely won't receive any "ticks" scheduled for the previous app's widget. In which case, it stops :slightly_frowning_face:  The workaround right now to get the widget going again is to "kickstart" it by simply opening and then closing a settings screen from either the widget or the app. I hope to make post-update widget restart either more elegant or entirely automatic at some point.
+
+> Q: "Why does the position of the divider change when 'Align to Divider' is selected? Isn't it supposed to stay in one place?"
+>
+> A: Yes, it's supposed to stay in one place, but the positioning was designed with the expectation of using a monospace font (shortsighted of me, I know). If you've changed a device setting effecting the font used, e.g. your system-wide font, to something that doesn't provide for monospace, then the calculated display position based on expected equal-width characters, and thus the divider position, will unfortunately be off.
 
 > Q: "There's no alarm feature, so why the need to set exact alarms? What's this got to do with an accurate time display?"
 > 
@@ -85,7 +95,7 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 
 > Q: "Why can't I change the font/text color/background color/widget background transparency/etc?"
 > 
-> A: Haven't gotten to them yet. But, as opposed to an alarm feature, adjustable widget background transparency in particular is *very* high on the priority list.
+> A: Haven't gotten to them yet. But, as opposed to an alarm feature, adjustable widget background transparency in particular is *very* high on the priority list (I want it for myself, too!).
 
 > Q: "Why no seconds?"
 > 
