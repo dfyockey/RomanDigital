@@ -34,4 +34,5 @@
     <color name="transparent_85_pct">#26FFFFFF</color>
     <color name="widgetText">#FAFAFA</color>
     <color name="fragment_title">@color/black</color>
+    <color name="button_bar_bkgnd">@color/white</color>
 </resources>
