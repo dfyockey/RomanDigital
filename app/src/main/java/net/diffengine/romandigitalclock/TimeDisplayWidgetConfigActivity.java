@@ -1,5 +1,5 @@
 /*
- * TimeDisplayWidgetConfigActivity
+ * TimeDisplayWidgetConfigActivity.java
  * - This file is part of the Android app RomanDigital
  *
  * Copyright 2024 David Yockey
@@ -66,8 +66,8 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
                     .beginTransaction()
                     .setReorderingAllowed(true);
 
-            fragmentTransaction.replace(R.id.widget_settings, new SettingsActivity.SettingsFragment());
-            fragmentTransaction.replace(R.id.button_bar, new SettingsActivity.ButtonBarFragment()).commit();
+            fragmentTransaction.add(R.id.widget_settings, new SettingsActivity.SettingsFragment());
+            fragmentTransaction.add(R.id.button_bar, new SettingsButtonBarFragment()).commit();
         }
 
         ActionBar actionBar = getSupportActionBar();

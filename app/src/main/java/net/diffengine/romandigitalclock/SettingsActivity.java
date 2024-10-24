@@ -40,9 +40,10 @@ public class SettingsActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.app_settings_frame, new SettingsFragment())
-                    .replace(R.id.screen_settings_frame, new ScreenSettingsFragment())
-                    .replace(R.id.button_bar_2, new ButtonBarFragment())
+                    .setReorderingAllowed(true)
+                    .add(R.id.app_settings_frame, new SettingsFragment())
+                    .add(R.id.screen_settings_frame, new ScreenSettingsFragment())
+                    .add(R.id.button_bar_2, new SettingsButtonBarFragment())
                     .commit();
         }
         ActionBar actionBar = getSupportActionBar();
@@ -97,12 +98,6 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.screen_preferences, rootKey);
-        }
-    }
-
-    public static class ButtonBarFragment extends Fragment {
-        public ButtonBarFragment() {
-            super(R.layout.fragment_settings_button_bar);
         }
     }
 
