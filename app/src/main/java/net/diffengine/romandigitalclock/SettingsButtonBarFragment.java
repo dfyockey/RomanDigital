@@ -20,6 +20,11 @@
 
 package net.diffengine.romandigitalclock;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.app.Activity;
+import android.appwidget.AppWidgetManager;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -47,13 +52,35 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
     }
 
     public void onClick (View v) {
-        if (v == btnCancel) {
-            btnCancel.setText("Xyzzy");
-            btnSave.setText("Reset");
-        } else if (v == btnSave) {
-            btnCancel.setText("Cancel");
-            btnSave.setText("Save");
+
+        Activity activity = requireActivity();
+
+        // Get the appWidgetId if we're in a widget config activity
+        //
+        //noinspection ReassignedVariable
+        int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
+        String cls = activity.getComponentName().getClassName();
+        if (cls.equals("net.diffengine.romandigitalclock.TimeDisplayWidgetConfigActivity")) {
+            TimeDisplayWidgetConfigActivity widgetConfigActivity = (TimeDisplayWidgetConfigActivity) activity;
+            appWidgetId = widgetConfigActivity.appWidgetId;
         }
+
+        if (v == btnCancel) {
+            // Add code to reset settings here
+        } else if (v == btnSave) {
+            if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+                // Provision of appwidget id in the extra data should prevent crash of some UIs
+                // (e.g. TouchWiz on old Samsung devices) at activity destruction.
+                // See https://stackoverflow.com/a/40709721
+                Intent result = new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+                activity.setResult(RESULT_OK, result);
+            }
+        } else {
+            // In case of some utterly stupid modification... :)
+            return;
+        }
+
+        activity.finish();
     }
 
     @Override
