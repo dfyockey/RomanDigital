@@ -25,18 +25,26 @@ import static android.app.Activity.RESULT_OK;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.Map;
+
 public class SettingsButtonBarFragment extends Fragment implements View.OnClickListener {
+    Activity parentActivity;
     Button btnCancel;
     Button btnSave;
+
+    Map<String, ?> origprefs;   // Storage for backup of original preference values
+    SharedPreferences prefs;
 
     public SettingsButtonBarFragment() {
         // If the layout isn't provided to the superclass, it's necessary to use a form of
@@ -49,38 +57,45 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        parentActivity = requireActivity();
+        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        origprefs = prefs.getAll();
     }
 
     public void onClick (View v) {
-
-        Activity activity = requireActivity();
 
         // Get the appWidgetId if we're in a widget config activity
         //
         //noinspection ReassignedVariable
         int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
-        String cls = activity.getComponentName().getClassName();
+        String cls = parentActivity.getComponentName().getClassName();
         if (cls.equals("net.diffengine.romandigitalclock.TimeDisplayWidgetConfigActivity")) {
-            TimeDisplayWidgetConfigActivity widgetConfigActivity = (TimeDisplayWidgetConfigActivity) activity;
+            TimeDisplayWidgetConfigActivity widgetConfigActivity = (TimeDisplayWidgetConfigActivity) parentActivity;
             appWidgetId = widgetConfigActivity.appWidgetId;
         }
 
         if (v == btnCancel) {
-            // Add code to reset settings here
+            // Set preferences back to original values
+            SharedPreferences.Editor spEditor = prefs.edit();
+            for (String key : origprefs.keySet()) {
+                spEditor.putBoolean(key, (boolean) origprefs.get(key));
+            }
+            spEditor.commit();
         } else if (v == btnSave) {
             if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
                 // Provision of appwidget id in the extra data should prevent crash of some UIs
                 // (e.g. TouchWiz on old Samsung devices) at activity destruction.
                 // See https://stackoverflow.com/a/40709721
                 Intent result = new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-                activity.setResult(RESULT_OK, result);
+                parentActivity.setResult(RESULT_OK, result);
             }
         } else {
-            // In case of some utterly stupid modification... :)
+            // In case of some shortsighted modification... :)
             return;
         }
 
-        activity.finish();
+        parentActivity.finish();
     }
 
     @Override
