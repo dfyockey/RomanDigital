@@ -59,7 +59,7 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
         super.onCreate(savedInstanceState);
 
         parentActivity = requireActivity();
-        prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
         origprefs = prefs.getAll();
     }
 
