@@ -26,6 +26,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
@@ -39,8 +40,10 @@ public class SettingsActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.app_settings_frame, new SettingsFragment())
-                    .replace(R.id.screen_settings_frame, new ScreenSettingsFragment())
+                    .setReorderingAllowed(true)
+                    .add(R.id.app_settings_frame, new SettingsFragment())
+                    .add(R.id.screen_settings_frame, new ScreenSettingsFragment())
+                    .add(R.id.button_bar_2, new SettingsButtonBarFragment())
                     .commit();
         }
         ActionBar actionBar = getSupportActionBar();

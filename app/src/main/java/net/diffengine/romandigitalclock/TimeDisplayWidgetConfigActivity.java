@@ -1,5 +1,5 @@
 /*
- * TimeDisplayWidgetConfigActivity
+ * TimeDisplayWidgetConfigActivity.java
  * - This file is part of the Android app RomanDigital
  *
  * Copyright 2024 David Yockey
@@ -22,6 +22,7 @@ package net.diffengine.romandigitalclock;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceFragmentCompat;
 
@@ -65,7 +66,8 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
                     .beginTransaction()
                     .setReorderingAllowed(true);
 
-            fragmentTransaction.replace(R.id.widget_settings, new SettingsActivity.SettingsFragment()).commit();
+            fragmentTransaction.add(R.id.widget_settings, new SettingsActivity.SettingsFragment());
+            fragmentTransaction.add(R.id.button_bar, new SettingsButtonBarFragment()).commit();
         }
 
         ActionBar actionBar = getSupportActionBar();
@@ -92,6 +94,7 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
         }
     }
 
+    // This method is unused and should be removed at some point
     public static class SettingsFragment extends PreferenceFragmentCompat {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
