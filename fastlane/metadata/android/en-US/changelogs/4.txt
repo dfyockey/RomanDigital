@@ -1,0 +1,2 @@
+Fixed:
+* App clock text being too large when user has selected a font in their Android settings that effects app fonts and that does not provide a monospace font. (Note: While this fix enables use of variable-width fonts, the "Align to Divider" option functionality does not work correctly for such fonts.)

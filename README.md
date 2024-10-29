@@ -59,7 +59,8 @@ in the normal manner for the particular Android version.
 
 The USE_EXACT_ALARM permission is set by this app. This permission is
 necessary on Android 13 and greater to enable the widget to provide an
-accurate time display. The permission cannot be disabled without modifying the source code.
+accurate time display without inconveniencing the user by asking for the permission.
+It cannot be disabled without modifying the source code.
 
 The SCHEDULE_EXACT_ALARM permission is also set by this app and is
 necessary on Android 12 for the same reason as the USE_EXACT_ALARM
@@ -69,9 +70,19 @@ permission will cause inaccuracy in the widget's time display.
 
 Android versions 11 and lower allow setting of exact alarms by default.
 
+An additional permission, net.diffengine.romandigitalclock.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION,
+is set by this app. This permission was set in the app build process by use of a particular Android
+library required to enable the app to function as expected on versions of Android 12 and earlier
+(i.e. prior to API 33). It cannot be disabled without modifying the source code. As noted in
+an fdroidserver commit, "it's basically just an internal hack, rather than a real permission." For
+a more technical explanation of this "permission", see the full commit message at
+https://gitlab.com/fdroid/fdroidserver/-/merge_requests/1336/diffs?commit_id=71697f9c88ec73980f63be5955f36cdc3ba7a02c
+
 ## Known Issues
 
 After updating the app, a widget that had previously been added to the home screen may stop updating. It may be 'kickstarted' by simply opening and then closing the widget's settings screen. For a bit more info on this, see the first FAQ question below.
+
+The 'Align to Divider' option does not correctly align the display when a variable width font is used.
 
 The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is based on Android 5.1, but the widget will not. RomanDigital has not been tested on other Fire versions.
 
@@ -79,7 +90,7 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 
 > Q: "I just updated RomanDigital, and now the widget doesn't work! What happened?"
 >
-> A: The widget "ticks" are scheduled in advance for technical reasons, and the widget that's part of the updated app likely won't receive any "ticks" scheduled for the previous app's widget. In which case, it stops :slightly_frowning_face:  The workaround right now to get the widget going again is to "kickstart" it by simply opening and then closing a settings screen from either the widget or the app. I hope to make post-update widget restart either more elegant or entirely automatic at some point.
+> A: The widget "ticks" are scheduled in advance for technical reasons, and the widget that's part of the updated app may not receive "ticks" previously scheduled for the widget's earlier version. In such a case, it stops :slightly_frowning_face:  The workaround right now to get the widget going again is to "kickstart" it by simply opening and then closing a settings screen from either the widget or the app. I hope to make post-update widget restart either more elegant or entirely automatic at some point.
 
 > Q: "Why does the position of the divider change when 'Align to Divider' is selected? Isn't it supposed to stay in one place?"
 >

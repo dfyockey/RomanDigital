@@ -1,0 +1,2 @@
+Added:
+* `Cancel` and `Save` buttons to both widget and app settings activities.

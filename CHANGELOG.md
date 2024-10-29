@@ -8,6 +8,12 @@ This project aims to adhere to [Semantic Versioning](https://server.org).
 
 Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
 
+## [1.2.0] - 2024-10-29
+
+### Added
+
+* `Cancel` and `Save` buttons to both widget and app settings activities (addresses Issue #12).
+
 ## [1.1.2] - 2024-10-19
 
 ### Fixed
