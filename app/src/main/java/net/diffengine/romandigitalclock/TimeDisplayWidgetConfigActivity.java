@@ -143,7 +143,7 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
         // broadcast an intent to kickstart the widget when it resumes
         // along with immediately updating the widget
         Intent kickstart = new Intent(this, TimeDisplayWidget.class);
-        kickstart.setAction(TimeDisplayWidget.MINUTE_TICK);
+        kickstart.setAction(TimeDisplayWidget.SETTINGS_KICK);
         kickstart.setPackage(this.getPackageName());
         this.sendBroadcast(kickstart);
     }
