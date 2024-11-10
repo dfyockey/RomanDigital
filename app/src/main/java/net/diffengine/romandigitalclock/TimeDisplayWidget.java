@@ -69,8 +69,9 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
         views.setTextViewText(R.id.appwidget_text, widgetText);
-        
-        views.setInt(R.id.appwidget_bkgnd, "setBackgroundResource", opacity[3]);
+
+        int opacityValue = sp.getInt("seekbar_opacity", 0);
+        views.setInt(R.id.appwidget_bkgnd, "setBackgroundResource", opacity[opacityValue]);
 
         Intent intent;
 
