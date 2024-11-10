@@ -41,6 +41,21 @@ import java.util.Calendar;
 public class TimeDisplayWidget extends AppWidgetProvider {
     static AlarmManager alarmManager;
     static PendingIntent alarmPendingIntent;
+
+    static int[] opacity = {
+            (R.drawable.appwidget_bkgnd_0),
+            (R.drawable.appwidget_bkgnd_10),
+            (R.drawable.appwidget_bkgnd_20),
+            (R.drawable.appwidget_bkgnd_30),
+            (R.drawable.appwidget_bkgnd_40),
+            (R.drawable.appwidget_bkgnd_50),
+            (R.drawable.appwidget_bkgnd_60),
+            (R.drawable.appwidget_bkgnd_70),
+            (R.drawable.appwidget_bkgnd_80),
+            (R.drawable.appwidget_bkgnd_90),
+            (R.drawable.appwidget_bkgnd_100)
+    };
+    
     public static final String MINUTE_TICK = "net.diffengine.romandigitalclock.MINUTE_TICK";
 
     private static RemoteViews updateTimeDisplay(Context context) {
@@ -54,6 +69,9 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
         views.setTextViewText(R.id.appwidget_text, widgetText);
+        
+        views.setInt(R.id.appwidget_bkgnd, "setBackgroundResource", opacity[3]);
+
         Intent intent;
 
         // This needs to be here rather than in onUpdate or updateAppWidget;
