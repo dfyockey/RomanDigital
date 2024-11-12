@@ -2,6 +2,12 @@
 
 Android Digital Clock App and Widget with Roman Numeral Display
 
+[<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/net.diffengine.romandigitalclock/)
+
+Or download the latest APK from the [Releases Section](https://github.com/dfyockey/RomanDigital/releases/latest).
+
 ## Description
 
 RomanDigital is a digital clock app that displays the current time in
