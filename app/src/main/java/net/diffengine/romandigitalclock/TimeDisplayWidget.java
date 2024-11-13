@@ -20,6 +20,8 @@
 
 package net.diffengine.romandigitalclock;
 
+import static androidx.core.content.ContextCompat.getColor;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -78,6 +80,14 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         if (action.equals(SETTINGS_KICK)) {
             int opacityValue = sp.getInt("seekbar_opacity", 0);
             views.setInt(R.id.appwidget_bkgnd, "setBackgroundResource", opacity[opacityValue]);
+
+            int widget_text_color_resource;
+            if (opacityValue < 5) {
+                widget_text_color_resource = R.color.widgetText_LoOpacityBkgnd;
+            } else {
+                widget_text_color_resource = R.color.widgetText_HiOpacityBkgnd;
+            }
+            views.setInt(R.id.appwidget_text, "setTextColor", getColor(context, widget_text_color_resource));
         }
 
         Intent intent;

@@ -32,7 +32,8 @@
     <color name="menu_bkgnd_color">#F3EDF7</color>
     <color name="menu_text_color">#282828</color>
     <color name="transparent_85_pct">#26FFFFFF</color>
-    <color name="widgetText">#FAFAFA</color>
+    <color name="widgetText_LoOpacityBkgnd">#FAFAFA</color>
+    <color name="widgetText_HiOpacityBkgnd">#040404</color>
 
     <color name="opacity_100">#FFFFFFFF</color>
     <color name="opacity_90">#E6FFFFFF</color>
