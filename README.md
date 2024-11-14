@@ -1,3 +1,5 @@
+![Banner image : RomanDigital clock displayed on a phone resting horizontally on a black Lego stand to the left of a Lego Botanicals bonsai tree](/fastlane/metadata/android/en-US/images/featureGraphic.png)
+
 # RomanDigital
 
 Android Digital Clock App and Widget with Roman Numeral Display
@@ -5,8 +7,9 @@ Android Digital Clock App and Widget with Roman Numeral Display
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/net.diffengine.romandigitalclock/)
-
-Or download the latest APK from the [Releases Section](https://github.com/dfyockey/RomanDigital/releases/latest).
+[<img src="/.github/images/get-the-latest-apk-on-github.png"
+     alt="Get the latest apk on GitHub"
+     height="80">](https://github.com/dfyockey/RomanDigital/releases/latest)
 
 ## Description
 
