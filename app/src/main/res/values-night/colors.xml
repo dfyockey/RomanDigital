@@ -27,7 +27,21 @@
     <color name="abswitch_track">#F44336</color>
     <color name="abswitch_track_disabled">#484848</color>
     <color name="transparent_85_pct">#26000000</color>
-    <color name="widgetText">#FAFAFA</color>
+    <color name="widgetText_LoOpacityBkgnd">#FAFAFA</color>
+    <color name="widgetText_HiOpacityBkgnd">#FAFAFA</color>
+
+    <color name="opacity_100">#FF000000</color>
+    <color name="opacity_90">#E6000000</color>
+    <color name="opacity_80">#CC000000</color>
+    <color name="opacity_70">#B3000000</color>
+    <color name="opacity_60">#99000000</color>
+    <color name="opacity_50">#80000000</color>
+    <color name="opacity_40">#66000000</color>
+    <color name="opacity_30">#4D000000</color>
+    <color name="opacity_20">#33000000</color>
+    <color name="opacity_10">#1A000000</color>
+    <color name="opacity_0">#00000000</color>
+
     <color name="fragment_title">@color/white</color>
     <color name="button_bar_bkgnd">@color/black</color>
 </resources>

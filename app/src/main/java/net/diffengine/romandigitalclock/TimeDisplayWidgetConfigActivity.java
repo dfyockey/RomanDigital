@@ -20,11 +20,14 @@
 
 package net.diffengine.romandigitalclock;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.SeekBarPreference;
 
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -67,6 +70,7 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
                     .setReorderingAllowed(true);
 
             fragmentTransaction.add(R.id.widget_settings, new SettingsActivity.SettingsFragment());
+            fragmentTransaction.add(R.id.widget_bkgnd, new WidgetBkgndSettingsFragment());
             fragmentTransaction.add(R.id.button_bar, new SettingsButtonBarFragment()).commit();
         }
 
@@ -102,6 +106,30 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
         }
     }
 
+    public static class WidgetBkgndSettingsFragment extends PreferenceFragmentCompat {
+        String buildOpacityLabel(int rawvalue) {
+            int percentage = rawvalue * 10;
+            return "Opacity: " + percentage + "%";
+        }
+
+        @Override
+        public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
+            setPreferencesFromResource(R.xml.widget_bkgnd_prefs, rootKey);
+
+            SeekBarPreference seekBarPreference = findPreference("seekbar_opacity");
+            seekBarPreference.setSummary( buildOpacityLabel(seekBarPreference.getValue()) );
+
+            seekBarPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
+                    SeekBarPreference seekBarPref = (SeekBarPreference) preference;
+                    seekBarPref.setSummary( buildOpacityLabel((int)newValue) );
+                    return true;
+                }
+            });
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -113,8 +141,9 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
 
         // Since the widget's alarms may have been canceled on pause,
         // broadcast an intent to kickstart the widget when it resumes
+        // along with immediately updating the widget
         Intent kickstart = new Intent(this, TimeDisplayWidget.class);
-        kickstart.setAction(TimeDisplayWidget.MINUTE_TICK);
+        kickstart.setAction(TimeDisplayWidget.SETTINGS_KICK);
         kickstart.setPackage(this.getPackageName());
         this.sendBroadcast(kickstart);
     }

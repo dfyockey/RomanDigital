@@ -32,7 +32,21 @@
     <color name="menu_bkgnd_color">#F3EDF7</color>
     <color name="menu_text_color">#282828</color>
     <color name="transparent_85_pct">#26FFFFFF</color>
-    <color name="widgetText">#FAFAFA</color>
+    <color name="widgetText_LoOpacityBkgnd">#FAFAFA</color>
+    <color name="widgetText_HiOpacityBkgnd">#040404</color>
+
+    <color name="opacity_100">#FFFFFFFF</color>
+    <color name="opacity_90">#E6FFFFFF</color>
+    <color name="opacity_80">#CCFFFFFF</color>
+    <color name="opacity_70">#B3FFFFFF</color>
+    <color name="opacity_60">#99FFFFFF</color>
+    <color name="opacity_50">#80FFFFFF</color>
+    <color name="opacity_40">#66FFFFFF</color>
+    <color name="opacity_30">#4DFFFFFF</color>
+    <color name="opacity_20">#33FFFFFF</color>
+    <color name="opacity_10">#1AFFFFFF</color>
+    <color name="opacity_0">#00FFFFFF</color>
+
     <color name="fragment_title">@color/black</color>
     <color name="button_bar_bkgnd">@color/white</color>
 </resources>

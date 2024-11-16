@@ -78,10 +78,20 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
         if (v == btnCancel) {
             // Set preferences back to original values
             SharedPreferences.Editor spEditor = prefs.edit();
+
             for (String key : origprefs.keySet()) {
-                spEditor.putBoolean(key, (boolean) origprefs.get(key));
+                Object value    = origprefs.get(key);
+                String prefType = value.getClass().getSimpleName();
+
+                if ( prefType.equals("Boolean") ) {
+                    spEditor.putBoolean(key, (boolean) value);
+                } else {
+                    spEditor.putInt(key, (int) value);
+                }
             }
+
             spEditor.commit();
+
         } else if (v == btnSave) {
             if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
                 // Provision of appwidget id in the extra data should prevent crash of some UIs

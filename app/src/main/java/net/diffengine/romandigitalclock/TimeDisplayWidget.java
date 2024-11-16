@@ -20,6 +20,8 @@
 
 package net.diffengine.romandigitalclock;
 
+import static androidx.core.content.ContextCompat.getColor;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -41,9 +43,28 @@ import java.util.Calendar;
 public class TimeDisplayWidget extends AppWidgetProvider {
     static AlarmManager alarmManager;
     static PendingIntent alarmPendingIntent;
-    public static final String MINUTE_TICK = "net.diffengine.romandigitalclock.MINUTE_TICK";
 
-    private static RemoteViews updateTimeDisplay(Context context) {
+    static int[] opacity = {
+            (R.drawable.appwidget_bkgnd_0),
+            (R.drawable.appwidget_bkgnd_10),
+            (R.drawable.appwidget_bkgnd_20),
+            (R.drawable.appwidget_bkgnd_30),
+            (R.drawable.appwidget_bkgnd_40),
+            (R.drawable.appwidget_bkgnd_50),
+            (R.drawable.appwidget_bkgnd_60),
+            (R.drawable.appwidget_bkgnd_70),
+            (R.drawable.appwidget_bkgnd_80),
+            (R.drawable.appwidget_bkgnd_90),
+            (R.drawable.appwidget_bkgnd_100)
+    };
+
+    // While both of the following intent actions will cause update of the time, since a change in
+    // settings may change the time display, the SETTINGS_KICK action indicative of such a change
+    // also causes update of widget background opacity.
+    public static final String MINUTE_TICK = "net.diffengine.romandigitalclock.MINUTE_TICK";
+    public static final String SETTINGS_KICK = "net.diffengine.romandigitalclock.SETTINGS_KICK";
+
+    private static RemoteViews updateTimeDisplay(Context context, String action) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm          = sp.getBoolean("switch_format", false);
         boolean ampmSeparator = sp.getBoolean("switch_separator", false);
@@ -54,6 +75,21 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
         views.setTextViewText(R.id.appwidget_text, widgetText);
+
+        // Update the widget background on instantiation, system boot, or change of settings
+        if (action.equals(SETTINGS_KICK)) {
+            int opacityValue = sp.getInt("seekbar_opacity", 0);
+            views.setInt(R.id.appwidget_bkgnd, "setBackgroundResource", opacity[opacityValue]);
+
+            int widget_text_color_resource;
+            if (opacityValue < 5) {
+                widget_text_color_resource = R.color.widgetText_LoOpacityBkgnd;
+            } else {
+                widget_text_color_resource = R.color.widgetText_HiOpacityBkgnd;
+            }
+            views.setInt(R.id.appwidget_text, "setTextColor", getColor(context, widget_text_color_resource));
+        }
+
         Intent intent;
 
         // This needs to be here rather than in onUpdate or updateAppWidget;
@@ -72,10 +108,10 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         return views;
     }
 
-    private void onTick (Context context) {
+    private void onTick (Context context, String action) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         ComponentName widgetName = new ComponentName(context.getPackageName(), TimeDisplayWidget.class.getName());
-        appWidgetManager.updateAppWidget(widgetName, updateTimeDisplay(context));
+        appWidgetManager.updateAppWidget(widgetName, updateTimeDisplay(context, action));
         setAlarm(context);
     }
 
@@ -88,6 +124,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
             action != null &&
             (
                 action.equals(MINUTE_TICK) ||
+                action.equals(SETTINGS_KICK) ||
                 action.equals(Intent.ACTION_TIMEZONE_CHANGED) ||
                 action.equals(Intent.ACTION_TIME_CHANGED) ||
                 //
@@ -102,7 +139,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         ) {
             // Treating a change in any of exact alarm permission, system time, or system timezone
             // as a minute tick insures immediate update of time display on such changes
-            onTick(context);
+            onTick(context, action);
         }
     }
 
@@ -160,7 +197,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
             int appWidgetId) {
-        appWidgetManager.updateAppWidget(appWidgetId, updateTimeDisplay(context));
+        appWidgetManager.updateAppWidget(appWidgetId, updateTimeDisplay(context, SETTINGS_KICK));
     }
 
     @Override
@@ -168,7 +205,13 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                                           int appWidgetId, Bundle newOptions) {
         int minwidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
         int textsize = (minwidth < 260) ? 28 : 34;
-        RemoteViews views = updateTimeDisplay(context);
+
+        // This call to updateTimeDisplay, which calls appWidgetManager.updateAppWidget, should likely be replaced with
+        // "RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);"
+        // because the current arrangement causes redundant calls to appWidgetManager.updateAppWidget.
+        // *** But needs to be thoroughly tested first. ***
+        RemoteViews views = updateTimeDisplay(context, SETTINGS_KICK);
+
         views.setTextViewTextSize(R.id.appwidget_text, TypedValue.COMPLEX_UNIT_SP, textsize);
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
