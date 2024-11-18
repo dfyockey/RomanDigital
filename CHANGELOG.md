@@ -8,6 +8,20 @@ This project aims to adhere to [Semantic Versioning](https://server.org).
 
 Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
 
+## [1.3.0] - 2024-11-18
+
+### Added
+
+* Variable widget background opacity, with opacity being selectable from 0% to 100% by tens.
+* A slider — technically, a SeekBarPreference — to the widget settings activity so as to enable the user to select the desired opacity.
+* Automatic setting of widget text color in light mode to white (#FAFAFA) for opacity < 50% and to black (#040404) for opacity >= 50% to improve contrast for very white backgrounds. Text color is set to white (#FAFAFA) in dark mode regardless of background opacity.
+* Intent SETTINGS_KICK and modifications to the widget so SETTINGS_KICK is treated identically to MINUTE_TICK with respect to time updating and additionally used to enable update of background opacity when changed by the user or update is initiated by the widget itself.
+
+### Changed
+
+* Widget corners for all Android versions to the same degree of curvature (8dp radius).
+* The broadcast of a kickstart intent in the widget config activity onPause method and calls to update the widget in the widget itself to include SETTINGS_KICK instead of MINUTE_TICK. 
+
 ## [1.2.0] - 2024-10-29
 
 ### Added

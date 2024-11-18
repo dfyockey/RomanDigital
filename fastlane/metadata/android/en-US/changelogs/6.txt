@@ -1,0 +1,6 @@
+Added:
+* Variable widget background opacity selectable with a slider added to the widget settings, where the opacity can be set from 0% to 100% by tens.
+* Automatic setting of widget text color in light mode to white for opacity < 50% and to black for opacity >= 50% to improve contrast for very white backgrounds.
+
+Changed:
+* Widget corners for all Android versions to the same degree of curvature.
