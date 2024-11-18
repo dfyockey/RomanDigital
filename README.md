@@ -79,8 +79,8 @@ permission will cause inaccuracy in the widget's time display.
 
 Android versions 11 and lower allow setting of exact alarms by default.
 
-An additional permission, net.diffengine.romandigitalclock.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION,
-is set by this app. This permission was set in the app build process by use of a particular Android
+In addition, net.diffengine.romandigitalclock.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+is set by this app. This was set during the app build process by use of a particular Android
 library required to enable the app to function as expected on versions of Android 12 and earlier
 (i.e. prior to API 33). It cannot be disabled without modifying the source code. As noted in
 an fdroidserver commit, "it's basically just an internal hack, rather than a real permission." For
