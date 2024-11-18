@@ -1,3 +1,5 @@
+![Banner image : RomanDigital clock displayed on a phone resting horizontally on a black Lego stand to the left of a Lego Botanicals bonsai tree](/fastlane/metadata/android/en-US/images/featureGraphic.png)
+
 # RomanDigital
 
 Android Digital Clock App and Widget with Roman Numeral Display
@@ -5,8 +7,9 @@ Android Digital Clock App and Widget with Roman Numeral Display
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
      height="80">](https://f-droid.org/packages/net.diffengine.romandigitalclock/)
-
-Or download the latest APK from the [Releases Section](https://github.com/dfyockey/RomanDigital/releases/latest).
+[<img src="/.github/images/get-the-latest-apk-on-github.png"
+     alt="Get the latest apk on GitHub"
+     height="80">](https://github.com/dfyockey/RomanDigital/releases/latest)
 
 ## Description
 
@@ -76,8 +79,8 @@ permission will cause inaccuracy in the widget's time display.
 
 Android versions 11 and lower allow setting of exact alarms by default.
 
-An additional permission, net.diffengine.romandigitalclock.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION,
-is set by this app. This permission was set in the app build process by use of a particular Android
+In addition, net.diffengine.romandigitalclock.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+is set by this app. This was set during the app build process by use of a particular Android
 library required to enable the app to function as expected on versions of Android 12 and earlier
 (i.e. prior to API 33). It cannot be disabled without modifying the source code. As noted in
 an fdroidserver commit, "it's basically just an internal hack, rather than a real permission." For
@@ -110,9 +113,9 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 > 
 > A: Maybe, but it's quite low on the priority list at this point.  
 
-> Q: "Why can't I change the font/text color/background color/widget background transparency/etc?"
+> Q: "Why can't I change the font/text color/background color/widget corner curvature/etc?"
 > 
-> A: Haven't gotten to them yet. But, as opposed to an alarm feature, adjustable widget background transparency in particular is *very* high on the priority list (I want it for myself, too!).
+> A: Haven't gotten to them yet.
 
 > Q: "Why no seconds?"
 > 
