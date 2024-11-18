@@ -113,9 +113,9 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 > 
 > A: Maybe, but it's quite low on the priority list at this point.  
 
-> Q: "Why can't I change the font/text color/background color/widget background transparency/etc?"
+> Q: "Why can't I change the font/text color/background color/widget corner curvature/etc?"
 > 
-> A: Haven't gotten to them yet. But, as opposed to an alarm feature, adjustable widget background transparency in particular is *very* high on the priority list (I want it for myself, too!).
+> A: Haven't gotten to them yet.
 
 > Q: "Why no seconds?"
 > 
