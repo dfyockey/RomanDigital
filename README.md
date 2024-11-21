@@ -6,13 +6,13 @@ Android Digital Clock App and Widget with Roman Numeral Display
 
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
 alt="Get it on F-Droid"
-height="80" align="left">](https://f-droid.org/packages/net.diffengine.romandigitalclock/)<img src="/.github/images/clearpixel.gif" height="22" width="30"><br />
+height="80" align="left">](https://f-droid.org/packages/net.diffengine.romandigitalclock/)<img src="/.github/images/clearpixel.gif" height="23" width="30"><br />
 <a href="https://f-droid.org/packages/net.diffengine.romandigitalclock/">![F-Droid Version](https://img.shields.io/f-droid/v/net.diffengine.romandigitalclock?label=Latest%20Version)</a><br />
 <br />
 <br />
 [<img src="/.github/images/get-the-latest-apk-on-github.png"
 alt="Get the latest apk on GitHub"
-height="80" align="left">](https://github.com/dfyockey/RomanDigital/releases/latest)<img src="/.github/images/clearpixel.gif" height="22" width="30"><br />
+height="80" align="left">](https://github.com/dfyockey/RomanDigital/releases/latest)<img src="/.github/images/clearpixel.gif" height="23" width="30"><br />
 <a href="https://github.com/dfyockey/RomanDigital/releases/latest">![GitHub Release](https://img.shields.io/github/v/release/dfyockey/RomanDigital?label=Latest%20Version)</a><br />
 <br />
 
