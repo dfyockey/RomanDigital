@@ -51,7 +51,7 @@ known Roman digital clock Android apps, including:
 
 * Option to only keep display on when device is charging
 * Adaptive display providing the largest possible monospace text for the device screen width (excepting a narrow margin)
-* A widget for providing on a device's Home screen a Roman digital clock display that mirrors the settings of the app clock display:
+* A widget for providing a Roman digital clock display on a device's Home screen, where the display mirrors the settings of the app clock display:
 
 ![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240910_174429_One_UI_Home_scaled.jpg)
 
