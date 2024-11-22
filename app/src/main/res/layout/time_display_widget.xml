@@ -62,7 +62,7 @@
         android:shadowRadius="8"
         android:text="@string/appwidget_text"
         android:textColor="@color/widgetText_LoOpacityBkgnd"
-        android:textSize="34sp"
+        android:textSize="28sp"
         android:typeface="monospace"
         tools:ignore="TextContrastCheck" />
 </RelativeLayout>
