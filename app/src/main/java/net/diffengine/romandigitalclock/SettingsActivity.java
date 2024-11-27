@@ -20,15 +20,18 @@
 
 package net.diffengine.romandigitalclock;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreferenceCompat;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -66,10 +69,38 @@ public class SettingsActivity extends AppCompatActivity {
             }
         }
 
+        Context prefManagerContext;
+        PreferenceCategory category;
+
+        private void addABSwitchPreference (String key, String aText, String bText) {
+            SwitchPreferenceCompat pref = new SwitchPreferenceCompat(prefManagerContext);
+            pref.setLayoutResource(R.layout.a_b_switch_layout);
+            pref.setKey(key);
+            pref.setDefaultValue("false");
+            pref.setTitle(aText);
+            pref.setSummary(bText);
+            category.addPreference(pref);
+        }
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.time_preferences, rootKey);
-            //
+            //setPreferencesFromResource(R.xml.time_preferences, rootKey);
+
+            PreferenceManager manager = getPreferenceManager();
+            prefManagerContext = manager.getContext();
+            PreferenceScreen screen = manager.createPreferenceScreen(prefManagerContext);
+
+                category = new PreferenceCategory(prefManagerContext);
+                category.setTitle("Time");
+                category.setIconSpaceReserved(false);
+                screen.addPreference(category);
+
+                    addABSwitchPreference("switch_format", "12 Hour", "24 Hour");
+                    addABSwitchPreference("switch_alignment", "Align to Center", "Align to Divider");
+                    addABSwitchPreference("switch_separator", ": for All", "· for AM\n: for PM");
+
+            setPreferenceScreen(screen);
+
             // At start of the activity, ensure that the separator switch is disabled and set to
             // left if the format switch is set to right (i.e. 24 hour format).
             //
