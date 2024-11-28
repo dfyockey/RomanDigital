@@ -44,7 +44,7 @@ public class SettingsActivity extends AppCompatActivity {
             getSupportFragmentManager()
                     .beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.app_settings_frame, new SettingsFragment())
+                    .add(R.id.app_settings_frame, new SettingsFragment(true))
                     .add(R.id.screen_settings_frame, new ScreenSettingsFragment())
                     .add(R.id.button_bar_2, new SettingsButtonBarFragment())
                     .commit();
@@ -57,8 +57,16 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
 
+        String prefix;
+
+        public SettingsFragment (Boolean isApp) {
+            final String appPrefix = "a";
+            final String widgetPrefix = "w";
+            prefix = ( (isApp) ? appPrefix : widgetPrefix );
+        }
+
         private void setSeparatorEnableState(SwitchPreferenceCompat pFormat) {
-            SwitchPreferenceCompat pSeparator = findPreference("switch_separator");
+            SwitchPreferenceCompat pSeparator = findPreference(prefix + "switch_separator");
             if (pFormat.isChecked() == MainActivity.right) {
                 //noinspection DataFlowIssue
                 pSeparator.setChecked(MainActivity.left);
@@ -75,7 +83,7 @@ public class SettingsActivity extends AppCompatActivity {
         private void addABSwitchPreference (String key, String aText, String bText) {
             SwitchPreferenceCompat pref = new SwitchPreferenceCompat(prefManagerContext);
             pref.setLayoutResource(R.layout.a_b_switch_layout);
-            pref.setKey(key);
+            pref.setKey(prefix + key);
             pref.setDefaultValue(false);
             pref.setTitle(aText);
             pref.setSummary(bText);
@@ -104,14 +112,14 @@ public class SettingsActivity extends AppCompatActivity {
             // At start of the activity, ensure that the separator switch is disabled and set to
             // left if the format switch is set to right (i.e. 24 hour format).
             //
-            SwitchPreferenceCompat pFormat = findPreference("switch_format");
+            SwitchPreferenceCompat pFormat = findPreference(prefix + "switch_format");
             //noinspection DataFlowIssue
             setSeparatorEnableState(pFormat);
         }
 
         @Override
         public boolean onPreferenceTreeClick(@NonNull Preference preference) {
-            if (preference.getKey().equals("switch_format")) {
+            if (preference.getKey().equals(prefix + "switch_format")) {
                 //
                 // Set separator switch enable and check states based on whether format switch state
                 // is left or right (i.e. whether format is 12 or 24 hour). Implementation in code
