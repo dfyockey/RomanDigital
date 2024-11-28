@@ -76,7 +76,7 @@ public class SettingsActivity extends AppCompatActivity {
             SwitchPreferenceCompat pref = new SwitchPreferenceCompat(prefManagerContext);
             pref.setLayoutResource(R.layout.a_b_switch_layout);
             pref.setKey(key);
-            pref.setDefaultValue("false");
+            pref.setDefaultValue(false);
             pref.setTitle(aText);
             pref.setSummary(bText);
             category.addPreference(pref);
