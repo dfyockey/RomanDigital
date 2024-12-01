@@ -85,8 +85,10 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
 
                 if ( prefType.equals("Boolean") ) {
                     spEditor.putBoolean(key, (boolean) value);
-                } else {
+                } else if ( prefType.equals("Integer") ) {
                     spEditor.putInt(key, (int) value);
+                } else {
+                    // nop
                 }
             }
 
