@@ -154,7 +154,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     private static PendingIntent getPendingIntent(Context context) {
         Intent tickIntent = new Intent(context, TimeDisplayWidget.class);
         tickIntent.setAction(MINUTE_TICK);
-        return PendingIntent.getBroadcast(context, 0, tickIntent, PendingIntent.FLAG_IMMUTABLE);
+        return PendingIntent.getBroadcast(context, 0, tickIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
     }
 
     private static void setAlarm (Context context) {
