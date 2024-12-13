@@ -122,7 +122,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
 
-        int allAppWidgetIds[] = AppWidgetManager.getInstance(context).getAppWidgetIds(widgetName);
+        int[] allAppWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(widgetName);
         alarmPendingIntent = getPendingIntent(context, allAppWidgetIds);
         setAlarm(context);
     }
@@ -149,7 +149,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                 (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && action.equals(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED))
             )
         ) {
-            int appWidgetIds[] = null;
+            int[] appWidgetIds = null;
             if (intent.hasExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)) {
                 appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
             }

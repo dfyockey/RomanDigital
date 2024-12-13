@@ -22,6 +22,7 @@ package net.diffengine.romandigitalclock;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -63,6 +64,7 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
         origprefs = prefs.getAll();
     }
 
+    @SuppressLint("ApplySharedPref")
     public void onClick (View v) {
 
         // Get the appWidgetId if we're in a widget config activity
