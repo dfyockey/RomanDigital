@@ -34,6 +34,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import java.util.Objects;
+
 public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
     int appWidgetId;
 
@@ -117,7 +119,7 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
             setPreferencesFromResource(R.xml.widget_bkgnd_prefs, rootKey);
 
             SeekBarPreference seekBarPreference = findPreference("seekbar_opacity");
-            seekBarPreference.setSummary( buildOpacityLabel(seekBarPreference.getValue()) );
+            Objects.requireNonNull(seekBarPreference).setSummary( buildOpacityLabel(seekBarPreference.getValue()) );
 
             seekBarPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                 @Override

@@ -38,6 +38,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class SettingsButtonBarFragment extends Fragment implements View.OnClickListener {
     Activity parentActivity;
@@ -83,14 +84,12 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
 
             for (String key : origprefs.keySet()) {
                 Object value    = origprefs.get(key);
-                String prefType = value.getClass().getSimpleName();
+                String prefType = Objects.requireNonNull(value).getClass().getSimpleName();
 
                 if ( prefType.equals("Boolean") ) {
                     spEditor.putBoolean(key, (boolean) value);
                 } else if ( prefType.equals("Integer") ) {
                     spEditor.putInt(key, (int) value);
-                } else {
-                    // nop
                 }
             }
 

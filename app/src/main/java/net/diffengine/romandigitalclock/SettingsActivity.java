@@ -62,7 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         public SettingsFragment (Boolean isApp, int appWidgetId) {
             final String appPostfix = "";
-            final String widgetPostfix = new Integer(appWidgetId).toString();
+            final String widgetPostfix = String.valueOf(appWidgetId);
             postfix = ( (isApp) ? appPostfix : widgetPostfix );
         }
 
