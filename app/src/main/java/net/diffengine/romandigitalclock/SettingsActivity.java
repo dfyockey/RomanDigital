@@ -60,7 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
         String prefix;
 
         public SettingsFragment (Boolean isApp) {
-            final String appPrefix = "a";
+            final String appPrefix = "";
             final String widgetPrefix = "w";
             prefix = ( (isApp) ? appPrefix : widgetPrefix );
         }

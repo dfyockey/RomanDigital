@@ -68,9 +68,9 @@ public class MainActivity extends AppCompatActivity {
 
     // Aliases for option keys
     private static final String
-            ampm = "aswitch_format",
-            alignment = "aswitch_alignment",
-            ampmSeparator = "aswitch_separator",
+            ampm = "switch_format",
+            alignment = "switch_alignment",
+            ampmSeparator = "switch_separator",
             keepon = "switch_keep_on",
             onlywhencharging = "switch_when_charging";
 
