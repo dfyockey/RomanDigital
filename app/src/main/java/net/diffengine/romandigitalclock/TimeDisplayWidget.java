@@ -119,7 +119,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         }
 
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+            updateAppWidget(context, appWidgetManager, action, appWidgetId);
         }
 
         int[] allAppWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(widgetName);
@@ -164,7 +164,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId);
+            updateAppWidget(context, appWidgetManager, SETTINGS_KICK, appWidgetId);
         }
     }
 
@@ -209,9 +209,8 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         }
     }
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-            int appWidgetId) {
-        appWidgetManager.updateAppWidget(appWidgetId, updateTimeDisplay(context, SETTINGS_KICK, appWidgetId));
+    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, String action, int appWidgetId) {
+        appWidgetManager.updateAppWidget(appWidgetId, updateTimeDisplay(context, action, appWidgetId));
     }
 
     @Override

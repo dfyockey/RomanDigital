@@ -145,8 +145,9 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        // Kick the widget so it'll update immediately based on
-        // any preference changes made through this activity
+        // Kick the widgets so they'll update time immediately in case some broadcast intent has
+        // been missed. This may be unnecessary; I tend to think of intents as similar to messages
+        // used in controlling other systems' GUIs, which may not be the case.
         Intent kickstart = new Intent(this, TimeDisplayWidget.class);
         kickstart.setAction(TimeDisplayWidget.MINUTE_TICK);
         kickstart.setPackage(this.getPackageName());
