@@ -26,10 +26,14 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceScreen;
 import androidx.preference.SeekBarPreference;
 
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -72,7 +76,7 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
                     .setReorderingAllowed(true);
 
             fragmentTransaction.add(R.id.widget_settings, new SettingsActivity.SettingsFragment(false, appWidgetId));
-            fragmentTransaction.add(R.id.widget_bkgnd, new WidgetBkgndSettingsFragment());
+            fragmentTransaction.add(R.id.widget_bkgnd, new WidgetBkgndSettingsFragment(appWidgetId));
             fragmentTransaction.add(R.id.button_bar, new SettingsButtonBarFragment()).commit();
         }
 
@@ -109,16 +113,48 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
     }
 
     public static class WidgetBkgndSettingsFragment extends PreferenceFragmentCompat {
+
+        String postfix;
+
+        public WidgetBkgndSettingsFragment (int appWidgetId) {
+            postfix = String.valueOf(appWidgetId);
+        }
+
         String buildOpacityLabel(int rawvalue) {
             int percentage = rawvalue * 10;
             return "Opacity: " + percentage + "%";
         }
 
+        Context prefManagerContext;
+        PreferenceCategory category;
+
+        @SuppressWarnings("SameParameterValue")     // From https://stackoverflow.com/a/48734923/
+        private void addSeekBarPreference (String key) {
+            SeekBarPreference pref = new SeekBarPreference(prefManagerContext);
+            pref.setKey(key + postfix);
+            pref.setMax(10);
+            pref.setShowSeekBarValue(false);
+            pref.setUpdatesContinuously(true);
+            pref.setSummary("Opacity: %");
+            category.addPreference(pref);
+        }
+
         @Override
         public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
-            setPreferencesFromResource(R.xml.widget_bkgnd_prefs, rootKey);
+            PreferenceManager manager = getPreferenceManager();
+            prefManagerContext = manager.getContext();
+            PreferenceScreen screen = manager.createPreferenceScreen(prefManagerContext);
 
-            SeekBarPreference seekBarPreference = findPreference("seekbar_opacity");
+            category = new PreferenceCategory(prefManagerContext);
+            category.setTitle("Background");
+            category.setIconSpaceReserved(false);
+            screen.addPreference(category);
+
+                addSeekBarPreference("seekbar_opacity");
+
+            setPreferenceScreen(screen);
+
+            SeekBarPreference seekBarPreference = findPreference("seekbar_opacity" + postfix);
             Objects.requireNonNull(seekBarPreference).setSummary( buildOpacityLabel(seekBarPreference.getValue()) );
 
             seekBarPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {

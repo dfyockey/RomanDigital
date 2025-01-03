@@ -78,7 +78,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 
         // Update the widget background on instantiation, system boot, or change of settings
         if (action.equals(SETTINGS_KICK)) {
-            int opacityValue = sp.getInt("seekbar_opacity", 0);
+            int opacityValue = sp.getInt("seekbar_opacity" + appWidgetId, 0);
             views.setInt(R.id.appwidget_bkgnd, "setBackgroundResource", opacity[opacityValue]);
 
             int widget_text_color_resource;
@@ -112,8 +112,8 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         ComponentName widgetName = new ComponentName(context.getPackageName(), TimeDisplayWidget.class.getName());
 
-        // SETTINGS_KICK may be received without any extra appWidgetIds array,
-        // so get an array of current appWidgetIds if necessary
+        // SETTINGS_KICK may be received without any extra appWidgetIds array;
+        // if so, get the array of current appWidgetIds
         if (appWidgetIds == null) {
             appWidgetIds = appWidgetManager.getAppWidgetIds(widgetName);
         }
