@@ -88,6 +88,10 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                 widget_text_color_resource = R.color.widgetText_HiOpacityBkgnd;
             }
             views.setInt(R.id.appwidget_text, "setTextColor", getColor(context, widget_text_color_resource));
+
+            Bundle widgetOptions = AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId);
+            int textsize = calcTimeDisplayTextSize(widgetOptions);
+            views.setTextViewTextSize(R.id.appwidget_text, TypedValue.COMPLEX_UNIT_SP, textsize);
         }
 
         Intent intent;
@@ -213,11 +217,15 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetId, updateTimeDisplay(context, action, appWidgetId));
     }
 
+    static private int calcTimeDisplayTextSize(Bundle bundle) {
+        int minwidth = bundle.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+        return ((minwidth < 260) ? 28 : 34);
+    }
+
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
                                           int appWidgetId, Bundle newOptions) {
-        int minwidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-        int textsize = (minwidth < 260) ? 28 : 34;
+        int textsize = calcTimeDisplayTextSize(newOptions);
 
         // This call to updateTimeDisplay, which calls appWidgetManager.updateAppWidget, should likely be replaced with
         // "RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);"
