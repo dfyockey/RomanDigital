@@ -210,7 +210,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 
     @Override
     public void onDisabled(Context context) {
-        if (alarmManager != null) {
+        if (alarmManager != null && alarmPendingIntent != null) {
             alarmManager.cancel(alarmPendingIntent);
         }
     }
