@@ -100,6 +100,8 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         // otherwise the widget won't properly respond to a click (i.e. tap)
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             intent = new Intent(context, TimeDisplayWidgetConfigActivity.class);
+            intent.setAction("click" + appWidgetId);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         } else {
             intent = new Intent(context, MainActivity.class);
         }
