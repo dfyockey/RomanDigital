@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateTimeDisplay() {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
-        String now = romantime.now( !getPref(ampm), getPref(ampmSeparator), !getPref(alignment) );
+        String now = romantime.now( !getPref(ampm), getPref(ampmSeparator), !getPref(alignment), "America/New_York" );
 
         // IMPORTANT:
         // For the String returned by romantime.now to be correctly aligned in TimeDisplay textview,
