@@ -113,10 +113,8 @@ public class SettingsActivity extends AppCompatActivity {
             pref.setEntryValues(TimeZone.getAvailableIDs());
 
             // Set summary if necessary
-            if (pref != null) {
-                if (pref.getEntry() == null) {
-                    pref.setValue(TimeZone.getDefault().getID());
-                }
+            if (pref.getEntry() == null) {
+                pref.setValue(TimeZone.getDefault().getID());
             }
 
             category.addPreference(pref);
