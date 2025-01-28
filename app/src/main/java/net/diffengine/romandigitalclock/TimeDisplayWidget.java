@@ -72,7 +72,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
-        CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, "America/Los_Angeles");
+        CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, "America/New_York");
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
         views.setTextViewText(R.id.appwidget_text, widgetText);
 

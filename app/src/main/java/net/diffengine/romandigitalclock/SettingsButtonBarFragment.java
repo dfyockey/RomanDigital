@@ -86,10 +86,18 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
                 Object value    = origprefs.get(key);
                 String prefType = Objects.requireNonNull(value).getClass().getSimpleName();
 
-                if ( prefType.equals("Boolean") ) {
-                    spEditor.putBoolean(key, (boolean) value);
-                } else if ( prefType.equals("Integer") ) {
-                    spEditor.putInt(key, (int) value);
+                switch (prefType) {
+                    case "Boolean":
+                        spEditor.putBoolean(key, (boolean) value);
+                        break;
+                    case "Integer":
+                        spEditor.putInt(key, (int) value);
+                        break;
+                    case "String":
+                        spEditor.putString(key, (String) value);
+                        break;
+                    default:
+                        break;
                 }
             }
 
