@@ -94,6 +94,13 @@ public class SettingsActivity extends AppCompatActivity {
             category.addPreference(pref);
         }
 
+        private void addSeparator (String key) {
+            Preference pref = new Preference(prefManagerContext);
+            pref.setLayoutResource(R.layout.separator_layout);
+            pref.setKey(key);
+            category.addPreference(pref);
+        }
+
         // Pass key for symmetry in preference method calls
         private void addTimeZoneListPreference (String key) {
             ListPreference pref = new ListPreference(prefManagerContext);
@@ -111,6 +118,9 @@ public class SettingsActivity extends AppCompatActivity {
 
             pref.setEntries(TimeZone.getAvailableIDs());
             pref.setEntryValues(TimeZone.getAvailableIDs());
+
+            // Required for some devices that default this to false
+            pref.setIconSpaceReserved(true);
 
             // Set summary if necessary
             if (pref.getEntry() == null) {
@@ -138,6 +148,7 @@ public class SettingsActivity extends AppCompatActivity {
                     addABSwitchPreference("switch_separator", ": for All", "· for AM\n: for PM");
 
                     if (!postfix.equals("")) {
+                        addSeparator("S1");
                         addTimeZoneListPreference("list_timezone");
                     }
 

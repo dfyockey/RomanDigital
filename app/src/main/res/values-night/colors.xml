@@ -29,6 +29,7 @@
     <color name="transparent_85_pct">#26000000</color>
     <color name="widgetText_LoOpacityBkgnd">#FAFAFA</color>
     <color name="widgetText_HiOpacityBkgnd">#FAFAFA</color>
+    <color name="separator">@color/abswitch_thumb_disabled</color>
 
     <color name="opacity_100">#FF000000</color>
     <color name="opacity_90">#E6000000</color>

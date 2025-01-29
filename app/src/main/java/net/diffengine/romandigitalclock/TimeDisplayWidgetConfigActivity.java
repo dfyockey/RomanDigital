@@ -136,6 +136,10 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
             pref.setShowSeekBarValue(false);
             pref.setUpdatesContinuously(true);
             pref.setSummary("Opacity: %");
+
+            // Required for some devices that default this to false
+            pref.setIconSpaceReserved(true);
+
             category.addPreference(pref);
         }
 
