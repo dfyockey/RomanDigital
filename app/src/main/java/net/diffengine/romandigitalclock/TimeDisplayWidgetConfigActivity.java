@@ -114,7 +114,10 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
 
     public static class WidgetBkgndSettingsFragment extends PreferenceFragmentCompat {
 
-        String postfix;
+        static String postfix;
+
+        public WidgetBkgndSettingsFragment () {
+        }
 
         public WidgetBkgndSettingsFragment (int appWidgetId) {
             postfix = String.valueOf(appWidgetId);

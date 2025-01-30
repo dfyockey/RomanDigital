@@ -61,7 +61,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
 
-        String postfix;
+        static String postfix;
+
+        public SettingsFragment () {
+        }
 
         public SettingsFragment (Boolean isApp, int appWidgetId) {
             final String appPostfix = "";
