@@ -71,11 +71,14 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
         boolean alignment     = sp.getBoolean("switch_alignment" + appWidgetId, false);
         String  tzid          = sp.getString("list_timezone" + appWidgetId, TimeZone.getDefault().getID());
+        //int layoutId          = R.layout.time_display_widget_hi_label;
+        //int layoutId          = R.layout.time_display_widget;
+        int layoutId          = R.layout.time_display_widget_lo_label;
 
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
         CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzid);
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
+        RemoteViews views = new RemoteViews(context.getPackageName(), layoutId);
         views.setTextViewText(R.id.appwidget_text, widgetText);
 
         // Update the widget background on instantiation, system boot, or change of settings
@@ -90,6 +93,10 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                 widget_text_color_resource = R.color.widgetText_HiOpacityBkgnd;
             }
             views.setInt(R.id.appwidget_text, "setTextColor", getColor(context, widget_text_color_resource));
+            if (layoutId != R.layout.time_display_widget) {
+                views.setTextViewText(R.id.appwidget_label, tzid);
+                views.setInt(R.id.appwidget_label, "setTextColor", getColor(context, widget_text_color_resource));
+            }
 
             Bundle widgetOptions = AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId);
             int textsize = calcTimeDisplayTextSize(widgetOptions);
