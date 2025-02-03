@@ -71,9 +71,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
         boolean alignment     = sp.getBoolean("switch_alignment" + appWidgetId, false);
         String  tzid          = sp.getString("list_timezone" + appWidgetId, TimeZone.getDefault().getID());
-        //int layoutId          = R.layout.time_display_widget_hi_label;
-        //int layoutId          = R.layout.time_display_widget;
-        int layoutId          = R.layout.time_display_widget_lo_label;
+        int layoutId          = Integer.parseInt( sp.getString("list_widget_layout" + appWidgetId, String.valueOf(R.layout.time_display_widget) ) );
 
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
