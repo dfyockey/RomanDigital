@@ -50,10 +50,6 @@ public class SettingsActivity extends AppCompatActivity {
                     .add(R.id.button_bar_2, new SettingsButtonBarFragment())
                     .commit();
         }
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
