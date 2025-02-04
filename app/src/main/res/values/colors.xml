@@ -49,4 +49,5 @@
 
     <color name="fragment_title">@color/black</color>
     <color name="button_bar_bkgnd">@color/white</color>
+    <color name="button_bar_text">@color/fragment_title</color>
 </resources>
