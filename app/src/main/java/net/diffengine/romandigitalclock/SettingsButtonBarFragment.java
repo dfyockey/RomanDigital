@@ -22,6 +22,7 @@ package net.diffengine.romandigitalclock;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Intent;
@@ -37,6 +38,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class SettingsButtonBarFragment extends Fragment implements View.OnClickListener {
     Activity parentActivity;
@@ -63,6 +65,7 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
         origprefs = prefs.getAll();
     }
 
+    @SuppressLint("ApplySharedPref")
     public void onClick (View v) {
 
         // Get the appWidgetId if we're in a widget config activity
@@ -81,11 +84,11 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
 
             for (String key : origprefs.keySet()) {
                 Object value    = origprefs.get(key);
-                String prefType = value.getClass().getSimpleName();
+                String prefType = Objects.requireNonNull(value).getClass().getSimpleName();
 
                 if ( prefType.equals("Boolean") ) {
                     spEditor.putBoolean(key, (boolean) value);
-                } else {
+                } else if ( prefType.equals("Integer") ) {
                     spEditor.putInt(key, (int) value);
                 }
             }

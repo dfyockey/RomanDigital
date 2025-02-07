@@ -28,7 +28,6 @@
     android:id="@+id/button_bar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/button_bar_bkgnd"
     android:orientation="horizontal"
     tools:context=".SettingsButtonBarFragment" >
 
@@ -38,10 +37,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Cancel"
+        android:text="@string/cancel"
         android:textAllCaps="false"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textColor="@color/button_bar_text"
+        android:textSize="19sp" />
 
     <Button
         android:id="@+id/buttonSave"
@@ -49,9 +48,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Save"
+        android:text="@string/save"
         android:textAllCaps="false"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textColor="@color/button_bar_text"
+        android:textSize="19sp" />
 
 </LinearLayout>
