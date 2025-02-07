@@ -28,12 +28,15 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreferenceCompat;
+
+import java.util.TimeZone;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -54,7 +57,10 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static class SettingsFragment extends PreferenceFragmentCompat {
 
-        String postfix;
+        static String postfix;
+
+        public SettingsFragment () {
+        }
 
         public SettingsFragment (Boolean isApp, int appWidgetId) {
             final String appPostfix = "";
@@ -87,6 +93,42 @@ public class SettingsActivity extends AppCompatActivity {
             category.addPreference(pref);
         }
 
+        private void addSeparator (String key) {
+            Preference pref = new Preference(prefManagerContext);
+            pref.setLayoutResource(R.layout.separator_layout);
+            pref.setKey(key);
+            category.addPreference(pref);
+        }
+
+        // Pass key for symmetry in preference method calls
+        private void addTimeZoneListPreference (String key) {
+            ListPreference pref = new ListPreference(prefManagerContext);
+            pref.setKey(key + postfix);
+            pref.setTitle("Time Zone");
+
+            // "%s" is documented in the doc for the deprecated android.preference.ListPreference at
+            // https://developer.android.com/reference/android/preference/ListPreference.html#setSummary(java.lang.CharSequence),
+            // but not in the doc for its replacement androidx.preference.ListPreference at
+            // https://developer.android.com/reference/androidx/preference/ListPreference#setSummary(java.lang.CharSequence).
+            //
+            // Consequently, while it's EXTREMELY useful, it should be considered deprecated unless
+            // and until it is documented in the androidx.preference.ListPreference documentation.
+            pref.setSummary("%s");
+
+            pref.setEntries(TimeZone.getAvailableIDs());
+            pref.setEntryValues(TimeZone.getAvailableIDs());
+
+            // Required for some devices that default this to false
+            pref.setIconSpaceReserved(true);
+
+            // Set summary if necessary
+            if (pref.getEntry() == null) {
+                pref.setValue(TimeZone.getDefault().getID());
+            }
+
+            category.addPreference(pref);
+        }
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             //setPreferencesFromResource(R.xml.time_preferences, rootKey);
@@ -103,6 +145,11 @@ public class SettingsActivity extends AppCompatActivity {
                     addABSwitchPreference("switch_format", "12 Hour", "24 Hour");
                     addABSwitchPreference("switch_alignment", "Align to Center", "Align to Divider");
                     addABSwitchPreference("switch_separator", ": for All", "· for AM\n: for PM");
+
+                    if (!postfix.equals("")) {
+                        addSeparator("S1");
+                        addTimeZoneListPreference("list_timezone");
+                    }
 
             setPreferenceScreen(screen);
 

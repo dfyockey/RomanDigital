@@ -38,6 +38,7 @@ import android.widget.RemoteViews;
 import androidx.preference.PreferenceManager;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 /** @noinspection SpellCheckingInspection*/
 public class TimeDisplayWidget extends AppWidgetProvider {
@@ -69,10 +70,11 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         boolean ampm          = sp.getBoolean("switch_format" + appWidgetId, false);
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
         boolean alignment     = sp.getBoolean("switch_alignment" + appWidgetId, false);
+        String  tzid          = sp.getString("list_timezone" + appWidgetId, TimeZone.getDefault().getID());
 
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
-        CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment);
+        CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzid);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
         views.setTextViewText(R.id.appwidget_text, widgetText);
 

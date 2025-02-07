@@ -21,6 +21,7 @@
 package net.diffengine.romandigitalclock;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 /** @noinspection SpellCheckingInspection*/
 public class romantime {
@@ -46,7 +47,7 @@ public class romantime {
 		return separator;
 	}
 
-	public static String now(boolean ampm, boolean ampmSeparator, boolean center) {
+	public static String now(boolean ampm, boolean ampmSeparator, boolean center, String tzId) {
 
 		// ampm		ampmSeparator
 		// T		T 				12 hr / ampm separator
@@ -55,6 +56,7 @@ public class romantime {
 
 		/* GET TIME */
 		Calendar cal = Calendar.getInstance();
+		cal.setTimeZone(TimeZone.getTimeZone(tzId));
 		String rHours	 = getHours(cal, ampm);
 		String rMinutes  = itor(cal.get(Calendar.MINUTE));
 		String separator = getSeparator(cal, ampm, ampmSeparator);

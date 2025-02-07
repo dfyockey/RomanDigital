@@ -91,7 +91,10 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
 
     public static class WidgetBkgndSettingsFragment extends PreferenceFragmentCompat {
 
-        String postfix;
+        static String postfix;
+
+        public WidgetBkgndSettingsFragment () {
+        }
 
         public WidgetBkgndSettingsFragment (int appWidgetId) {
             postfix = String.valueOf(appWidgetId);
@@ -113,6 +116,10 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
             pref.setShowSeekBarValue(false);
             pref.setUpdatesContinuously(true);
             pref.setSummary("Opacity: %");
+
+            // Required for some devices that default this to false
+            pref.setIconSpaceReserved(true);
+
             category.addPreference(pref);
         }
 
