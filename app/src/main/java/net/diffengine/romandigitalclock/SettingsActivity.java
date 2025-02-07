@@ -100,11 +100,11 @@ public class SettingsActivity extends AppCompatActivity {
             category.addPreference(pref);
         }
 
-        // Pass key for symmetry in preference method calls
-        private void addTimeZoneListPreference (String key) {
+        private void addListPreference (String key, String title, String[] entries, String[] entryValues, String defaultValue) {
             ListPreference pref = new ListPreference(prefManagerContext);
+            pref.setIconSpaceReserved(true);    // Required for some devices that default this to false
             pref.setKey(key + postfix);
-            pref.setTitle("Time Zone");
+            pref.setTitle(title);
 
             // "%s" is documented in the doc for the deprecated android.preference.ListPreference at
             // https://developer.android.com/reference/android/preference/ListPreference.html#setSummary(java.lang.CharSequence),
@@ -115,15 +115,12 @@ public class SettingsActivity extends AppCompatActivity {
             // and until it is documented in the androidx.preference.ListPreference documentation.
             pref.setSummary("%s");
 
-            pref.setEntries(TimeZone.getAvailableIDs());
-            pref.setEntryValues(TimeZone.getAvailableIDs());
-
-            // Required for some devices that default this to false
-            pref.setIconSpaceReserved(true);
+            pref.setEntries(entries);
+            pref.setEntryValues(entryValues);
 
             // Set summary if necessary
             if (pref.getEntry() == null) {
-                pref.setValue(TimeZone.getDefault().getID());
+                pref.setValue(defaultValue);
             }
 
             category.addPreference(pref);
@@ -148,7 +145,19 @@ public class SettingsActivity extends AppCompatActivity {
 
                     if (!postfix.equals("")) {
                         addSeparator("S1");
-                        addTimeZoneListPreference("list_timezone");
+
+                        String[] timezoneIds = TimeZone.getAvailableIDs();
+                        addListPreference("list_timezone", "Time Zone", timezoneIds, timezoneIds, TimeZone.getDefault().getID() );
+
+                        String[] layoutEntries = {"Time zone label above time", "Time only", "Time zone label below time"};
+
+                        String[] layoutValues  = {
+                                String.valueOf(R.layout.time_display_widget_hi_label),
+                                String.valueOf(R.layout.time_display_widget),
+                                String.valueOf(R.layout.time_display_widget_lo_label)
+                        };
+
+                        addListPreference("list_widget_layout", "Display Layout", layoutEntries, layoutValues, layoutValues[1] );
                     }
 
             setPreferenceScreen(screen);
