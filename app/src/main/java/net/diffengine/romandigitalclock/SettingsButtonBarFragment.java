@@ -2,7 +2,7 @@
  * SettingsButtonBarFragment.java
  * - This file is part of the Android app RomanDigital
  *
- * Copyright 2024 David Yockey
+ * Copyright 2024-2025 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

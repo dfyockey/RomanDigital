@@ -5,7 +5,7 @@
  * - This file is part of the Android app RomanDigital
  *   and is a values resource
  *
- * Copyright 2024 David Yockey
+ * Copyright 2024-2025 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@
     <string name="menuitem_settings">Settings</string>
     <string name="menuitem_about">About</string>
 
-    <string name="copyright">Copyright © 2024 David Yockey</string>
+    <string name="copyright">Copyright © 2024-2025 David Yockey</string>
 
     <string name="license_notice">
 "Licensed under the Apache License, Version 2.0 (the "License"); you may only use this software in compliance with the License. You may obtain a copy of the License at
