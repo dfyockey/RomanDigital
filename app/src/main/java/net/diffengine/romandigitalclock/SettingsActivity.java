@@ -26,7 +26,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -117,11 +116,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             pref.setEntries(entries);
             pref.setEntryValues(entryValues);
-
-            // Set summary if necessary
-            if (pref.getEntry() == null) {
-                pref.setValue(defaultValue);
-            }
+            pref.setValue(defaultValue);
 
             category.addPreference(pref);
         }

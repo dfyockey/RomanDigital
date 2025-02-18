@@ -33,12 +33,6 @@
     android:orientation="vertical"
     android:gravity="center" >
 
-    <!--
-        Poor text contrast in the following TextView is irrelevant because the widget background
-        specified by the applied style attribute above is semitransparent, so real text contrast
-        will be determined by the device's home screen background as set by the user.
-    -->
-
     <TextView
         android:id="@+id/appwidget_label"
         android:layout_width="wrap_content"

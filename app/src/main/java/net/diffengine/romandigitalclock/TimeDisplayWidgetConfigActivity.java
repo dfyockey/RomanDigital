@@ -22,7 +22,6 @@ package net.diffengine.romandigitalclock;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.Preference;
@@ -36,7 +35,6 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 
 import java.util.Objects;
 
@@ -78,14 +76,6 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
             fragmentTransaction.add(R.id.widget_settings, new SettingsActivity.SettingsFragment(false, appWidgetId));
             fragmentTransaction.add(R.id.widget_bkgnd, new WidgetBkgndSettingsFragment(appWidgetId));
             fragmentTransaction.add(R.id.button_bar, new SettingsButtonBarFragment()).commit();
-        }
-    }
-
-    // This method is unused and should be removed at some point
-    public static class SettingsFragment extends PreferenceFragmentCompat {
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.time_preferences, rootKey);
         }
     }
 

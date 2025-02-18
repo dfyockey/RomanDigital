@@ -44,10 +44,6 @@
     <string name="keepon_title">Keep screen on</string>
     <string name="charging_title">     Only when charging</string>
 
-    <!--
-    <string name="civ_fill">            </string>
-    <string name="mil_fill">             </string>
-    -->
     <string name="civ_fill">XXXXXXXXXXXX</string>
     <string name="mil_fill">XXXXXXXXXXXXX</string>
 
@@ -88,22 +84,6 @@ for the full license text."
     <string name="appwidget_text">XIII:XXXVIII</string>
     <string name="app_widget_description">Digital Clock with Roman Numeral Display</string>
     <string name="title_widget_settings">RomanDigital Widget Settings</string>
-    <string name="exact_alarm_section_title">Exact Alarm Permission</string>
-    <string name="settings_section_title">Settings</string>
-    <string name="explain_exact_alarm_permission">
-        To accurately update the displayed time, the RomanDigital widget requires user permission to
-        set exact alarms.
-        \n\nWithout this permission, the widget will be updated at inexact times, causing the
-        displayed time to lag the system clock.
-        \n\nClick the button below and set the option on the resulting screen to grant the required
-        permission.
-    </string>
-    <string name="exact_alarm_permission_granted">
-        The RomanDigital widget currently has permission to set exact alarms so it can accurately
-        update the displayed time.
-    </string>
-    <string name="button_exact_alarm_permission">Open Permission Setting Screen</string>
-    <string name="close_btn_description">Configuration Activity Close</string>
     <string name="tz_above_time">Time zone label above time</string>
     <string name="time_only">Time only</string>
     <string name="tz_below_time">Time zone label below time</string>
