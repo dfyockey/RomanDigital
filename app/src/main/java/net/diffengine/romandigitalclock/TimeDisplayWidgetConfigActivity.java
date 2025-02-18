@@ -68,6 +68,11 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
         setResultCanceled();
         setContentView(R.layout.activity_time_display_widget_config);
 
+        if(BuildConfig.DEBUG) {
+            String activityTitle = (String) getTitle();
+            setTitle(activityTitle + " - " + appWidgetId);
+        }
+
         if (savedInstanceState == null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction()
