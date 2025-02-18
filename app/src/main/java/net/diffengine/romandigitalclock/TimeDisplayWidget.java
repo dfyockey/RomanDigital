@@ -65,13 +65,27 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     public static final String MINUTE_TICK = "net.diffengine.romandigitalclock.MINUTE_TICK";
     public static final String SETTINGS_KICK = "net.diffengine.romandigitalclock.SETTINGS_KICK";
 
+    private static int getLayoutId(String layoutMoniker) {
+        switch (layoutMoniker) {
+            case "hi_label":
+                return R.layout.time_display_widget_hi_label;
+            case "no_label":
+                return R.layout.time_display_widget;
+            case "lo_label":
+                return R.layout.time_display_widget_lo_label;
+            default:
+                break;
+        }
+        return R.layout.time_display_widget;  // error condition: invalid layoutMoniker
+    }
+
     private static RemoteViews updateTimeDisplay(Context context, String action, int appWidgetId) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm          = sp.getBoolean("switch_format" + appWidgetId, false);
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
         boolean alignment     = sp.getBoolean("switch_alignment" + appWidgetId, false);
         String  tzid          = sp.getString("list_timezone" + appWidgetId, TimeZone.getDefault().getID());
-        int layoutId          = Integer.parseInt( sp.getString("list_widget_layout" + appWidgetId, String.valueOf(R.layout.time_display_widget) ) );
+        int layoutId          = getLayoutId( sp.getString("list_widget_layout" + appWidgetId, "no_label" ) );
 
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
