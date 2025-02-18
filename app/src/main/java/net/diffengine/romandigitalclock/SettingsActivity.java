@@ -149,7 +149,7 @@ public class SettingsActivity extends AppCompatActivity {
                         String[] timezoneIds = TimeZone.getAvailableIDs();
                         addListPreference("list_timezone", "Time Zone", timezoneIds, timezoneIds, TimeZone.getDefault().getID() );
 
-                        String[] layoutEntries = {"Time zone label above time", "Time only", "Time zone label below time"};
+                        String[] layoutEntries = {getString(R.string.tz_above_time), getString(R.string.time_only), getString(R.string.tz_below_time)};
                         String[] layoutValues  = {"hi_label", "no_label", "lo_label"};
 
                         addListPreference("list_widget_layout", "Display Layout", layoutEntries, layoutValues, layoutValues[1] );

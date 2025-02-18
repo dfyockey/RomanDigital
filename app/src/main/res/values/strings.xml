@@ -104,6 +104,9 @@ for the full license text."
     </string>
     <string name="button_exact_alarm_permission">Open Permission Setting Screen</string>
     <string name="close_btn_description">Configuration Activity Close</string>
+    <string name="tz_above_time">Time zone label above time</string>
+    <string name="time_only">Time only</string>
+    <string name="tz_below_time">Time zone label below time</string>
 
     <!-- Time Preferences Strings -->
     <string name="left">false</string>
