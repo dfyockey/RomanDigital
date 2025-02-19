@@ -56,7 +56,7 @@ RomanDigital further includes:
 
 * Independent setting of widget background transparency, time zone, and other settings:
 
-![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20250219_115336_One_UI_Home_scaled.jpg) ![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20250219_120411_One_UI_Home_scaled.jpg)
+![Portrait screenshot of a second phone Home screen showing four RomanDigital widgets with center-aligned Continental U.S. time zone times and different transparency backgrounds](/.github/images/Screenshot_20250219_115336_One_UI_Home_scaled.jpg) ![Portrait screenshot of a third phone Home screen showing six RomanDigital widgets with fixed-divider-aligned international location time zone times](/.github/images/Screenshot_20250219_120411_One_UI_Home_scaled.jpg)
 
 * And... RomanDigital is Apache-2.0-licensed open source :slightly_smiling_face:
 
