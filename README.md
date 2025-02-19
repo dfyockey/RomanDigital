@@ -41,8 +41,7 @@ RomanDigital includes several common clock app features, including:
 
 ![Landscape screenshot of phone showing system bars and RomanDigital app displaying time as IV:XIV with toolbar containing gear and info icons](/.github/images/Screenshot_20240809_161416_RomanDigital.png)
 
-RomanDigital further includes features believed to be unique over other
-known Roman digital clock Android apps, including:
+RomanDigital further includes:
 
 * Choice between centered display and display aligned with a fixed divider
 * AM/PM indicator integrated into the time display, such that the divider is displayed as "·" for AM and ":" for PM:
@@ -51,9 +50,13 @@ known Roman digital clock Android apps, including:
 
 * Option to only keep display on when device is charging
 * Adaptive display providing the largest possible monospace text for the device screen width (excepting a narrow margin)
-* A widget for providing a Roman digital clock display on a device's Home screen, where the display mirrors the settings of the app clock display:
+* A widget for providing a Roman digital clock display on a device's Home screen:
 
 ![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240910_174429_One_UI_Home_scaled.jpg)
+
+* Independent setting of widget background transparency, time zone, and other settings:
+
+![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20250219_115336_One_UI_Home_scaled.jpg) ![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20250219_120411_One_UI_Home_scaled.jpg)
 
 * And... RomanDigital is Apache-2.0-licensed open source :slightly_smiling_face:
 
