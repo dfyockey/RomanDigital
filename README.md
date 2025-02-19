@@ -105,13 +105,13 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 
 ## FAQ (Foremost Anticipated Questions)
 
-> Q: "I just updated RomanDigital, and now the widget doesn't work! What happened?"
+> Q: "I just updated RomanDigital / updated Android / restarted my device, and now the widget doesn't work! What happened?"
 >
-> A: The widget "ticks" are scheduled in advance for technical reasons, and the widget that's part of the updated app may not receive "ticks" previously scheduled for the widget's earlier version. In such a case, it stops :slightly_frowning_face:  The workaround right now to get the widget going again is to "kickstart" it by simply opening and then closing a settings screen from either the widget or the app. I hope to make post-update widget restart either more elegant or entirely automatic at some point.
+> A: The widget "ticks" are scheduled in advance for technical reasons, and the widget that's part of the updated app may not receive "ticks" previously scheduled for the widget's earlier version. In such a case, it stops :slightly_frowning_face:  The workaround right now to get the widget going again is to "kickstart" it by simply opening and then canceling a settings screen from any widget or from the app. Not ideal, but at least it works. :roll_eyes:  I hope to make such widget restarts either more elegant or entirely automatic at some point.
 
 > Q: "Why does the position of the divider change when 'Align to Divider' is selected? Isn't it supposed to stay in one place?"
 >
-> A: Yes, it's supposed to stay in one place, but the positioning was designed with the expectation of using a monospace font (shortsighted of me, I know). If you've changed a device setting effecting the font used, e.g. your system-wide font, to something that doesn't provide for monospace, then the calculated display position based on expected equal-width characters, and thus the divider position, will unfortunately be off.
+> A: Yes, it's supposed to stay in one place, but the positioning was designed with the expectation of using a monospace font (shortsighted of me, I know, but implementation for variable width fonts would be _really hard_). If you've changed a device setting effecting the font used, e.g. your system-wide font, to something that doesn't provide for monospace, then the calculated display position based on expected equal-width characters, and thus the divider position, will unfortunately be off.
 
 > Q: "There's no alarm feature, so why the need to set exact alarms? What's this got to do with an accurate time display?"
 > 
@@ -119,11 +119,11 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 
 > Q: "Will there ever be an alarm feature?"
 > 
-> A: Maybe, but it's quite low on the priority list at this point.  
+> A: Maybe, but it's quite low on the priority list at this point.
 
 > Q: "Why can't I change the font/text color/background color/widget corner curvature/etc?"
 > 
-> A: Haven't gotten to them yet.
+> A: Background _transparency_ can now be changed, with background fully white/black for 100% opacity in light/dark mode. As for other stylistic changes, I haven't gotten to them yet.
 
 > Q: "Why no seconds?"
 > 
@@ -150,7 +150,3 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 > Q: "Will it work on a watch or a TV?"
 >
 > A: It might — haven't tried — but if it did, it would likely result in a time display that's "unoptimized for the given device's screen size." In other words, "too large" or "too small".
-
-> Q: "Can the app and widgets be set to different time zones?"
->
-> A: Not at this point because only one global set of preferences is used. But providing independent preferences for the app and each widget is something I'd like to get to pretty soon.
