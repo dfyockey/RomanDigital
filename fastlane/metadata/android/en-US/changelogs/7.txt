@@ -1,0 +1,15 @@
+Added:
+* Ability to configure settings independently for app and for each of one or more widgets.
+* Ability to select a different time zone for each widget.
+* Selectable widget layouts enabling addition of a time zone label above or below the time display.
+
+Changed:
+* Internal details related to updating of widgets' time and features, to improve efficiency.
+
+Removed:
+* The back arrow from the title bar of each settings activity.
+
+Fixed:
+* Issues with widget time display text size being incorrect for the width of the widget (3 or >=4 tiles wide).
+
+NOTE: Installing this update may require the User to reset settings for any widgets currently in use.
