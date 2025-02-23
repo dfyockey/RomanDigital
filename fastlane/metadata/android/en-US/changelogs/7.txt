@@ -7,9 +7,9 @@ Changed:
 * Internal details related to updating of widgets' time and features, to improve efficiency.
 
 Removed:
-* The back arrow from the title bar of each settings activity.
+* The back arrow from the title bar of each Settings screen, since the arrow performs the same function as the Save button,
 
 Fixed:
 * Issues with widget time display text size being incorrect for the width of the widget (3 or >=4 tiles wide).
 
-NOTE: Installing this update may require the User to reset settings for any widgets currently in use.
+NOTE: Installing this update will likely require resetting settings for any widgets currently in use.
