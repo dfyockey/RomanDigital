@@ -8,6 +8,35 @@ This project aims to adhere to [Semantic Versioning](https://server.org).
 
 Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
 
+## [2.0.0] - 2025-02-23
+
+### Added
+
+* Ability to configure settings independently for app and for each of one or more widgets. Settings are distinguished by a postfix widget id added to preference keys corresponding to a given widget, and by app settings having no postfix. __[This addition may require the User to reset settings for any widgets currently in use.]__
+* Ability to select a different time zone for each widget.
+* Selectable widget layouts enabling addition of a time zone label above or below the time display.
+* A custom preference that has no function except to provide a separator line in the arrangement of preferences on a settings activity.
+* The id of the widget currently being configured to the widget settings activity title when the project is built for debugging.
+* Commit type 'cleanup' for chores limited to removal of unused files, unused code, unneeded comments (or portions thereof), and/or superfluous whitespace.
+
+### Changed
+
+* XML implementation of time and opacity preferences to code implementation to enable programmatic change of preference keys so the same hierarchy could be used to independently set different preference values for app and widget.
+* Tick intent (action MINUTE_TICK) so as to eliminate its unnecessary duplication.
+* Frequency of updating widget features by determining when to update such features based on the action of a received intent, especially preventing these features from being updated with every receipt of a MINUTE_TICK intent.
+
+### Deprecated
+
+* The back arrow on the about activity, to be replaced with an "Ok" or similarly labeled button in the style of the buttons now provided on settings activities.
+
+### Removed
+
+* The back arrow from the title bar of each settings activity.
+
+### Fixed
+
+* Issues with widget time display text size being incorrect for the width of the widget (3 or >=4 tiles wide) by adding setting of text size to be updated along with other widget features.
+
 ## [1.3.0] - 2024-11-18
 
 ### Added

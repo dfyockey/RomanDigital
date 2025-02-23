@@ -2,11 +2,13 @@ The RomanDigital app provides a clock of unique style that can be used to repurp
 
 For more personal use, the RomanDigital widget makes a distinctive addition to a device's Home screen.
 
-RomanDigital includes features expected in an ordinary digital clock app, such as:
+RomanDigital includes features expected in an ordinary digital clock, such as:
 * Choice of 12 or 24 hour format
 * Optional AM/PM indicator (uniquely integrated into the time display)
 * Option to keep display on when app is in the foreground
 * Display in either portrait or landscape
+
+The RomanDigital widget also includes variable background opacity that can be set from 0% to 100% by tens.
 
 For more detailed information including a FAQ list, please see the README.md file accompanying the RomanDigital source code.
 

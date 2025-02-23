@@ -41,8 +41,7 @@ RomanDigital includes several common clock app features, including:
 
 ![Landscape screenshot of phone showing system bars and RomanDigital app displaying time as IV:XIV with toolbar containing gear and info icons](/.github/images/Screenshot_20240809_161416_RomanDigital.png)
 
-RomanDigital further includes features believed to be unique over other
-known Roman digital clock Android apps, including:
+RomanDigital further includes:
 
 * Choice between centered display and display aligned with a fixed divider
 * AM/PM indicator integrated into the time display, such that the divider is displayed as "·" for AM and ":" for PM:
@@ -51,9 +50,13 @@ known Roman digital clock Android apps, including:
 
 * Option to only keep display on when device is charging
 * Adaptive display providing the largest possible monospace text for the device screen width (excepting a narrow margin)
-* A widget for providing a Roman digital clock display on a device's Home screen, where the display mirrors the settings of the app clock display:
+* A widget for providing a Roman digital clock display on a device's Home screen:
 
 ![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240910_174429_One_UI_Home_scaled.jpg)
+
+* Independent setting of widget background transparency, time zone, and other settings:
+
+![Portrait screenshot of a second phone Home screen showing four RomanDigital widgets with center-aligned Continental U.S. time zone times, time zone labels below times, and different transparency backgrounds](/.github/images/Screenshot_20250219_115336_One_UI_Home_scaled.jpg) ![Portrait screenshot of a third phone Home screen showing six RomanDigital widgets with fixed-divider-aligned international location time zone times and time zone labels above times](/.github/images/Screenshot_20250219_120411_One_UI_Home_scaled.jpg)
 
 * And... RomanDigital is Apache-2.0-licensed open source :slightly_smiling_face:
 
@@ -102,13 +105,13 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 
 ## FAQ (Foremost Anticipated Questions)
 
-> Q: "I just updated RomanDigital, and now the widget doesn't work! What happened?"
+> Q: "I just updated RomanDigital / updated Android / restarted my device, and now the widget doesn't work! What happened?"
 >
-> A: The widget "ticks" are scheduled in advance for technical reasons, and the widget that's part of the updated app may not receive "ticks" previously scheduled for the widget's earlier version. In such a case, it stops :slightly_frowning_face:  The workaround right now to get the widget going again is to "kickstart" it by simply opening and then closing a settings screen from either the widget or the app. I hope to make post-update widget restart either more elegant or entirely automatic at some point.
+> A: The widget "ticks" are scheduled in advance for technical reasons, and the widget that's part of the updated app may not receive "ticks" previously scheduled for the widget's earlier version. In such a case, it stops :slightly_frowning_face:  The workaround right now to get the widget going again is to "kickstart" it by simply opening and then canceling a settings screen from any widget or from the app. Not ideal, but at least it works. :roll_eyes:  My hope is to make such widget restarts either more elegant or entirely automatic at some point.
 
 > Q: "Why does the position of the divider change when 'Align to Divider' is selected? Isn't it supposed to stay in one place?"
 >
-> A: Yes, it's supposed to stay in one place, but the positioning was designed with the expectation of using a monospace font (shortsighted of me, I know). If you've changed a device setting effecting the font used, e.g. your system-wide font, to something that doesn't provide for monospace, then the calculated display position based on expected equal-width characters, and thus the divider position, will unfortunately be off.
+> A: Yes, it's supposed to stay in one place, but the positioning was designed with the expectation of using a monospace font. Shortsighted of me, I know, but implementation for variable width fonts would be _really hard_. If you've changed a device setting effecting the font used, e.g. your system-wide font, to something that doesn't provide for monospace, then the calculated display position based on expected equal-width characters, and thus the divider position, will unfortunately be off.
 
 > Q: "There's no alarm feature, so why the need to set exact alarms? What's this got to do with an accurate time display?"
 > 
@@ -116,11 +119,11 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 
 > Q: "Will there ever be an alarm feature?"
 > 
-> A: Maybe, but it's quite low on the priority list at this point.  
+> A: Maybe, but it's quite low on the priority list at this point.
 
 > Q: "Why can't I change the font/text color/background color/widget corner curvature/etc?"
 > 
-> A: Haven't gotten to them yet.
+> A: Background _transparency_ can now be changed, with background fully white/black for 100% opacity in light/dark mode. As for other stylistic changes, I haven't gotten to them yet. (_Spoiler Alert!_  Variable app text color is planned for version 2.1.0.)
 
 > Q: "Why no seconds?"
 > 
@@ -129,6 +132,10 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 > Q: "Why no date?"
 > 
 > A: Because it's just a simple clock. At least for now.
+
+> Q: "I want to change widget time zone labels to particular place names. Is there any way to do this?"
+> 
+> A: Not right now, but it should be added pretty soon since I want that option myself and it should be easy to implement.
 
 > Q: "Can I put the widget on my phone's lock screen?"
 >
@@ -147,7 +154,3 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 > Q: "Will it work on a watch or a TV?"
 >
 > A: It might — haven't tried — but if it did, it would likely result in a time display that's "unoptimized for the given device's screen size." In other words, "too large" or "too small".
-
-> Q: "Can the app and widgets be set to different time zones?"
->
-> A: Not at this point because only one global set of preferences is used. But providing independent preferences for the app and each widget is something I'd like to get to pretty soon.
