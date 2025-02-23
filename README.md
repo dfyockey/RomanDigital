@@ -123,7 +123,7 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 
 > Q: "Why can't I change the font/text color/background color/widget corner curvature/etc?"
 > 
-> A: Background _transparency_ can now be changed, with background fully white/black for 100% opacity in light/dark mode. As for other stylistic changes, I haven't gotten to them yet.
+> A: Background _transparency_ can now be changed, with background fully white/black for 100% opacity in light/dark mode. As for other stylistic changes, I haven't gotten to them yet. (_Spoiler Alert!_  Variable app text color is planned for version 2.1.0.)
 
 > Q: "Why no seconds?"
 > 
@@ -132,6 +132,10 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 > Q: "Why no date?"
 > 
 > A: Because it's just a simple clock. At least for now.
+
+> Q: "I want to change widget time zone labels to particular place names. Is there any way to do this?"
+> 
+> A: Not right now, but it should be added pretty soon since I want that option myself and it should be easy to implement.
 
 > Q: "Can I put the widget on my phone's lock screen?"
 >
