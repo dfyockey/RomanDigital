@@ -1,0 +1,20 @@
+Fixed:
+* Failure of widgets to restart at device boot.
+
+_In version 2.0.0_
+
+Added:
+* Independent configuration app and each widget.
+* Time zone selection for each widget.
+* Selectable widget layouts adding a time zone label.
+
+Changed:
+* Internal details to improve efficiency.
+
+Removed:
+* Settings screens' back arrow from title bar.
+
+Fixed:
+* Inappropriate widget time display text size for particular widget widths.
+
+_Update to v2.0.0 may require reset of settings for currently installed widgets._
