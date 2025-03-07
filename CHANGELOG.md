@@ -8,7 +8,13 @@ This project aims to adhere to [Semantic Versioning](https://server.org).
 
 Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
 
-## [2.0.0] - 2025-02-23
+## [2.0.1] - 2025-03-07
+
+### Fixed
+
+* Failure of widgets to restart at device boot.
+
+## [2.0.0] - 2025-02-20
 
 ### Added
 
@@ -35,7 +41,7 @@ Regarding project commits: As of 2024-08-23, this project aims to adhere to the 
 
 ### Fixed
 
-* Issues with widget time display text size being incorrect for the width of the widget (3 or >=4 tiles wide) by adding setting of text size to be updated along with other widget features.
+* Issues with widget time display text size being incorrect for the width of the widget (3 or >4 tiles wide) by adding setting of text size to be updated along with other widget features.
 
 ## [1.3.0] - 2024-11-18
 
