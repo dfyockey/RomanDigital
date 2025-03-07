@@ -97,7 +97,7 @@ https://gitlab.com/fdroid/fdroidserver/-/merge_requests/1336/diffs?commit_id=716
 
 ## Known Issues
 
-After updating the app, a widget that had previously been added to the home screen may stop updating. It may be 'kickstarted' by simply opening and then closing the widget's settings screen. For a bit more info on this, see the first FAQ question below.
+After building and updating the app in Android Studio, a widget that had previously been added to the home screen may stop updating. It may be 'kickstarted' by simply opening and then closing the widget's settings screen.
 
 The 'Align to Divider' option does not correctly align the display when a variable width font is used.
 
@@ -105,9 +105,9 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 
 ## FAQ (Foremost Anticipated Questions)
 
-> Q: "I just updated RomanDigital / updated Android / restarted my device, and now the widget doesn't work! What happened?"
+> Q: "I just updated RomanDigital / updated Android / restarted my device, and now the widget doesn't work! How do I get it running again?"
 >
-> A: The widget "ticks" are scheduled in advance for technical reasons, and the widget that's part of the updated app may not receive "ticks" previously scheduled for the widget's earlier version. In such a case, it stops :slightly_frowning_face:  The workaround right now to get the widget going again is to "kickstart" it by simply opening and then canceling a settings screen from any widget or from the app. Not ideal, but at least it works. :roll_eyes:  My hope is to make such widget restarts either more elegant or entirely automatic at some point.
+> A: As of version 2.0.1, this should only happen when running RomanDigital on a device through Android Studio. The workaround to get the widget going again is to "kickstart" it by simply opening and then canceling a settings screen from any widget or from the app.
 
 > Q: "Why does the position of the divider change when 'Align to Divider' is selected? Isn't it supposed to stay in one place?"
 >
