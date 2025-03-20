@@ -29,6 +29,7 @@
     style="@style/Widget.RomanDigitalClock.AppWidget.Container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/appwidget_bkgnd_100"
     android:theme="@style/Theme.RomanDigitalClock.AppWidgetContainer">
 
     <TextView
@@ -55,8 +56,8 @@
         android:shadowDy="3"
         android:shadowRadius="8"
         android:text="@string/appwidget_text"
-        android:textColor="@color/widgetText_LoOpacityBkgnd"
-        android:textSize="28sp"
+        android:textColor="@color/widgetText_HiOpacityBkgnd"
+        android:textSize="24sp"
         android:typeface="monospace"
         tools:ignore="TextContrastCheck" />
 </RelativeLayout>

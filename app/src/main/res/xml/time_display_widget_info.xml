@@ -42,6 +42,7 @@
     android:minHeight="40dp"
     android:minResizeHeight="40dp"
     android:updatePeriodMillis="86400000"
+    android:previewLayout="@layout/time_display_widget"
     android:previewImage="@drawable/romandigital_3x1_appwidget_preview"
     android:initialLayout="@layout/time_display_widget"
     android:description="@string/app_widget_description"
