@@ -29,7 +29,7 @@
     style="@style/Widget.RomanDigitalClock.AppWidget.Container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/appwidget_bkgnd_100"
+    android:background="@drawable/appwidget_bkgnd_50"
     android:theme="@style/Theme.RomanDigitalClock.AppWidgetContainer">
 
     <TextView
