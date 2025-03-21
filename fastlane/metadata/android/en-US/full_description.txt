@@ -8,7 +8,11 @@ RomanDigital includes features expected in an ordinary digital clock, such as:
 * Option to keep display on when app is in the foreground
 * Display in either portrait or landscape
 
-The RomanDigital widget also includes variable background opacity that can be set from 0% to 100% by tens.
+The RomanDigital also includes:
+* Independent configuration of app and widgets.
+* Variable widget background opacity that can be set from 0% to 100% by tens.
+* Selectable widget time zone.
+* Selectable widget layouts to add a time zone label.
 
 For more detailed information including a FAQ list, please see the README.md file accompanying the RomanDigital source code.
 
