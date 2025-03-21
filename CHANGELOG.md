@@ -8,6 +8,13 @@ This project aims to adhere to [Semantic Versioning](https://server.org).
 
 Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
 
+## [2.0.2] - 2025-03-21
+
+### Fixed
+
+* Failure of widget preferences being applied after a device's launcher has reset. Fixed by allowing update of preference-related features with every receipt of a MINUTE_TICK intent, negating a change in [2.0.0].
+* Accuracy of preview in the widget picker on device's running Android 12 or later.
+
 ## [2.0.1] - 2025-03-07
 
 ### Fixed

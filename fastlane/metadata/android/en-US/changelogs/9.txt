@@ -1,0 +1,10 @@
+Fixed:
+* Failure of widget preferences being applied after a device's launcher has reset.
+* Accuracy of preview in the widget picker on device's running Android 12 or later.
+
+<i>In version 2.0.1</i>
+
+Fixed:
+* Failure of widgets to restart at device boot.
+
+<i>Update from any v1.x.x to v2.x.x may require reset of settings for currently installed widgets.</i>
