@@ -94,7 +94,16 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         views.setTextViewText(R.id.appwidget_text, widgetText);
 
         // Update the widget background on instantiation, system boot, or change of settings
-        if (action.equals(SETTINGS_KICK)) {
+        /*
+            Unfortunately, all of the preferences need to be reset for call to updateTimeDisplay so
+            the widget is properly displayed following a complete reset of the device's launcher, at
+            least on Samsung devices running One UI 6.1 on Android 14, or TouchWiz on Android 5.1.
+
+            The check for SETTINGS_KICK is being kept to facilitate possible implementation of an
+            option to save power if it's determined by the user that their launcher doesn't cause
+            the issue observed with Samsung's launchers.
+        */
+//      if (action.equals(SETTINGS_KICK)) {
             int opacityValue = sp.getInt("seekbar_opacity" + appWidgetId, 0);
             views.setInt(R.id.appwidget_bkgnd, "setBackgroundResource", opacity[opacityValue]);
 
@@ -113,7 +122,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
             Bundle widgetOptions = AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId);
             int textsize = calcTimeDisplayTextSize(widgetOptions);
             views.setTextViewTextSize(R.id.appwidget_text, TypedValue.COMPLEX_UNIT_SP, textsize);
-        }
+//        }
 
         Intent intent;
 
