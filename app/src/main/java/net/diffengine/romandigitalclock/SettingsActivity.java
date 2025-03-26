@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -48,6 +49,7 @@ public class SettingsActivity extends AppCompatActivity {
                     .beginTransaction()
                     .setReorderingAllowed(true)
                     .add(R.id.app_settings_frame, new SettingsFragment(true, AppWidgetManager.INVALID_APPWIDGET_ID))
+                    .add(R.id.display_color_frame, new DisplayColorFragment())
                     .add(R.id.screen_settings_frame, new ScreenSettingsFragment())
                     .add(R.id.button_bar_2, new SettingsButtonBarFragment())
                     .commit();
@@ -180,6 +182,13 @@ public class SettingsActivity extends AppCompatActivity {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.screen_preferences, rootKey);
+        }
+    }
+
+    public static class DisplayColorFragment extends PreferenceFragmentCompat {
+        @Override
+        public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
+            setPreferencesFromResource(R.xml.display_color_prefs, rootKey);
         }
     }
 
