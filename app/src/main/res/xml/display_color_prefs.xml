@@ -33,7 +33,7 @@
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="Color"
-            app:defaultValue="#F44336"
+            app:defaultValue="F44336"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 </PreferenceScreen>

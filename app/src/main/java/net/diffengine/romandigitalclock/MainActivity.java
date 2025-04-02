@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
 
     static private String getHexFromColorRes(Context context, @ColorRes int id) {
         int colorInt = ContextCompat.getColor(context, id) & 0xFFFFFF;
-        return String.format("#%06X", colorInt);
+        return String.format("%06X", colorInt);
     }
 
     private void setDisplayColor(@ColorInt int color) {
@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setDisplayColorFromPref() {
         String defaultColorHexStr = getHexFromColorRes(this, R.color.clock_red);
-        String colorString = prefs.getString("hexcolor", defaultColorHexStr);
+        String colorString = "#" + prefs.getString("hexcolor", defaultColorHexStr);
         setDisplayColor(Color.parseColor(colorString));
     }
 
