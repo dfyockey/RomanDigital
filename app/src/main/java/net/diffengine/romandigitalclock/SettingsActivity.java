@@ -27,7 +27,9 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
@@ -186,9 +188,45 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public static class DisplayColorFragment extends PreferenceFragmentCompat {
+        Context prefManagerContext;
+        PreferenceCategory category;
+
         @Override
         public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
-            setPreferencesFromResource(R.xml.display_color_prefs, rootKey);
+            PreferenceManager manager = getPreferenceManager();
+            prefManagerContext = manager.getContext();
+            PreferenceScreen screen = manager.createPreferenceScreen(prefManagerContext);
+
+                category = new PreferenceCategory(prefManagerContext);
+                category.setIconSpaceReserved(false);
+                category.setTitle("Style");
+                screen.addPreference(category);
+
+                EditTextPreference pref = new EditTextPreference(prefManagerContext);
+                pref.setKey("hexcolor");
+                pref.setSingleLineTitle(true);
+                pref.setTitle("Color");
+                pref.setDefaultValue("F44336");
+                pref.setSummaryProvider(EditTextPreference.SimpleSummaryProvider.getInstance());
+                pref.setOnPreferenceChangeListener( new Preference.OnPreferenceChangeListener() {
+                        @Override
+                        public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
+                            String hexcolor = (String)newValue;
+                            if ( hexcolor == null || !hexcolor.matches("[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]") ) {
+                                new AlertDialog.Builder(prefManagerContext)
+                                        .setTitle("Invalid Color Value")
+                                        .setMessage("Value must be a six-character hexadecimal.")
+                                        .show();
+                                return false;
+                            }
+                            return true;
+                        }
+                    }
+                );
+
+                category.addPreference(pref);
+
+            setPreferenceScreen(screen);
         }
     }
 
