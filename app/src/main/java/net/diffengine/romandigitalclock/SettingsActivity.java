@@ -202,6 +202,17 @@ public class SettingsActivity extends AppCompatActivity {
                 category.setTitle("Style");
                 screen.addPreference(category);
 
+                Preference colorPref = new Preference(prefManagerContext);
+                colorPref.setTitle("Color Dialog");
+                colorPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(@NonNull Preference preference) {
+                        new ColorDialogFragment().show(getChildFragmentManager(), ColorDialogFragment.TAG);
+                        return false;
+                    }
+                });
+                category.addPreference(colorPref);
+
                 EditTextPreference pref = new EditTextPreference(prefManagerContext);
                 pref.setKey("hexcolor");
                 pref.setSingleLineTitle(true);
