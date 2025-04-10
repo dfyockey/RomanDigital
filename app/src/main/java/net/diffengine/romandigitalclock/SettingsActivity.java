@@ -23,6 +23,7 @@ package net.diffengine.romandigitalclock;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.EditTextPreference;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
+import androidx.preference.Preference.SummaryProvider;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -187,9 +189,22 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
+    public static boolean isHexColor(String hex) {
+        return !( hex == null || !hex.matches("[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]") );
+    }
+
     public static class DisplayColorFragment extends PreferenceFragmentCompat {
         Context prefManagerContext;
         PreferenceCategory category;
+
+//        SummaryProvider<Preference> ColorSummaryProvider = new SummaryProvider<Preference>() {
+//            @Nullable
+//            @Override
+//            public CharSequence provideSummary(@NonNull Preference preference) {
+//                SharedPreferences sp = preference.getSharedPreferences();
+//                return sp.getString("hexcolor", "------");
+//            }
+//        };
 
         @Override
         public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
@@ -204,38 +219,50 @@ public class SettingsActivity extends AppCompatActivity {
 
                 Preference colorPref = new Preference(prefManagerContext);
                 colorPref.setTitle("Color Dialog");
+                colorPref.setKey("hexcolor");
                 colorPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(@NonNull Preference preference) {
-                        new ColorDialogFragment().show(getChildFragmentManager(), ColorDialogFragment.TAG);
-                        return false;
+                        SharedPreferences sp = colorPref.getSharedPreferences();
+                        String key = colorPref.getKey();
+                        ColorDialogFragment colorDialogFragment = new ColorDialogFragment(colorPref, key);
+                        colorDialogFragment.show(getChildFragmentManager(), ColorDialogFragment.TAG);
+                        return true;
                     }
                 });
                 category.addPreference(colorPref);
 
-                EditTextPreference pref = new EditTextPreference(prefManagerContext);
-                pref.setKey("hexcolor");
-                pref.setSingleLineTitle(true);
-                pref.setTitle("Color");
-                pref.setDefaultValue("F44336");
-                pref.setSummaryProvider(EditTextPreference.SimpleSummaryProvider.getInstance());
-                pref.setOnPreferenceChangeListener( new Preference.OnPreferenceChangeListener() {
-                        @Override
-                        public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
-                            String hexcolor = (String)newValue;
-                            if ( hexcolor == null || !hexcolor.matches("[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]") ) {
-                                new AlertDialog.Builder(prefManagerContext)
-                                        .setTitle("Invalid Color Value")
-                                        .setMessage("Value must be a six-character hexadecimal.")
-                                        .show();
-                                return false;
-                            }
-                            return true;
-                        }
-                    }
-                );
+                SharedPreferences sp = colorPref.getSharedPreferences();
+                colorPref.setSummary(sp.getString("hexcolor", "F44336"));
 
-                category.addPreference(pref);
+//                ColorDialogPreference colorPref = new ColorDialogPreference(prefManagerContext);
+//                colorPref.setTitle("Color Dialog");
+//                category.addPreference(colorPref);
+
+//                EditTextPreference pref = new EditTextPreference(prefManagerContext);
+//                pref.setKey("hexcolor");
+//                pref.setSingleLineTitle(true);
+//                pref.setTitle("Color");
+//                pref.setDefaultValue("F44336");
+//                pref.setSummaryProvider(EditTextPreference.SimpleSummaryProvider.getInstance());
+//                pref.setOnPreferenceChangeListener( new Preference.OnPreferenceChangeListener() {
+//                        @Override
+//                        public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
+//                            String hexcolor = (String)newValue;
+//                            //if ( hexcolor == null || !hexcolor.matches("[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]") ) {
+//                            if (isHexColor(hexcolor)) {
+//                                new AlertDialog.Builder(prefManagerContext)
+//                                        .setTitle("Invalid Color Value")
+//                                        .setMessage("Value must be a six-character hexadecimal.")
+//                                        .show();
+//                                return false;
+//                            }
+//                            return true;
+//                        }
+//                    }
+//                );
+//
+//                category.addPreference(pref);
 
             setPreferenceScreen(screen);
         }

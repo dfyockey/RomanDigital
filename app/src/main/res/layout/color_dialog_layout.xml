@@ -5,15 +5,20 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/tvMessage"
+        android:id="@+id/tvPreview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
+        android:background="@android:color/black"
         android:paddingStart="4dp"
         android:paddingEnd="4dp"
-        android:text="Message"
+        android:text="XI:LV"
+        android:textAlignment="center"
+        android:textColor="@color/clock_red"
+        android:textSize="34sp"
+        android:typeface="monospace"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,6 +38,6 @@
         android:textAlignment="textStart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvMessage" />
+        app:layout_constraintTop_toBottomOf="@id/tvPreview" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
