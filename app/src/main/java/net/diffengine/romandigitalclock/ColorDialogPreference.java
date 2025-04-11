@@ -9,40 +9,40 @@ import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 
 public class ColorDialogPreference extends Preference {
-    FragmentManager fm;
+    FragmentManager m_fm;
 
-    public ColorDialogPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    @SuppressWarnings({"UnusedDeclaration"})
+    public ColorDialogPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes, FragmentManager fm) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        init();
+        init(fm);
     }
 
-    public ColorDialogPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    @SuppressWarnings({"UnusedDeclaration"})
+    public ColorDialogPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, FragmentManager fm) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(fm);
     }
 
-    public ColorDialogPreference(@NonNull Context context, @Nullable AttributeSet attrs) {
+    @SuppressWarnings({"UnusedDeclaration"})
+    public ColorDialogPreference(@NonNull Context context, @Nullable AttributeSet attrs, FragmentManager fm) {
         super(context, attrs);
-        init();
+        init(fm);
     }
 
-    public ColorDialogPreference(@NonNull Context context) {
+    public ColorDialogPreference(@NonNull Context context, FragmentManager fm) {
         super(context);
-        init();
+        init(fm);
     }
 
-    private void init() {
+    private void init(FragmentManager fm) {
+        m_fm = fm;
         setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(@NonNull Preference preference) {
                 ColorDialogFragment colorDialogFragment = new ColorDialogFragment(preference, getKey());
-                colorDialogFragment.show(fm, ColorDialogFragment.TAG);
+                colorDialogFragment.show(m_fm, ColorDialogFragment.TAG);
                 return true;
             }
         });
-    }
-
-    public void setFm(FragmentManager fm) {
-        this.fm = fm;
     }
 }
