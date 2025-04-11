@@ -223,7 +223,6 @@ public class SettingsActivity extends AppCompatActivity {
                 colorPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(@NonNull Preference preference) {
-                        SharedPreferences sp = colorPref.getSharedPreferences();
                         String key = colorPref.getKey();
                         ColorDialogFragment colorDialogFragment = new ColorDialogFragment(colorPref, key);
                         colorDialogFragment.show(getChildFragmentManager(), ColorDialogFragment.TAG);
@@ -235,9 +234,11 @@ public class SettingsActivity extends AppCompatActivity {
                 SharedPreferences sp = colorPref.getSharedPreferences();
                 colorPref.setSummary(sp.getString("hexcolor", "F44336"));
 
-//                ColorDialogPreference colorPref = new ColorDialogPreference(prefManagerContext);
-//                colorPref.setTitle("Color Dialog");
-//                category.addPreference(colorPref);
+                ColorDialogPreference colorPrefCls = new ColorDialogPreference(prefManagerContext);
+                colorPrefCls.setTitle("Color Dialog");
+                colorPrefCls.setKey("hexcolor");
+                colorPrefCls.setFm(getChildFragmentManager());
+                category.addPreference(colorPrefCls);
 
 //                EditTextPreference pref = new EditTextPreference(prefManagerContext);
 //                pref.setKey("hexcolor");
