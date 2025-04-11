@@ -17,8 +17,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.preference.Preference;
 
-import java.util.Objects;
-
 public class ColorDialogFragment extends DialogFragment {
 
     SharedPreferences sp;
@@ -89,7 +87,6 @@ public class ColorDialogFragment extends DialogFragment {
 
         builder.setView(v);
 
-        // Create the AlertDialog object and return it.
         AlertDialog alertDialog = builder.create();
         return alertDialog;
     }

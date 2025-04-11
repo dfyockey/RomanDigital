@@ -1,6 +1,7 @@
 package net.diffengine.romandigitalclock;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
@@ -8,8 +9,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 
-public class ColorDialogPreference extends Preference {
-    FragmentManager m_fm;
+public class ColorDialogPreference extends Preference implements Preference.OnPreferenceClickListener {
+    FragmentManager     m_fm;
+    SharedPreferences   m_sp;
 
     @SuppressWarnings({"UnusedDeclaration"})
     public ColorDialogPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes, FragmentManager fm) {
@@ -36,13 +38,23 @@ public class ColorDialogPreference extends Preference {
 
     private void init(FragmentManager fm) {
         m_fm = fm;
-        setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(@NonNull Preference preference) {
-                ColorDialogFragment colorDialogFragment = new ColorDialogFragment(preference, getKey());
-                colorDialogFragment.show(m_fm, ColorDialogFragment.TAG);
-                return true;
-            }
-        });
+        setOnPreferenceClickListener(this);
+    }
+
+    @Override
+    public void onAttached() {
+        super.onAttached();
+        m_sp = getSharedPreferences();
+        if (m_sp != null) {
+            String colorhexcode = m_sp.getString(getKey(), "");
+            setSummary(colorhexcode);
+        }
+    }
+
+    @Override
+    public boolean onPreferenceClick(@NonNull Preference preference) {
+        ColorDialogFragment colorDialogFragment = new ColorDialogFragment(preference, getKey());
+        colorDialogFragment.show(m_fm, ColorDialogFragment.TAG);
+        return true;
     }
 }
