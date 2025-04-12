@@ -203,27 +203,10 @@ public class SettingsActivity extends AppCompatActivity {
                 category.setTitle("Style");
                 screen.addPreference(category);
 
-                Preference colorPref = new Preference(prefManagerContext);
+                ColorDialogPreference colorPref = new ColorDialogPreference(prefManagerContext, getChildFragmentManager());
                 colorPref.setTitle("Color Dialog");
                 colorPref.setKey("hexcolor");
-                colorPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                    @Override
-                    public boolean onPreferenceClick(@NonNull Preference preference) {
-                        String key = colorPref.getKey();
-                        ColorDialogFragment colorDialogFragment = new ColorDialogFragment(colorPref, key);
-                        colorDialogFragment.show(getChildFragmentManager(), ColorDialogFragment.TAG);
-                        return true;
-                    }
-                });
                 category.addPreference(colorPref);
-
-                SharedPreferences sp = colorPref.getSharedPreferences();
-                colorPref.setSummary(sp.getString("hexcolor", "F44336"));
-
-                ColorDialogPreference colorPrefCls = new ColorDialogPreference(prefManagerContext, getChildFragmentManager());
-                colorPrefCls.setTitle("Color Dialog");
-                colorPrefCls.setKey("hexcolor");
-                category.addPreference(colorPrefCls);
 
             setPreferenceScreen(screen);
         }
