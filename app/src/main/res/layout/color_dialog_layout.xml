@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:customview="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -40,4 +42,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvPreview" />
 
+    <!--/////////////////////////////////////////////////////////-->
+    <!-- no, No, NO! You can't put a Preference into a Layout!!! -->
+    <!--/////////////////////////////////////////////////////////
+    <net.diffengine.romandigitalclock.ColorSlideBarPreference
+        android:id="@+id/sbRed"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/etHexcode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    -->
+
+    <!--
+    <net.diffengine.romandigitalclock.ColorSeekBarView
+        android:id="@+id/sbRed"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        customview:label="R"
+        customview:color="@color/clock_red"
+        app:layout_constraintTop_toBottomOf="@id/etHexcode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    -->
+
+    <net.diffengine.romandigitalclock.ColorSeekBarView
+        android:id="@+id/sbRed"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintTop_toBottomOf="@id/etHexcode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!--
+    <SeekBar
+        android:id="@+id/sbRed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/etHexcode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    -->
 </androidx.constraintlayout.widget.ConstraintLayout>
