@@ -28,9 +28,10 @@
         <attr name="appWidgetRadius" format="dimension" />
     </declare-styleable>
 
-<!--    <declare-styleable name="ColorSeekBarView">-->
-<!--        <attr name="barLabel" format="string" />-->
-<!--        <attr name="barColor" format="reference" />-->
-<!--    </declare-styleable>-->
+    <declare-styleable name="ColorSeekBarView">
+        <attr name="barLabel" format="string" />
+        <attr name="barColor" format="reference" />
+        <attr name="barBackgroundColor" format="reference" />
+    </declare-styleable>
 
 </resources>

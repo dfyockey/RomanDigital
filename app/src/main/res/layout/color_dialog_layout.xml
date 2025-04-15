@@ -94,6 +94,9 @@
         android:id="@+id/sbRed"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        customview:barLabel="R"
+        customview:barColor="@android:color/holo_red_dark"
+        customview:barBackgroundColor="@color/color_seekbar_background"
         app:layout_constraintTop_toBottomOf="@id/etHexcode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
