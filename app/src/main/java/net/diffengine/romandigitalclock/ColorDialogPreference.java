@@ -94,24 +94,30 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             // Use the Builder class for convenient dialog construction.
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Color")
-                    .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            // User okays the selected color.
-                            String colorText = etHexcode.getText().toString();
-                            if (SettingsActivity.isHexColor(colorText)) {
-                                sp.edit().putString(key, colorText).commit();
-                                pref.setSummary(colorText);
-                                dialog.dismiss();
-                            } else {
-                                dialog.cancel();
-                            }
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
+                .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // User okays the selected color.
+                        String colorText = etHexcode.getText().toString();
+                        if (SettingsActivity.isHexColor(colorText)) {
+                            sp.edit().putString(key, colorText).commit();
+                            pref.setSummary(colorText);
                             dialog.dismiss();
+                        } else {
+                            // Placing this here instead of in an onCancel method prevents it
+                            // from from firing if the user taps outside the dialog to cancel.
+                            new AlertDialog.Builder(getActivity())
+                                    .setTitle("Invalid Color Value")
+                                    .setMessage("Value must be a six-character hexadecimal.")
+                                    .show();
+                            dialog.cancel();
                         }
-                    });
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
 
             // Customize Dialog View //
             String hexcolor = sp.getString(key, "FFFFFF");
@@ -120,7 +126,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             etHexcode.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                    // NOP
                 }
 
                 @Override
@@ -134,7 +140,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
 
                 @Override
                 public void afterTextChanged(Editable s) {
-
+                    // NOP
                 }
             });
             // End of Dialog View Customization //
@@ -143,16 +149,6 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
 
             AlertDialog alertDialog = builder.create();
             return alertDialog;
-        }
-
-        @Override
-        public void onCancel(@NonNull DialogInterface dialog) {
-            super.onCancel(dialog);
-
-            new AlertDialog.Builder(getActivity())
-                    .setTitle("Invalid Color Value")
-                    .setMessage("Value must be a six-character hexadecimal.")
-                    .show();
         }
 
         public String TAG = "ColorDialogFragment";
