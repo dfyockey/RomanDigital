@@ -204,7 +204,7 @@ public class SettingsActivity extends AppCompatActivity {
                 screen.addPreference(category);
 
                 ColorDialogPreference colorPref = new ColorDialogPreference(prefManagerContext, getChildFragmentManager());
-                colorPref.setTitle("Color Dialog");
+                colorPref.setTitle("Time Color");
                 colorPref.setKey("hexcolor");
                 category.addPreference(colorPref);
 

@@ -94,12 +94,41 @@
         android:id="@+id/sbRed"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        customview:barLabel="R"
-        customview:barColor="@android:color/holo_red_dark"
-        customview:barBackgroundColor="@color/color_seekbar_background"
-        app:layout_constraintTop_toBottomOf="@id/etHexcode"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etHexcode"
+        customview:barBackgroundColor="@color/color_seekbar_background"
+        customview:barColor="@android:color/holo_red_dark"
+        customview:barLabel="R" />
+
+    <net.diffengine.romandigitalclock.ColorSeekBarView
+        android:id="@+id/sbGreen"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sbRed"
+        customview:barBackgroundColor="@color/color_seekbar_background"
+        customview:barColor="@android:color/holo_green_dark"
+        customview:barLabel="G" />
+
+    <net.diffengine.romandigitalclock.ColorSeekBarView
+        android:id="@+id/sbBlue"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sbGreen"
+        customview:barBackgroundColor="@color/color_seekbar_background"
+        customview:barColor="@android:color/holo_blue_dark"
+        customview:barLabel="B" />
 
     <!--
     <SeekBar

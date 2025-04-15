@@ -113,7 +113,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
 
             // Use the Builder class for convenient dialog construction.
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setTitle("Color")
+            builder.setTitle(pref.getTitle())
                 .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User okays the selected color.
