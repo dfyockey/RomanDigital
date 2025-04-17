@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -70,7 +71,7 @@ public class ColorSeekBarView extends LinearLayout {
             TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ColorSeekBarView, 0, 0);
 
             try {
-                mtext = a.getText(R.styleable.ColorSeekBarView_barLabel);
+                mtext  = a.getText(R.styleable.ColorSeekBarView_barLabel);
                 mcolor = a.getColorStateList(R.styleable.ColorSeekBarView_barColor);
                 mbkgnd = a.getColorStateList(R.styleable.ColorSeekBarView_barBackgroundColor);
             } finally {
@@ -90,6 +91,10 @@ public class ColorSeekBarView extends LinearLayout {
         barLabel.setText(mtext);
 
         barColor = findViewById(R.id.colorBar);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            barColor.setMin(0);
+        }
+        barColor.setMax(255);
         barColor.setProgressDrawable(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.seekbar_track_material, null));
         barColor.setProgressBackgroundTintMode(PorterDuff.Mode.SRC_IN);
         barColor.setProgressBackgroundTintList(mbkgnd);
@@ -97,5 +102,14 @@ public class ColorSeekBarView extends LinearLayout {
         barColor.setProgressTintList(mcolor);
         barColor.setThumbTintMode(PorterDuff.Mode.SRC_IN);
         barColor.setThumbTintList(mcolor);
+    }
+
+    public void setProgress(int progress) {
+        barColor.setProgress(progress);
+    }
+    public int  getProgress()             { return barColor.getProgress();  }
+
+    public void setOnColorSeekBarChangeListener(SeekBar.OnSeekBarChangeListener listener) {
+        barColor.setOnSeekBarChangeListener(listener);
     }
 }

@@ -32,6 +32,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -103,6 +104,56 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             this.key = key;
         }
 
+
+        ///// onCreateDialog Support Methods /////////////////////////////////////////////////
+        private void setProgress(ColorSeekBarView colorBar, String hexcolor, int startIndex, int endIndex) {
+            colorBar.setProgress(Integer.valueOf(hexcolor.substring(startIndex,endIndex), 16));
+        }
+
+        private void setProgress(ColorSeekBarView[] colorBars, String hexcolor) {
+            if (SettingsActivity.isHexColor(hexcolor)) {
+                int i = 0;
+                for (ColorSeekBarView colorbar:colorBars) {
+                    setProgress(colorbar, hexcolor, i, (i+2));
+                    i += 2;
+                }
+            }
+        }
+
+//        enum ColorID {RED, GRN, BLU}
+
+        private void setOnColorSeekBarChangeListener(ColorSeekBarView colorBar, ColorSeekBarView[] csbv, EditText et) {
+            colorBar.setOnColorSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                final ColorSeekBarView[] colorBars = csbv;
+                final EditText etHexcolor = et;
+
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (fromUser) {
+                        String hexcolor = "";
+                        for (ColorSeekBarView colorBar:colorBars) {
+                            int p = colorBar.getProgress();
+
+                            String pHex = Integer.toHexString(p).toUpperCase();
+                            if (p < 16) {
+                                pHex = "0" + pHex;
+                            }
+
+                            hexcolor = hexcolor.concat(pHex);
+                        }
+                        etHexcolor.setText(hexcolor);
+                    }
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) { /* NOP */ }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) { /* NOP */ }
+            });
+        }
+        ///// End of onCreateDialog Support Methods //////////////////////////////////////////
+
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -110,6 +161,10 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             View v = layoutInflater.inflate(R.layout.color_dialog_layout, null);
             EditText etHexcode = v.findViewById(R.id.etHexcode);
             TextView tvPreview = v.findViewById(R.id.tvPreview);
+            ColorSeekBarView csvRed = v.findViewById(R.id.sbRed);
+            ColorSeekBarView csvGrn = v.findViewById(R.id.sbGreen);
+            ColorSeekBarView csvBlu = v.findViewById(R.id.sbBlue);
+            ColorSeekBarView[] colorSeekBarViews = {csvRed, csvGrn, csvBlu};
 
             // Use the Builder class for convenient dialog construction.
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -142,26 +197,31 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             // Customize Dialog View //
             String hexcolor = sp.getString(key, "FFFFFF");
             etHexcode.setText(hexcolor);
+            setProgress(colorSeekBarViews, hexcolor);
+
             tvPreview.setTextColor(Color.parseColor("#" + hexcolor));
+
+            setOnColorSeekBarChangeListener(csvRed, colorSeekBarViews, etHexcode);
+            setOnColorSeekBarChangeListener(csvGrn, colorSeekBarViews, etHexcode);
+            setOnColorSeekBarChangeListener(csvBlu, colorSeekBarViews, etHexcode);
+
             etHexcode.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    // NOP
-                }
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) { /* NOP */ }
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (SettingsActivity.isHexColor(s.toString())) {
+                    String hexcolor = s.toString();
+                    if (SettingsActivity.isHexColor(hexcolor)) {
                         tvPreview.setTextColor(Color.parseColor("#" + s));
+                        setProgress(colorSeekBarViews, hexcolor);
                     } else {
                         tvPreview.setTextColor(getResources().getColor(android.R.color.black));
                     }
                 }
 
                 @Override
-                public void afterTextChanged(Editable s) {
-                    // NOP
-                }
+                public void afterTextChanged(Editable s) { /* NOP */ }
             });
             // End of Dialog View Customization //
 
