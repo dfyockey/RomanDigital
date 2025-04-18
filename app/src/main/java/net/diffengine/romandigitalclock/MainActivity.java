@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private final String UPDATE_DISPLAY = "net.diffengine.romandigitalclock.UPDATE_DISPLAY";
 
     // Aliases for option keys
-    private static final String
+    public static final String
             ampm = "switch_format",
             alignment = "switch_alignment",
             ampmSeparator = "switch_separator",

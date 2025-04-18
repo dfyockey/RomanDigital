@@ -20,15 +20,18 @@
 
 package net.diffengine.romandigitalclock;
 
+import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
@@ -41,16 +44,20 @@ import java.util.TimeZone;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    DisplayColorFragment displayColorFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
         if (savedInstanceState == null) {
-            getSupportFragmentManager()
+            displayColorFragment = new DisplayColorFragment();
+            FragmentManager supportFragmentManager = getSupportFragmentManager();
+            supportFragmentManager
                     .beginTransaction()
                     .setReorderingAllowed(true)
                     .add(R.id.app_settings_frame, new SettingsFragment(true, AppWidgetManager.INVALID_APPWIDGET_ID))
-                    .add(R.id.display_color_frame, new DisplayColorFragment())
+                    .add(R.id.display_color_frame, displayColorFragment)
                     .add(R.id.screen_settings_frame, new ScreenSettingsFragment())
                     .add(R.id.button_bar_2, new SettingsButtonBarFragment())
                     .commit();
@@ -210,7 +217,29 @@ public class SettingsActivity extends AppCompatActivity {
 
             setPreferenceScreen(screen);
         }
+
+        public void updateDialogTimeDisplayPreview() {
+            ColorDialogPreference colorDialogPreference = category.findPreference("hexcolor"); //colorPref; //DisplayColorFragment.getColorDialogPreference();
+            ColorDialogPreference.ColorDialogFragment colorDialogFragment = colorDialogPreference.getColorDialogFragment();
+
+            if (colorDialogFragment != null) {
+                Dialog dialog = colorDialogFragment.getDialog();
+                if (dialog != null && dialog.isShowing()) {
+                    colorDialogFragment.updatePreviewTime();
+                }
+            }
+        }
     }
+
+    private class BroadcastReceiverEx extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            displayColorFragment.updateDialogTimeDisplayPreview();
+        }
+    }
+
+    // Receiver instance to be registered as exported for receiving system-broadcast ACTION_TIME_TICK intent
+    private final BroadcastReceiverEx broadcastReceiver = new BroadcastReceiverEx();
 
     @Override
     protected void onPause() {
@@ -223,5 +252,14 @@ public class SettingsActivity extends AppCompatActivity {
         kickstart.setAction(TimeDisplayWidget.MINUTE_TICK);
         kickstart.setPackage(this.getPackageName());
         this.sendBroadcast(kickstart);
+
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
     }
 }

@@ -20,6 +20,10 @@
 
 package net.diffengine.romandigitalclock;
 
+import static net.diffengine.romandigitalclock.MainActivity.alignment;
+import static net.diffengine.romandigitalclock.MainActivity.ampm;
+import static net.diffengine.romandigitalclock.MainActivity.ampmSeparator;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -41,6 +45,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
+
+import java.util.TimeZone;
 
 public class ColorDialogPreference extends Preference implements Preference.OnPreferenceClickListener {
     FragmentManager     m_fm;
@@ -84,9 +90,14 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         }
     }
 
+    ColorDialogFragment colorDialogFragment;
+    public ColorDialogFragment getColorDialogFragment() {
+        return colorDialogFragment;
+    }
+
     @Override
     public boolean onPreferenceClick(@NonNull Preference preference) {
-        ColorDialogFragment colorDialogFragment = new ColorDialogFragment(preference, getKey());
+        colorDialogFragment = new ColorDialogFragment(preference, getKey());
         colorDialogFragment.show(m_fm, colorDialogFragment.TAG);
         return true;
     }
@@ -97,6 +108,8 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         SharedPreferences sp;
         Preference pref;
         String key;
+        private AlertDialog alertDialog;
+        private TextView tvPreview;
 
         public ColorDialogFragment(Preference pref, String key) {
             this.sp = pref.getSharedPreferences();
@@ -104,6 +117,9 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             this.key = key;
         }
 
+        public Dialog getDialog() {
+            return alertDialog;
+        }
 
         ///// onCreateDialog Support Methods /////////////////////////////////////////////////
         private void setProgress(ColorSeekBarView colorBar, String hexcolor, int startIndex, int endIndex) {
@@ -119,8 +135,6 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
                 }
             }
         }
-
-//        enum ColorID {RED, GRN, BLU}
 
         private void setOnColorSeekBarChangeListener(ColorSeekBarView colorBar, ColorSeekBarView[] csbv, EditText et) {
             colorBar.setOnColorSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -160,7 +174,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             LayoutInflater layoutInflater = getLayoutInflater();
             View v = layoutInflater.inflate(R.layout.color_dialog_layout, null);
             EditText etHexcode = v.findViewById(R.id.etHexcode);
-            TextView tvPreview = v.findViewById(R.id.tvPreview);
+            tvPreview = v.findViewById(R.id.tvPreview);
             ColorSeekBarView csvRed = v.findViewById(R.id.sbRed);
             ColorSeekBarView csvGrn = v.findViewById(R.id.sbGreen);
             ColorSeekBarView csvBlu = v.findViewById(R.id.sbBlue);
@@ -201,6 +215,9 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
 
             tvPreview.setTextColor(Color.parseColor("#" + hexcolor));
 
+            // Update the preview at dialog creation
+            updatePreviewTime();
+
             setOnColorSeekBarChangeListener(csvRed, colorSeekBarViews, etHexcode);
             setOnColorSeekBarChangeListener(csvGrn, colorSeekBarViews, etHexcode);
             setOnColorSeekBarChangeListener(csvBlu, colorSeekBarViews, etHexcode);
@@ -227,8 +244,17 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
 
             builder.setView(v);
 
-            AlertDialog alertDialog = builder.create();
+            alertDialog = builder.create();
             return alertDialog;
+        }
+
+        private boolean getPref(String key) {
+            return sp.getBoolean(key, false);
+        }
+
+        public void updatePreviewTime() {
+            String currentTime = romantime.now( !getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID() );
+            tvPreview.setText(currentTime);
         }
 
         public String TAG = "ColorDialogFragment";
