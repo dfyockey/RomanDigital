@@ -45,6 +45,21 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     static AlarmManager alarmManager;
     static PendingIntent alarmPendingIntent;
 
+    static final float ONE_TENTH_OF_OPACITY_RANGE = 25.5f;
+//    static int[] opacity = {
+//            (R.color.opacity_0),
+//            (R.color.opacity_10),
+//            (R.color.opacity_20),
+//            (R.color.opacity_30),
+//            (R.color.opacity_40),
+//            (R.color.opacity_50),
+//            (R.color.opacity_60),
+//            (R.color.opacity_70),
+//            (R.color.opacity_80),
+//            (R.color.opacity_90),
+//            (R.color.opacity_100),
+//    };
+
     static int[] opacity = {
             (R.drawable.appwidget_bkgnd_0),
             (R.drawable.appwidget_bkgnd_10),
@@ -90,6 +105,14 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
         CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzid);
+
+        if (layoutId == R.layout.time_display_widget) {
+            if (ampmSeparator) {
+                layoutId = R.layout.time_display_widget;
+            } else {
+                layoutId = R.layout.time_display_widget_2;
+            }
+        }
         RemoteViews views = new RemoteViews(context.getPackageName(), layoutId);
         views.setTextViewText(R.id.appwidget_text, widgetText);
 
@@ -104,11 +127,16 @@ public class TimeDisplayWidget extends AppWidgetProvider {
             the issue observed with Samsung's launchers.
         */
 //      if (action.equals(SETTINGS_KICK)) {
-            int opacityValue = sp.getInt("seekbar_opacity" + appWidgetId, 0);
-            views.setInt(R.id.appwidget_bkgnd, "setBackgroundResource", opacity[opacityValue]);
+            int opacityIndex = sp.getInt("seekbar_opacity" + appWidgetId, 0);
+//            int bkgndColor   = getColor(context, opacity[opacityIndex]);
+//            int opacityValue = (int)(opacityIndex * ONE_TENTH_OF_OPACITY_RANGE) * 0x1000000;
+//            int bkgndColor   = opacityValue + getColor(context, R.color.opacity_0);
+
+//            views.setInt(R.id.appwidget_bkgnd, "setBackgroundColor", getColor(context, opacity[opacityIndex]));
+            views.setInt(R.id.appwidget_bkgnd, "setBackgroundResource", opacity[opacityIndex]);
 
             int widget_text_color_resource;
-            if (opacityValue < 5) {
+            if (opacityIndex < 5) {
                 widget_text_color_resource = R.color.widgetText_LoOpacityBkgnd;
             } else {
                 widget_text_color_resource = R.color.widgetText_HiOpacityBkgnd;

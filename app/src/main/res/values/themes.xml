@@ -37,13 +37,21 @@
     <style name="Theme.RomanDigitalClock.AppWidgetContainerParent"
         parent="@android:style/Theme.DeviceDefault">
         <!-- Radius of the outer bound of widgets to make the rounded corners -->
-        <item name="appWidgetRadius">8dp</item>
+<!--        <item name="appWidgetRadius">8dp</item>-->
         <item name="appWidgetInnerRadius">0dp</item>
     </style>
 
     <style name="Theme.RomanDigitalClock.AppWidgetContainer"
         parent="Theme.RomanDigitalClock.AppWidgetContainerParent">
         <!-- Apply padding to avoid the content of the widget colliding with the rounded corners -->
+        <item name="appWidgetRadius">16dp</item>
+        <item name="appWidgetPadding">0dp</item>
+    </style>
+
+    <style name="Theme.RomanDigitalClock.AppWidgetContainer2"
+        parent="Theme.RomanDigitalClock.AppWidgetContainerParent">
+        <!-- Apply padding to avoid the content of the widget colliding with the rounded corners -->
+        <item name="appWidgetRadius">64dp</item>
         <item name="appWidgetPadding">0dp</item>
     </style>
 </resources>
