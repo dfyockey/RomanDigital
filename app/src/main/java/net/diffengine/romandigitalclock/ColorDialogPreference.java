@@ -51,6 +51,7 @@ import java.util.TimeZone;
 public class ColorDialogPreference extends Preference implements Preference.OnPreferenceClickListener {
     FragmentManager     m_fm;
     SharedPreferences   m_sp;
+    String hexcolor;
 
     @SuppressWarnings({"UnusedDeclaration"})
     public ColorDialogPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes, FragmentManager fm) {
@@ -85,8 +86,13 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         super.onAttached();
         m_sp = getSharedPreferences();
         if (m_sp != null) {
-            String colorhexcode = m_sp.getString(getKey(), "");
-            setSummary(colorhexcode);
+            // Validate saved color value, using default color if invalid
+            String defaultColorHexStr = MainActivity.getHexFromColorRes(getContext(), R.color.clock_red);
+            hexcolor = m_sp.getString(getKey(), defaultColorHexStr);
+            if (!SettingsActivity.isHexColor(hexcolor)) {
+                hexcolor = defaultColorHexStr;
+            }
+            setSummary(hexcolor);
         }
     }
 
@@ -97,7 +103,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
 
     @Override
     public boolean onPreferenceClick(@NonNull Preference preference) {
-        colorDialogFragment = new ColorDialogFragment(preference, getKey());
+        colorDialogFragment = new ColorDialogFragment(preference, getKey(), this);
         colorDialogFragment.show(m_fm, colorDialogFragment.TAG);
         return true;
     }
@@ -108,13 +114,15 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         SharedPreferences sp;
         Preference pref;
         String key;
+        ColorDialogPreference outerClass;
         private AlertDialog alertDialog;
         private TextView tvPreview;
 
-        public ColorDialogFragment(Preference pref, String key) {
+        public ColorDialogFragment(Preference pref, String key, ColorDialogPreference outerClass) {
             this.sp = pref.getSharedPreferences();
             this.pref = pref;
             this.key = key;
+            this.outerClass = outerClass;
         }
 
         public Dialog getDialog() {
@@ -209,11 +217,10 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
                 });
 
             // Customize Dialog View //
-            String hexcolor = sp.getString(key, "FFFFFF");
-            etHexcode.setText(hexcolor);
-            setProgress(colorSeekBarViews, hexcolor);
+            etHexcode.setText(outerClass.hexcolor);
+            setProgress(colorSeekBarViews, outerClass.hexcolor);
 
-            tvPreview.setTextColor(Color.parseColor("#" + hexcolor));
+            tvPreview.setTextColor(Color.parseColor("#" + outerClass.hexcolor));
 
             // Update the preview at dialog creation
             updatePreviewTime();
