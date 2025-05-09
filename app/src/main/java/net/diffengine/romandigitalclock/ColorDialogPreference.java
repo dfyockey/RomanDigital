@@ -88,7 +88,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         if (m_sp != null) {
             // Validate saved color value, using default color if invalid
             hexcolor = MainActivity.getHexColor(getContext(), m_sp, getKey());
-            setSummary(hexcolor);
+            setSummary("#" + hexcolor);
         }
     }
 
@@ -193,7 +193,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
                         String colorText = etHexcode.getText().toString();
                         if (SettingsActivity.isHexColor(colorText)) {
                             sp.edit().putString(key, colorText).commit();
-                            pref.setSummary(colorText);
+                            pref.setSummary("#" + colorText);
                             dialog.dismiss();
                         } else {
                             // Placing this here instead of in an onCancel method prevents it
