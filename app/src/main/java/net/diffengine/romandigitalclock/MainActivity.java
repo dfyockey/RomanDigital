@@ -242,14 +242,21 @@ public class MainActivity extends AppCompatActivity {
         textView.setTextColor(color);
     }
 
-    private void setDisplayColorFromPref() {
-        // Validate saved color value, using default color if invalid
-        String defaultColorHexStr = getHexFromColorRes(this, R.color.clock_red);
-        String hexcolor = prefs.getString("hexcolor", defaultColorHexStr);
+    public static String getHexColor(Context context, SharedPreferences sp, String key) {
+        String defaultColorHexStr = getHexFromColorRes(context, R.color.clock_red);
+        String hexcolor = sp.getString(key, defaultColorHexStr);
         if (!SettingsActivity.isHexColor(hexcolor)) {
             hexcolor = defaultColorHexStr;
         }
-        setDisplayColor(Color.parseColor("#" + hexcolor));
+        return hexcolor;
+    }
+
+    private void setDisplayColorFromPref() {
+        // Validate saved color value, using default color if invalid
+        if(prefs != null) {
+            String hexcolor = getHexColor(this, prefs, "hexcolor");
+            setDisplayColor(Color.parseColor("#" + hexcolor));
+        }
     }
 
     @Override

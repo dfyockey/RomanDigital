@@ -87,11 +87,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         m_sp = getSharedPreferences();
         if (m_sp != null) {
             // Validate saved color value, using default color if invalid
-            String defaultColorHexStr = MainActivity.getHexFromColorRes(getContext(), R.color.clock_red);
-            hexcolor = m_sp.getString(getKey(), defaultColorHexStr);
-            if (!SettingsActivity.isHexColor(hexcolor)) {
-                hexcolor = defaultColorHexStr;
-            }
+            hexcolor = MainActivity.getHexColor(getContext(), m_sp, getKey());
             setSummary(hexcolor);
         }
     }
