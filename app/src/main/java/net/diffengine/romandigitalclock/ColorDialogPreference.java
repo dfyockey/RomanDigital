@@ -88,6 +88,11 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             String colorhexcode = m_sp.getString(getKey(), "");
             setSummary(colorhexcode);
         }
+
+        colorDialogFragment = (ColorDialogFragment) m_fm.findFragmentByTag(ColorDialogFragment.TAG);
+        if(colorDialogFragment != null) {
+            colorDialogFragment.setPrefs(this);
+        }
     }
 
     ColorDialogFragment colorDialogFragment;
@@ -97,8 +102,9 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
 
     @Override
     public boolean onPreferenceClick(@NonNull Preference preference) {
-        colorDialogFragment = new ColorDialogFragment(preference, getKey());
-        colorDialogFragment.show(m_fm, colorDialogFragment.TAG);
+        // Wrapping the Summary in a String prevents the argument from being null
+        colorDialogFragment = new ColorDialogFragment(preference);
+        colorDialogFragment.show(m_fm, ColorDialogFragment.TAG);
         return true;
     }
 
@@ -108,13 +114,24 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         SharedPreferences sp;
         Preference pref;
         String key;
+        String hexcolor;
         private AlertDialog alertDialog;
         private TextView tvPreview;
 
-        public ColorDialogFragment(Preference pref, String key) {
-            this.sp = pref.getSharedPreferences();
-            this.pref = pref;
-            this.key = key;
+        public ColorDialogFragment() {
+            /* NOP */
+        }
+
+        public ColorDialogFragment(Preference preference) {
+            setPrefs(preference);
+            hexcolor = String.valueOf(pref.getSummary());
+            key = pref.getKey();
+        }
+
+        // Call from the associated preference's onAttach method to reset pref after a configuration change
+        private void setPrefs(Preference preference) {
+            pref = preference;
+            sp = pref.getSharedPreferences();
         }
 
         public Dialog getDialog() {
@@ -171,6 +188,12 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Restore Instance State
+            if (savedInstanceState != null) {
+                key = savedInstanceState.getString("key", "");
+                hexcolor = savedInstanceState.getString("hexcolor", "FFFFFF");
+            }
+
             LayoutInflater layoutInflater = getLayoutInflater();
             View v = layoutInflater.inflate(R.layout.color_dialog_layout, null);
             EditText etHexcode = v.findViewById(R.id.etHexcode);
@@ -209,7 +232,6 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
                 });
 
             // Customize Dialog View //
-            String hexcolor = sp.getString(key, "FFFFFF");
             etHexcode.setText(hexcolor);
             setProgress(colorSeekBarViews, hexcolor);
 
@@ -253,11 +275,20 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         }
 
         public void updatePreviewTime() {
-            String currentTime = romantime.now( !getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID() );
-            tvPreview.setText(currentTime);
+            if (sp != null) {
+                String currentTime = romantime.now(!getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID());
+                tvPreview.setText(currentTime);
+            }
         }
 
-        public String TAG = "ColorDialogFragment";
+        @Override
+        public void onSaveInstanceState(@NonNull Bundle outState) {
+            super.onSaveInstanceState(outState);
+            outState.putString("key", key);
+            outState.putString("hexcolor", hexcolor);
+        }
+
+        public static String TAG = "ColorDialogFragment";
     }
     //////////////////////////////////////////////////////////////////////////////////////////
 }
