@@ -51,6 +51,7 @@ import java.util.TimeZone;
 public class ColorDialogPreference extends Preference implements Preference.OnPreferenceClickListener {
     FragmentManager     m_fm;
     SharedPreferences   m_sp;
+    ColorDialogFragment colorDialogFragment;
 
     @SuppressWarnings({"UnusedDeclaration"})
     public ColorDialogPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes, FragmentManager fm) {
@@ -80,6 +81,10 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         setOnPreferenceClickListener(this);
     }
 
+    public ColorDialogFragment getColorDialogFragment() {
+        return colorDialogFragment;
+    }
+
     @Override
     public void onAttached() {
         super.onAttached();
@@ -93,11 +98,6 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         if(colorDialogFragment != null) {
             colorDialogFragment.setPrefs(this);
         }
-    }
-
-    ColorDialogFragment colorDialogFragment;
-    public ColorDialogFragment getColorDialogFragment() {
-        return colorDialogFragment;
     }
 
     @Override
@@ -115,6 +115,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         Preference pref;
         String key;
         String hexcolor;
+        ColorSeekBarView[] colorSeekBarViews;
         private AlertDialog alertDialog;
         private TextView tvPreview;
 
@@ -201,7 +202,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             ColorSeekBarView csvRed = v.findViewById(R.id.sbRed);
             ColorSeekBarView csvGrn = v.findViewById(R.id.sbGreen);
             ColorSeekBarView csvBlu = v.findViewById(R.id.sbBlue);
-            ColorSeekBarView[] colorSeekBarViews = {csvRed, csvGrn, csvBlu};
+            colorSeekBarViews = new ColorSeekBarView[]{csvRed, csvGrn, csvBlu};
 
             // Use the Builder class for convenient dialog construction.
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -250,7 +251,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    String hexcolor = s.toString();
+                    hexcolor = s.toString();
                     if (SettingsActivity.isHexColor(hexcolor)) {
                         tvPreview.setTextColor(Color.parseColor("#" + s));
                         setProgress(colorSeekBarViews, hexcolor);
@@ -268,6 +269,12 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
 
             alertDialog = builder.create();
             return alertDialog;
+        }
+
+        @Override
+        public void onStart() {
+            super.onStart();
+            setProgress(colorSeekBarViews, hexcolor);
         }
 
         private boolean getPref(String key) {
