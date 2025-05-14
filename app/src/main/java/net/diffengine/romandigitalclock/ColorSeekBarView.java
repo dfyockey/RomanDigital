@@ -95,7 +95,11 @@ public class ColorSeekBarView extends LinearLayout {
             barColor.setMin(0);
         }
         barColor.setMax(255);
-        barColor.setProgressDrawable(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.seekbar_track_material, null));
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            barColor.setProgressDrawable(ResourcesCompat.getDrawable(getContext().getResources(), R.drawable.seekbar_track_material, null));
+        }
+
         barColor.setProgressBackgroundTintMode(PorterDuff.Mode.SRC_IN);
         barColor.setProgressBackgroundTintList(mbkgnd);
         barColor.setProgressTintMode(PorterDuff.Mode.SRC_IN);

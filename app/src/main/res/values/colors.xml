@@ -52,5 +52,5 @@
     <color name="button_bar_bkgnd">@color/white</color>
     <color name="button_bar_text">@color/fragment_title</color>
 
-    <color name="color_seekbar_background">#E0E0E0</color>
+    <color name="color_seekbar_background">#DCDCDC</color>
 </resources>

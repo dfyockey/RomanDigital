@@ -37,10 +37,11 @@
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:typeface="monospace" />
 
-    <SeekBar
+    <androidx.appcompat.widget.AppCompatSeekBar
         android:id="@+id/colorBar"
         android:layout_width="0dp"
         android:layout_weight="1"
-        android:layout_height="?android:attr/listPreferredItemHeightSmall" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical" />
 
 </LinearLayout>
