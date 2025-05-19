@@ -20,6 +20,8 @@
 
 package net.diffengine.romandigitalclock;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
@@ -40,6 +42,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private final String UPDATE_DISPLAY = "net.diffengine.romandigitalclock.UPDATE_DISPLAY";
 
     // Aliases for option keys
-    private static final String
+    public static final String
             ampm = "switch_format",
             alignment = "switch_alignment",
             ampmSeparator = "switch_separator",
@@ -199,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
         bkgndView.setOnClickListener(bkgndOCL);
     }
 
-    private void modToolbarMenu(Toolbar myToolbar) {
+    private void modToolbarMenu(Toolbar myToolbar, @ColorInt int color) {
         // Loop through Views contained in myToolbar as suggested at
         // https://snow.dog/blog/how-to-dynamicaly-change-android-toolbar-icons-color (which is
         // Apache 2.0 licensed at https://gist.github.com/chomi3/7e088760ef7bca10430e), but set
@@ -217,11 +220,32 @@ public class MainActivity extends AppCompatActivity {
                     // Icon needs to be "wrapped" to facilitate use across different API levels.
                     // See https://developer.android.com/reference/androidx/core/graphics/drawable/DrawableCompat#wrap(android.graphics.drawable.Drawable)
                     if (icon != null) {
-                        DrawableCompat.setTint(DrawableCompat.wrap(icon), getResources().getColor(R.color.clock_red));
+                        DrawableCompat.setTint(DrawableCompat.wrap(icon), color);
                     }
                 }
             }
         }
+    }
+
+    static private String getHexFromColorRes(Context context, @ColorRes int id) {
+        int colorInt = ContextCompat.getColor(context, id) & 0xFFFFFF;
+        return String.format("%06X", colorInt);
+    }
+
+    private void setDisplayColor(@ColorInt int color) {
+        Toolbar toolbar = findViewById(R.id.my_toolbar);
+        toolbar.setTitleTextColor(color);
+
+        modToolbarMenu(toolbar, color);
+
+        TextView textView = findViewById(R.id.TimeDisplay);
+        textView.setTextColor(color);
+    }
+
+    private void setDisplayColorFromPref() {
+        String defaultColorHexStr = getHexFromColorRes(this, R.color.clock_red);
+        String colorString = "#" + prefs.getString("hexcolor", defaultColorHexStr);
+        setDisplayColor(Color.parseColor(colorString));
     }
 
     @Override
@@ -263,8 +287,6 @@ public class MainActivity extends AppCompatActivity {
                 lpToolbar.rightMargin = insets.right;
                 myToolbar.setLayoutParams(lpToolbar);
 
-                modToolbarMenu(myToolbar);
-
                 return WindowInsetsCompat.CONSUMED;
             }
         });
@@ -292,6 +314,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        setDisplayColorFromPref();
     }
 
     //---------------------------------------------------------------
@@ -315,6 +338,7 @@ public class MainActivity extends AppCompatActivity {
         TimeDisplaySizeControl = findViewById(R.id.timedisplay_size_control);
         TimeDisplaySizeControl.setText(maxtime_fill);
         TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
+        setDisplayColorFromPref();
 
         registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
         ContextCompat.registerReceiver(context, updateReceiver, new IntentFilter(UPDATE_DISPLAY), ContextCompat.RECEIVER_NOT_EXPORTED);
