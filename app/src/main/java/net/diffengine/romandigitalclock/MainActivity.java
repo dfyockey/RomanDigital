@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    static private String getHexFromColorRes(Context context, @ColorRes int id) {
+    static public String getHexFromColorRes(Context context, @ColorRes int id) {
         int colorInt = ContextCompat.getColor(context, id) & 0xFFFFFF;
         return String.format("%06X", colorInt);
     }
@@ -242,10 +242,21 @@ public class MainActivity extends AppCompatActivity {
         textView.setTextColor(color);
     }
 
+    public static String getHexColor(Context context, SharedPreferences sp, String key) {
+        String defaultColorHexStr = getHexFromColorRes(context, R.color.clock_red);
+        String hexcolor = sp.getString(key, defaultColorHexStr);
+        if (!SettingsActivity.isHexColor(hexcolor)) {
+            hexcolor = defaultColorHexStr;
+        }
+        return hexcolor;
+    }
+
     private void setDisplayColorFromPref() {
-        String defaultColorHexStr = getHexFromColorRes(this, R.color.clock_red);
-        String colorString = "#" + prefs.getString("hexcolor", defaultColorHexStr);
-        setDisplayColor(Color.parseColor(colorString));
+        // Validate saved color value, using default color if invalid
+        if(prefs != null) {
+            String hexcolor = getHexColor(this, prefs, "hexcolor");
+            setDisplayColor(Color.parseColor("#" + hexcolor));
+        }
     }
 
     @Override
