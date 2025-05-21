@@ -90,7 +90,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         super.onAttached();
         m_sp = getSharedPreferences();
         if (m_sp != null) {
-            String colorhexcode = m_sp.getString(getKey(), "");
+            String colorhexcode = m_sp.getString(getKey(), MainActivity.getDefaultColorHexString(getContext()));
             setSummary(colorhexcode);
         }
 
@@ -192,7 +192,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             // Restore Instance State
             if (savedInstanceState != null) {
                 key = savedInstanceState.getString("key", "");
-                hexcolor = savedInstanceState.getString("hexcolor", "FFFFFF");
+                hexcolor = savedInstanceState.getString("hexcolor", MainActivity.getDefaultColorHexString(getContext()));
             }
 
             LayoutInflater layoutInflater = getLayoutInflater();

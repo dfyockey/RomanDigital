@@ -232,6 +232,10 @@ public class MainActivity extends AppCompatActivity {
         return String.format("%06X", colorInt);
     }
 
+    static public String getDefaultColorHexString(Context context) {
+        return getHexFromColorRes(context, R.color.clock_red);
+    }
+
     private void setDisplayColor(@ColorInt int color) {
         Toolbar toolbar = findViewById(R.id.my_toolbar);
         toolbar.setTitleTextColor(color);
@@ -243,8 +247,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setDisplayColorFromPref() {
-        String defaultColorHexStr = getHexFromColorRes(this, R.color.clock_red);
-        String colorString = "#" + prefs.getString("hexcolor", defaultColorHexStr);
+        String colorString = "#" + prefs.getString("hexcolor", getDefaultColorHexString(this));
         setDisplayColor(Color.parseColor(colorString));
     }
 
