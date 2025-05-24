@@ -51,7 +51,7 @@ import java.util.TimeZone;
 public class ColorDialogPreference extends Preference implements Preference.OnPreferenceClickListener {
     FragmentManager     m_fm;
     SharedPreferences   m_sp;
-    String hexcolor;
+    ColorDialogFragment colorDialogFragment;
 
     @SuppressWarnings({"UnusedDeclaration"})
     public ColorDialogPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes, FragmentManager fm) {
@@ -81,26 +81,32 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         setOnPreferenceClickListener(this);
     }
 
-    @Override
-    public void onAttached() {
-        super.onAttached();
-        m_sp = getSharedPreferences();
-        if (m_sp != null) {
-            // Validate saved color value, using default color if invalid
-            hexcolor = MainActivity.getHexColor(getContext(), m_sp, getKey());
-            setSummary("#" + hexcolor);
-        }
-    }
-
-    ColorDialogFragment colorDialogFragment;
     public ColorDialogFragment getColorDialogFragment() {
         return colorDialogFragment;
     }
 
     @Override
+    public void onAttached() {
+        super.onAttached();
+        m_sp = getSharedPreferences();
+        if (m_sp != null) {
+            String colorhexcode = m_sp.getString(getKey(), MainActivity.getDefaultColorHexString(getContext()));
+            if(!SettingsActivity.isHexColor(colorhexcode)) {
+                colorhexcode = MainActivity.getDefaultColorHexString(getContext());
+            }
+            setSummary("#" + colorhexcode);
+        }
+
+        colorDialogFragment = (ColorDialogFragment) m_fm.findFragmentByTag(ColorDialogFragment.TAG);
+        if(colorDialogFragment != null) {
+            colorDialogFragment.setPrefs(this);
+        }
+    }
+
+    @Override
     public boolean onPreferenceClick(@NonNull Preference preference) {
-        colorDialogFragment = new ColorDialogFragment(preference, getKey(), this);
-        colorDialogFragment.show(m_fm, colorDialogFragment.TAG);
+        colorDialogFragment = new ColorDialogFragment(preference);
+        colorDialogFragment.show(m_fm, ColorDialogFragment.TAG);
         return true;
     }
 
@@ -110,15 +116,25 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         SharedPreferences sp;
         Preference pref;
         String key;
-        ColorDialogPreference outerClass;
+        String hexcolor;
+        ColorSeekBarView[] colorSeekBarViews;
         private AlertDialog alertDialog;
         private TextView tvPreview;
 
-        public ColorDialogFragment(Preference pref, String key, ColorDialogPreference outerClass) {
-            this.sp = pref.getSharedPreferences();
-            this.pref = pref;
-            this.key = key;
-            this.outerClass = outerClass;
+        public ColorDialogFragment() {
+            /* NOP */
+        }
+
+        public ColorDialogFragment(Preference preference) {
+            setPrefs(preference);
+            hexcolor = String.valueOf(pref.getSummary()).substring(1);
+            key = pref.getKey();
+        }
+
+        // Call from the associated preference's onAttach method to reset pref after a configuration change
+        private void setPrefs(Preference preference) {
+            pref = preference;
+            sp = pref.getSharedPreferences();
         }
 
         public Dialog getDialog() {
@@ -175,6 +191,12 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Restore Instance State
+            if (savedInstanceState != null) {
+                key = savedInstanceState.getString("key", "");
+                hexcolor = savedInstanceState.getString("hexcolor", MainActivity.getDefaultColorHexString(getContext()));
+            }
+
             LayoutInflater layoutInflater = getLayoutInflater();
             View v = layoutInflater.inflate(R.layout.color_dialog_layout, null);
             EditText etHexcode = v.findViewById(R.id.etHexcode);
@@ -182,7 +204,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             ColorSeekBarView csvRed = v.findViewById(R.id.sbRed);
             ColorSeekBarView csvGrn = v.findViewById(R.id.sbGreen);
             ColorSeekBarView csvBlu = v.findViewById(R.id.sbBlue);
-            ColorSeekBarView[] colorSeekBarViews = {csvRed, csvGrn, csvBlu};
+            colorSeekBarViews = new ColorSeekBarView[]{csvRed, csvGrn, csvBlu};
 
             // Use the Builder class for convenient dialog construction.
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -213,10 +235,10 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
                 });
 
             // Customize Dialog View //
-            etHexcode.setText(outerClass.hexcolor);
-            setProgress(colorSeekBarViews, outerClass.hexcolor);
+            etHexcode.setText(hexcolor);
+            setProgress(colorSeekBarViews, hexcolor);
 
-            tvPreview.setTextColor(Color.parseColor("#" + outerClass.hexcolor));
+            tvPreview.setTextColor(Color.parseColor("#" + hexcolor));
 
             // Update the preview at dialog creation
             updatePreviewTime();
@@ -231,7 +253,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    String hexcolor = s.toString();
+                    hexcolor = s.toString();
                     if (SettingsActivity.isHexColor(hexcolor)) {
                         tvPreview.setTextColor(Color.parseColor("#" + s));
                         setProgress(colorSeekBarViews, hexcolor);
@@ -251,16 +273,31 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             return alertDialog;
         }
 
+        @Override
+        public void onStart() {
+            super.onStart();
+            setProgress(colorSeekBarViews, hexcolor);
+        }
+
         private boolean getPref(String key) {
             return sp.getBoolean(key, false);
         }
 
         public void updatePreviewTime() {
-            String currentTime = romantime.now( !getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID() );
-            tvPreview.setText(currentTime);
+            if (sp != null) {
+                String currentTime = romantime.now(!getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID());
+                tvPreview.setText(currentTime);
+            }
         }
 
-        public String TAG = "ColorDialogFragment";
+        @Override
+        public void onSaveInstanceState(@NonNull Bundle outState) {
+            super.onSaveInstanceState(outState);
+            outState.putString("key", key);
+            outState.putString("hexcolor", hexcolor);
+        }
+
+        public static String TAG = "ColorDialogFragment";
     }
     //////////////////////////////////////////////////////////////////////////////////////////
 }

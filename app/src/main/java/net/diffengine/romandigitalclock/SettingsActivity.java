@@ -61,6 +61,9 @@ public class SettingsActivity extends AppCompatActivity {
                     .add(R.id.screen_settings_frame, new ScreenSettingsFragment())
                     .add(R.id.button_bar_2, new SettingsButtonBarFragment())
                     .commit();
+        } else {
+            FragmentManager supportFragmentManager = getSupportFragmentManager();
+            displayColorFragment = (DisplayColorFragment) supportFragmentManager.findFragmentById(R.id.display_color_frame);
         }
     }
 
@@ -234,7 +237,9 @@ public class SettingsActivity extends AppCompatActivity {
     private class BroadcastReceiverEx extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            displayColorFragment.updateDialogTimeDisplayPreview();
+            if (displayColorFragment != null) {
+                displayColorFragment.updateDialogTimeDisplayPreview();
+            }
         }
     }
 
