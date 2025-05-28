@@ -90,11 +90,8 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         super.onAttached();
         m_sp = getSharedPreferences();
         if (m_sp != null) {
-            String colorhexcode = m_sp.getString(getKey(), MainActivity.getDefaultColorHexString(getContext()));
-            if(!SettingsActivity.isHexColor(colorhexcode)) {
-                colorhexcode = MainActivity.getDefaultColorHexString(getContext());
-            }
-            setSummary("#" + colorhexcode);
+            String hexcolor = MainActivity.getHexColor(getContext(), m_sp, getKey());
+            setSummary("#" + hexcolor);
         }
 
         colorDialogFragment = (ColorDialogFragment) m_fm.findFragmentByTag(ColorDialogFragment.TAG);
