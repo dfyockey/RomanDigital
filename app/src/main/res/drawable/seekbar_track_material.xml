@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2014 The Android Open Source Project
-     Modifications Copyright (C) 2025 David Yockey
+<!--
+     seekbar_track_material.xml
+     - This file is part of the Android app RomanDigital,
+       is a drawable resource, and
+       is a modified version of seekbar_track_material.xml
+       acquired from the Android Open Source Project (AOSP)
+
+     Copyright (C) 2014 The Android Open Source Project
+     Copyright (C) 2025 David Yockey
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
