@@ -138,7 +138,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             return alertDialog;
         }
 
-        ///// onCreateDialog Support Methods /////////////////////////////////////////////////
+        ///// onCreateDialog & onStart Support Methods ///////////////////////////////////////
         private void setProgress(ColorSeekBarView colorBar, String hexcolor, int startIndex, int endIndex) {
             colorBar.setProgress(Integer.valueOf(hexcolor.substring(startIndex,endIndex), 16));
         }
@@ -183,7 +183,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
                 public void onStopTrackingTouch(SeekBar seekBar) { /* NOP */ }
             });
         }
-        ///// End of onCreateDialog Support Methods //////////////////////////////////////////
+        ///// End of onCreateDialog & onStart Support Methods ////////////////////////////////
 
         @NonNull
         @Override
