@@ -40,6 +40,7 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreferenceCompat;
 
+import java.util.Objects;
 import java.util.TimeZone;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -222,8 +223,8 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         public void updateDialogTimeDisplayPreview() {
-            ColorDialogPreference colorDialogPreference = category.findPreference("hexcolor"); //colorPref; //DisplayColorFragment.getColorDialogPreference();
-            ColorDialogPreference.ColorDialogFragment colorDialogFragment = colorDialogPreference.getColorDialogFragment();
+            ColorDialogPreference colorDialogPreference = category.findPreference("hexcolor");
+            ColorDialogPreference.ColorDialogFragment colorDialogFragment = Objects.requireNonNull(colorDialogPreference).getColorDialogFragment();
 
             if (colorDialogFragment != null) {
                 Dialog dialog = colorDialogFragment.getDialog();

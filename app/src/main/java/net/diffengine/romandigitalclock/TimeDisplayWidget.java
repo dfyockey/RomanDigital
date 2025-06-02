@@ -79,6 +79,9 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         return R.layout.time_display_widget;  // error condition: invalid layoutMoniker
     }
 
+    // Unused action parameter is retained because it may be used later
+    // to handle SETTINGS_KICK or another power-saving action.
+    /** @noinspection unused*/
     private static RemoteViews updateTimeDisplay(Context context, String action, int appWidgetId) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm          = sp.getBoolean("switch_format" + appWidgetId, false);

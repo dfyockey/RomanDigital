@@ -204,20 +204,20 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             colorSeekBarViews = new ColorSeekBarView[]{csvRed, csvGrn, csvBlu};
 
             // Use the Builder class for convenient dialog construction.
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
             builder.setTitle(pref.getTitle())
                 .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // User okays the selected color.
                         String colorText = etHexcode.getText().toString();
                         if (SettingsActivity.isHexColor(colorText)) {
-                            sp.edit().putString(key, colorText).commit();
+                            sp.edit().putString(key, colorText).apply();
                             pref.setSummary("#" + colorText);
                             dialog.dismiss();
                         } else {
                             // Placing this here instead of in an onCancel method prevents it
                             // from from firing if the user taps outside the dialog to cancel.
-                            new AlertDialog.Builder(getActivity())
+                            new AlertDialog.Builder(requireActivity())
                                     .setTitle("Invalid Color Value")
                                     .setMessage("Value must be a six-character hexadecimal.")
                                     .show();
