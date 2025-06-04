@@ -8,6 +8,24 @@ This project aims to adhere to [Semantic Versioning](https://server.org).
 
 Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
 
+## [2.1.0] - 2025-06-??
+
+### Added
+* A dialog accessible through the app settings for setting the app time color.
+* Controls in the color setting dialog for setting the color to a particular hex color value either directly in a text field or by use of sliders to select red, green, and blue values.
+* Verification that a saved value is a valid hex color code, so an invalid value can't be saved.
+* An AlertDialog shown when the user tries to save an invalid color value.
+* Dynamic reciprocal setting of the text field and the sliders' positions on change of either to a valid hex color code, and with the sliders' positions being unchanged when the text field contains an invalid color code.
+* A real-time clock display preview in the color setting dialog with its text color dynamically changed when a valid hex color code is provided, and with the color set to black when the color hex code is invalid.
+
+### Added (Technical)
+* A general implementation of a custom SeekBar view allowing selection of a slider color and label by XML attributes (ColorSeekBarView).
+* A custom Preference class (ColorDialogPreference) encapsulating a DialogFragment (ColorDialogFragment) and showing an RGB color setting dialog when clicked on within a PreferenceScreen.
+* A BroadcastReceiver in SettingsActivity to receive the ACTION_TIME_TICK intent and initiate update of the dialog preview, and methods in SettingsActivity and ColorDialogPreference to facilitate indirect access to the dialog from the BroadcastReceiver, as part of addition of the real-time functionality in the dialog clock display preview.
+* Implementation of the inherited onAttached method of ColorDialogPreference with code to set the preference's Summary to the current hex color value at a point in the preference lifecycle where a reference to SharedPreferences will be available before the preference is first viewed, and to provide a point at which to reset references in the instantiated ColorDialogFragment of a ColorDialogPreference after device (and consequent dialog) rotation.
+* Implementation of the inherited onStart method in which to set the ColorSeekBarView instances progress after the dialog is fully reconstructed following rotation.
+* Validation of hex color value read from SharedPreferences and provision of a default value on invalidity to prevent a crash; should only be relevant if an early commit between releases 2.0.1 and 2.1.0 in which a '#' character was saved with the hex color value is built and run, and is then upgraded to a later version without '#' saved.
+
 ## [2.0.2] - 2025-03-21
 
 ### Fixed

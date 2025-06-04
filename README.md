@@ -50,6 +50,10 @@ RomanDigital further includes:
 
 * Option to only keep display on when device is charging
 * Adaptive display providing the largest possible monospace text for the device screen width (excepting a narrow margin)
+* Choice of app clock display color by selecting RGB values or by entering a hex code:
+
+![Portrait screenshot of phone cropped to show a Time Color dialog enabling setting of app display color by 6-character hex code or by setting red, green, and blue sliders, and including a clock display preview](/.github/images/Screenshot_20250603_104752_RomanDigital.jpg)
+
 * A widget for providing a Roman digital clock display on a device's Home screen:
 
 ![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240910_174429_One_UI_Home_scaled.jpg)
@@ -123,7 +127,7 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 
 > Q: "Why can't I change the font/text color/background color/widget corner curvature/etc?"
 > 
-> A: Background _transparency_ can now be changed, with background fully white/black for 100% opacity in light/dark mode. As for other stylistic changes, I haven't gotten to them yet. (_Spoiler Alert!_  Variable app text color is planned for version 2.1.0.)
+> A: App text color can now be changed, as noted in the **Features** above. Also, background _transparency_ can be changed, with background fully white/black for 100% opacity in light/dark mode. As for other stylistic changes, I haven't gotten to them yet.
 
 > Q: "Why no seconds?"
 > 
