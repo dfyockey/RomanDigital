@@ -13,6 +13,7 @@ The RomanDigital also includes:
 * Variable widget background opacity that can be set from 0% to 100% by tens.
 * Selectable widget time zone.
 * Selectable widget layouts to add a time zone label.
+* Selectable app time display color.
 
 For more detailed information including a FAQ list, please see the README.md file accompanying the RomanDigital source code.
 

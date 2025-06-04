@@ -1,0 +1,3 @@
+Added setting of app time display color:
+* An added dialog for picking the color by either setting RGB sliders and/or a hex color value is accessible from a 'Time Color' setting added to the app settings.
+* A real-time clock display preview included in the dialog changes color with the current dialog settings, allowing a realistic idea of how the color will appear in use.
