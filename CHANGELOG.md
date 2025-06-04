@@ -8,7 +8,7 @@ This project aims to adhere to [Semantic Versioning](https://server.org).
 
 Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
 
-## [2.1.0] - 2025-06-??
+## [2.1.0] - 2025-06-04
 
 ### Added
 * A dialog accessible through the app settings for setting the app time color.
