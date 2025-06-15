@@ -102,4 +102,7 @@ for the full license text."
     <!-- Button Labels -->
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+
+    <!-- Color Dialog Strings -->
+    <string name="hexcode_hint">RRGGBB hex color code</string>
 </resources>

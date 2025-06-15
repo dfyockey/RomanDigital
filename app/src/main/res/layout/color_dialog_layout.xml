@@ -49,38 +49,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/colorPrefix"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:minHeight="48dp"
-        android:text="#"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/etHexcode"
-        app:layout_constraintStart_toStartOf="@+id/tvPreview"
-        app:layout_constraintTop_toTopOf="@+id/etHexcode"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/etHexcode"
-        android:hint="RRGGBB hex color code"
-        android:importantForAutofill="no"
-        android:inputType="textNoSuggestions|textCapCharacters"
-        android:digits="0123456789ABCDEFabcdef"
-        android:maxLength="6"
-        android:maxLines="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:minHeight="48dp"
-        android:text="000000"
-        android:textAlignment="textStart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/colorPrefix"
-        app:layout_constraintTop_toBottomOf="@id/tvPreview" />
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -88,22 +56,55 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etHexcode">
+        app:layout_constraintTop_toBottomOf="@id/tvPreview">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <TextView
+                android:id="@+id/colorPrefix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/color_control_height"
+                android:text="#"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="@+id/etHexcode"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/etHexcode"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <EditText
+                android:id="@id/etHexcode"
+                android:hint="@string/hexcode_hint"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions|textCapCharacters"
+                android:digits="0123456789ABCDEFabcdef"
+                android:maxLength="6"
+                android:maxLines="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:minHeight="@dimen/color_control_height"
+                android:text="000000"
+                android:textAlignment="textStart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/colorPrefix"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <net.diffengine.romandigitalclock.ColorSeekBarView
                 android:id="@+id/sbRed"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/color_control_height"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etHexcode"
                 customview:barBackgroundColor="@color/color_seekbar_background"
                 customview:barColor="@android:color/holo_red_dark"
                 customview:barLabel="R" />
@@ -111,7 +112,7 @@
             <net.diffengine.romandigitalclock.ColorSeekBarView
                 android:id="@+id/sbGreen"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/color_control_height"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -124,7 +125,7 @@
             <net.diffengine.romandigitalclock.ColorSeekBarView
                 android:id="@+id/sbBlue"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/color_control_height"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
