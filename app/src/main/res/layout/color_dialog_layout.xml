@@ -58,9 +58,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvPreview">
 
+        <!--
+            android:focusableInTouchMode is set in the following layout to prevent automatic
+            scrolling of the ScrollView when the EditView value is changed by the user setting on
+            one of the color bar sliders. Touch Mode is understood to prevent Android from
+            automatically setting visual indication of focus, thus eliminating scrolling of the
+            EditView into the user's view when it is focussed while being updated by slider setting
+            changes.
+
+            For information on TouchMode and android:focusableInTouchMode, see
+                https://developer.android.com/reference/android/view/View#attr_android:focusableInTouchMode,
+                https://developer.android.com/reference/android/view/View#focus-handling,
+                https://developer.android.com/reference/android/view/View#touch-mode, and
+                https://stackoverflow.com/a/19133753/8100489
+        -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true">
 
             <TextView
                 android:id="@+id/colorPrefix"
