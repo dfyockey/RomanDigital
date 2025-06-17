@@ -77,20 +77,21 @@
             android:layout_height="wrap_content"
             android:focusableInTouchMode="true">
 
+            <!-- colorPrefix height needs to be the max possible within its constraints to properly align with etHexcode -->
             <TextView
                 android:id="@+id/colorPrefix"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginStart="32dp"
                 android:gravity="center_vertical"
-                android:minHeight="@dimen/color_control_height"
                 android:text="#"
-                android:textSize="18sp"
+                android:textAppearance="?android:attr/textAppearanceListItem"
                 app:layout_constraintBottom_toBottomOf="@+id/etHexcode"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/etHexcode"
                 app:layout_constraintVertical_bias="0.0" />
 
+            <!-- etHexcode height needs to be flexible to accommodate a large font size in system settings -->
             <EditText
                 android:id="@id/etHexcode"
                 android:hint="@string/hexcode_hint"
