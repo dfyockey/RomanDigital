@@ -8,13 +8,13 @@ This project aims to adhere to [Semantic Versioning](https://server.org).
 
 Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
 
-## [unreleased]
+## [2.1.1] - 2025-06-18
 
 ### Changed
 * The screen area into which the color sliders can be scrolled, thereby reducing the amount of scrolling needed to access all of the sliders.
 
 ### Fixed
-* The following, primarily due to a user's increase of font size in Android's system settings:
+* The following, primarily caused by a user's increase of font size in Android's system settings:
   * Misalignment of the color code label in the Time Color dialog
   * The Time Color dialog's preview text being too large for proper display
 

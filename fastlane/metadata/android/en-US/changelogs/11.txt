@@ -1,0 +1,7 @@
+Changed:
+* The screen area into which the color sliders can be scrolled, thereby reducing the amount of scrolling needed to access all of the sliders.
+
+Fixed:
+* The following, primarily caused by a user's increase of font size in Android's system settings:
+  * Misalignment of the color code label '#' in the Time Color dialog
+  * The Time Color dialog's preview text being too large for proper display
