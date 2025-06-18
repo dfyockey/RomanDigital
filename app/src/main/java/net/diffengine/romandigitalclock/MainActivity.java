@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isCharging() {
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+
+        // Regarding the null receiver in the following line, see
+        // https://developer.android.com/training/monitoring-device-state/battery-monitoring#DetermineChargeState
         Intent batteryStatus = context.registerReceiver(null, ifilter);
 
         // Are we charging / charged?

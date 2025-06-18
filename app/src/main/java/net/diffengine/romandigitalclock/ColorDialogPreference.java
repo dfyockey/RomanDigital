@@ -23,16 +23,19 @@ package net.diffengine.romandigitalclock;
 import static net.diffengine.romandigitalclock.MainActivity.alignment;
 import static net.diffengine.romandigitalclock.MainActivity.ampm;
 import static net.diffengine.romandigitalclock.MainActivity.ampmSeparator;
+import static net.diffengine.romandigitalclock.MainActivity.left;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -42,16 +45,19 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 
+import java.util.Objects;
 import java.util.TimeZone;
 
 public class ColorDialogPreference extends Preference implements Preference.OnPreferenceClickListener {
     FragmentManager     m_fm;
     SharedPreferences   m_sp;
     ColorDialogFragment colorDialogFragment;
+    static public final String UPDATE_PREVIEW = "net.diffengine.romandigitalclock.UPDATE_PREVIEW";
 
     @SuppressWarnings({"UnusedDeclaration"})
     public ColorDialogPreference(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes, FragmentManager fm) {
@@ -117,6 +123,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         ColorSeekBarView[] colorSeekBarViews;
         private AlertDialog alertDialog;
         private TextView tvPreview;
+        private AppCompatTextView PreviewDisplaySizeControl;
 
         public ColorDialogFragment() {
             /* NOP */
@@ -202,6 +209,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             ColorSeekBarView csvGrn = v.findViewById(R.id.sbGreen);
             ColorSeekBarView csvBlu = v.findViewById(R.id.sbBlue);
             colorSeekBarViews = new ColorSeekBarView[]{csvRed, csvGrn, csvBlu};
+            PreviewDisplaySizeControl = v.findViewById(R.id.preview_display_size_control);
 
             // Use the Builder class for convenient dialog construction.
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
@@ -276,15 +284,60 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             setProgress(colorSeekBarViews, hexcolor);
         }
 
+        @Override
+        public void onResume() {
+            super.onResume();
+            tvPreview.setVisibility(View.INVISIBLE);
+            String maxtime_fill = getString((getPref(ampm) == left) ? R.string.civ_fill : R.string.mil_fill);
+            PreviewDisplaySizeControl.setText(maxtime_fill);
+            tvPreview.setTextSize(TypedValue.COMPLEX_UNIT_PX, PreviewDisplaySizeControl.getTextSize());
+            text_resize_attempt_count = 0;
+            sendUpdatePreviewIntent();
+        }
+
         private boolean getPref(String key) {
             return sp.getBoolean(key, false);
         }
 
+        int text_resize_attempt_count = 0;
         public void updatePreviewTime() {
             if (sp != null) {
                 String currentTime = romantime.now(!getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID());
+
+                // IMPORTANT:
+                // For the String returned by romantime.now to be correctly aligned in TimeDisplay textview,
+                // TextDisplay.typeface MUST be set in activity_main.xml to 'monospace'
+
+                float pxCurrentControlTextSize = PreviewDisplaySizeControl.getTextSize();
+
+                if (tvPreview.getVisibility() == View.INVISIBLE) {
+                    float pxDefaultControlTextSize = getResources().getDimension(R.dimen.timedisplay_size_control_default_textsize);
+
+                    /*/////
+                    //  Check of updateCount prevents infinitely sending broadcasts if an unforeseen
+                    //  occurrence keeps pxCurrentControlTextSize from falling below
+                    //  pxDefaultControlTextSize within a reasonable number of tries.
+                    //
+                    //  Casting of the px values to int prevents problems in the comparison if a fractional
+                    //  pixel value is generated in calculation of pxDefaultControlTextSize.
+                    *//////
+                    if ( (int)pxCurrentControlTextSize >= (int)pxDefaultControlTextSize && text_resize_attempt_count++ < R.dimen.text_resize_attempt_limit ) {
+                        sendUpdatePreviewIntent();
+                    } else {
+                        tvPreview.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                tvPreview.setTextSize(TypedValue.COMPLEX_UNIT_PX, pxCurrentControlTextSize);
                 tvPreview.setText(currentTime);
             }
+        }
+
+        void sendUpdatePreviewIntent() {
+            requireActivity().sendBroadcast( new Intent()
+                    .setAction(UPDATE_PREVIEW)
+                    .setPackage(requireContext().getPackageName())
+            );
         }
 
         @Override

@@ -14,7 +14,9 @@ Regarding project commits: As of 2024-08-23, this project aims to adhere to the 
 * The screen area into which the color sliders can be scrolled, thereby reducing the amount of scrolling needed to access all of the sliders.
 
 ### Fixed
-* Misalignment of the color code label in the Time Color dialog that occurred due to a low resolution display or a user's increase of font size in Android's system settings. 
+* The following, primarily due to a user's increase of font size in Android's system settings:
+  * Misalignment of the color code label in the Time Color dialog
+  * The Time Color dialog's preview text being too large for proper display
 
 ## [2.1.0] - 2025-06-04
 
