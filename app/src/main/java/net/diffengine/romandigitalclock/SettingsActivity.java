@@ -20,6 +20,8 @@
 
 package net.diffengine.romandigitalclock;
 
+import static net.diffengine.romandigitalclock.ColorDialogPreference.UPDATE_PREVIEW;
+
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
@@ -31,6 +33,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -247,6 +250,9 @@ public class SettingsActivity extends AppCompatActivity {
     // Receiver instance to be registered as exported for receiving system-broadcast ACTION_TIME_TICK intent
     private final BroadcastReceiverEx broadcastReceiver = new BroadcastReceiverEx();
 
+    // Receiver instance to be registered as RECEIVER_NOT_EXPORTED for receiving UPDATE_PREVIEW intent broadcast from ColorDialogFragment
+    private final BroadcastReceiverEx updateReceiver = new BroadcastReceiverEx();
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -259,6 +265,7 @@ public class SettingsActivity extends AppCompatActivity {
         kickstart.setPackage(this.getPackageName());
         this.sendBroadcast(kickstart);
 
+        unregisterReceiver(updateReceiver);
         unregisterReceiver(broadcastReceiver);
     }
 
@@ -267,5 +274,6 @@ public class SettingsActivity extends AppCompatActivity {
         super.onResume();
 
         registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+        ContextCompat.registerReceiver(this, updateReceiver, new IntentFilter(UPDATE_PREVIEW), ContextCompat.RECEIVER_NOT_EXPORTED);
     }
 }

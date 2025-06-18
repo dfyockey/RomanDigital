@@ -27,11 +27,45 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:customview="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--
+        The following AppCompatTextView is provided here for the same reason, with regard to
+        the tvPreview TextView, as in activity_main.xml.
+    -->
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/preview_display_size_control"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:background="@color/black"
+        android:clickable="false"
+        android:gravity="center"
+        android:maxLines="1"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:text="@string/civ_fill"
+        android:textColor="@color/black"
+        android:textSize="@dimen/timedisplay_size_control_default_textsize"
+        android:typeface="monospace"
+        android:visibility="invisible"
+        app:autoSizeMaxTextSize="@dimen/timedisplay_size_control_default_textsize"
+        app:autoSizeStepGranularity="1sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPreview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".5"
+        tools:ignore="VisualLintOverlap,TextContrastCheck" />
+
     <TextView
-        android:id="@+id/tvPreview"
+        android:id="@id/tvPreview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -45,41 +79,10 @@
         android:textColor="@color/clock_red"
         android:textSize="34sp"
         android:typeface="monospace"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/colorPrefix"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:minHeight="48dp"
-        android:text="#"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/etHexcode"
-        app:layout_constraintStart_toStartOf="@+id/tvPreview"
-        app:layout_constraintTop_toTopOf="@+id/etHexcode"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/etHexcode"
-        android:hint="RRGGBB hex color code"
-        android:importantForAutofill="no"
-        android:inputType="textNoSuggestions|textCapCharacters"
-        android:digits="0123456789ABCDEFabcdef"
-        android:maxLength="6"
-        android:maxLines="1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:minHeight="48dp"
-        android:text="000000"
-        android:textAlignment="textStart"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/colorPrefix"
-        app:layout_constraintTop_toBottomOf="@id/tvPreview" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -88,22 +91,71 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etHexcode">
+        app:layout_constraintTop_toBottomOf="@id/tvPreview">
 
+        <!--
+            android:focusableInTouchMode is set in the following layout to prevent automatic
+            scrolling of the ScrollView when the EditView value is changed by the user setting on
+            one of the color bar sliders. Touch Mode is understood to prevent Android from
+            automatically setting visual indication of focus, thus eliminating scrolling of the
+            EditView into the user's view when it is focussed while being updated by slider setting
+            changes.
+
+            For information on TouchMode and android:focusableInTouchMode, see
+                https://developer.android.com/reference/android/view/View#attr_android:focusableInTouchMode,
+                https://developer.android.com/reference/android/view/View#focus-handling,
+                https://developer.android.com/reference/android/view/View#touch-mode, and
+                https://stackoverflow.com/a/19133753/8100489
+        -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:focusableInTouchMode="true">
+
+            <!-- colorPrefix height needs to be the max possible within its constraints to properly align with etHexcode -->
+            <TextView
+                android:id="@+id/colorPrefix"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_marginStart="32dp"
+                android:gravity="center_vertical"
+                android:text="#"
+                android:textAppearance="?android:attr/textAppearanceListItem"
+                app:layout_constraintBottom_toBottomOf="@+id/etHexcode"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/etHexcode"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <!-- etHexcode height needs to be flexible to accommodate a large font size in system settings -->
+            <EditText
+                android:id="@id/etHexcode"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:digits="0123456789ABCDEFabcdef"
+                android:hint="@string/hexcode_hint"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions|textCapCharacters"
+                android:maxLength="6"
+                android:maxLines="1"
+                android:minHeight="@dimen/color_control_height"
+                android:text="000000"
+                android:textAlignment="textStart"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/colorPrefix"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <net.diffengine.romandigitalclock.ColorSeekBarView
                 android:id="@+id/sbRed"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/color_control_height"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/etHexcode"
                 customview:barBackgroundColor="@color/color_seekbar_background"
                 customview:barColor="@android:color/holo_red_dark"
                 customview:barLabel="R" />
@@ -111,7 +163,7 @@
             <net.diffengine.romandigitalclock.ColorSeekBarView
                 android:id="@+id/sbGreen"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/color_control_height"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -124,7 +176,7 @@
             <net.diffengine.romandigitalclock.ColorSeekBarView
                 android:id="@+id/sbBlue"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/color_control_height"
                 android:layout_marginStart="32dp"
                 android:layout_marginEnd="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
