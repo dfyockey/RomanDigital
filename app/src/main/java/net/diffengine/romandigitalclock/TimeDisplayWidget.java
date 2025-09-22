@@ -123,8 +123,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
             }
 
             Bundle widgetOptions = AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId);
-            int textsize = calcTimeDisplayTextSize(widgetOptions);
-            views.setTextViewTextSize(R.id.appwidget_text, TypedValue.COMPLEX_UNIT_SP, textsize);
+            setTimeTextSize(views, widgetOptions);
 //        }
 
         Intent intent;
@@ -257,18 +256,21 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         return ((minwidth < 260) ? 28 : 34);
     }
 
+    static private void setTimeTextSize(RemoteViews views, Bundle widgetOptions) {
+        int textsize = calcTimeDisplayTextSize(widgetOptions);
+        views.setTextViewTextSize(R.id.appwidget_text, TypedValue.COMPLEX_UNIT_SP, textsize);
+    }
+
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
                                           int appWidgetId, Bundle newOptions) {
-        int textsize = calcTimeDisplayTextSize(newOptions);
 
-        // This call to updateTimeDisplay, which calls appWidgetManager.updateAppWidget, should likely be replaced with
-        // "RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);"
-        // because the current arrangement causes redundant calls to appWidgetManager.updateAppWidget.
-        // *** But needs to be thoroughly tested first. ***
+        // This call needs to be here rather than just instantiating a new RemoteViews
+        // object so the display will be updated for each of the multiple calls to
+        // onAppWidgetOptionsChanged that may occur while the user is resizing a widget
         RemoteViews views = updateTimeDisplay(context, SETTINGS_KICK, appWidgetId);
 
-        views.setTextViewTextSize(R.id.appwidget_text, TypedValue.COMPLEX_UNIT_SP, textsize);
+        setTimeTextSize(views, newOptions);
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 }
