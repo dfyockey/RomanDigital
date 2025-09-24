@@ -30,8 +30,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 
@@ -93,6 +97,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
         CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzid);
+//        widgetText = "VIII:XXXVIII";
         RemoteViews views = new RemoteViews(context.getPackageName(), layoutId);
         views.setTextViewText(R.id.appwidget_text, widgetText);
 
@@ -123,7 +128,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
             }
 
             Bundle widgetOptions = AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId);
-            setTimeTextSize(views, widgetOptions);
+            setTimeTextSize(context, views, appWidgetId, widgetOptions);
 //        }
 
         Intent intent;
@@ -251,14 +256,85 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetId, updateTimeDisplay(context, action, appWidgetId));
     }
 
-    static private int calcTimeDisplayTextSize(Bundle bundle) {
-        int minwidth = bundle.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-        return ((minwidth < 260) ? 28 : 34);
+    static private int findMaxTextSize(Context context, Rect maxRect, String refText) {
+        /*
+            Use a binary search to find the largest TextSize such that the provided reference text
+            refText fits within the provided rectangle maxRect, where the variable loSize will
+            contain the final result.
+
+            Note:
+                The search may exit with rect.width() greater than maxRect.width() if the exit
+                condition is met when hiSize is set to midSize. This isn't an issue because the
+                smaller rectangle around text the size of loSize, i.e the search result, will still
+                fit within the max width and height of the maxRect.
+        */
+        Rect rect = new Rect();
+        Paint paint = new Paint();
+        paint.setTypeface(Typeface.MONOSPACE);
+
+        int loSize = 0;
+        int hiSize = 1024;   // Arbitrarily selected largest permissible text size
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        while (loSize + 1 < hiSize) {
+            int midSize = (hiSize + loSize) / 2;
+
+            int textSize;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                textSize = midSize;
+            } else {
+                // Convert midSize, in DIP units, to PX units to set the paint text size so that
+                // getTextBounds will generate an accurate rectangle
+                textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, midSize, displayMetrics);
+            }
+
+            paint.setTextSize(textSize);
+            paint.getTextBounds(refText, 0, refText.length(), rect);
+            if (rect.width() >= maxRect.width()) {
+                hiSize = midSize;
+            } else {
+                loSize = midSize;
+            }
+        }
+        return loSize;
     }
 
-    static private void setTimeTextSize(RemoteViews views, Bundle widgetOptions) {
-        int textsize = calcTimeDisplayTextSize(widgetOptions);
-        views.setTextViewTextSize(R.id.appwidget_text, TypedValue.COMPLEX_UNIT_SP, textsize);
+    static private int calcTimeDisplayTextSize(Context context, int appWidgetId, Bundle bundle) {
+        // Get text of max length equal to the clock's max width display
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean ampm = sp.getBoolean("switch_format" + appWidgetId, false);
+        String maxlengthText = context.getString((ampm == MainActivity.left) ? R.string.civ_fill : R.string.mil_fill);
+        int widgetWidth = 0;
+        int widgetHeight = 0;
+
+        // Set up Rect containing widget rectangle into which to fit text
+        // 1) Get widget width and height in DIP
+        int widgetWidthDp = bundle.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+        int widgetHeightDp = bundle.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            // 2) Assign the DIP width and height directly to the variables used in setting up Rect
+            widgetWidth = widgetWidthDp;
+            widgetHeight = widgetHeightDp;
+            // 3) Set Rect using the unconverted values...
+        } else {
+            // 2) Convert width and height to PX
+            DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+            widgetWidth = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widgetWidthDp, displayMetrics);
+            widgetHeight = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, widgetHeightDp, displayMetrics);
+            // 3) Set Rect using PX width and height for proper comparison to Rect in PX units returned
+            //    from paint.getTextBounds in findMaxTextSize...
+        }
+        Rect maxRect = new Rect(0, 0, widgetWidth-1, widgetHeight-1);
+
+        int maxTextSize = findMaxTextSize(context, maxRect, maxlengthText);
+
+        return maxTextSize;
+    }
+
+    static private void setTimeTextSize(Context context, RemoteViews views, int appWidgetId, Bundle widgetOptions) {
+        int textsize = calcTimeDisplayTextSize(context, appWidgetId, widgetOptions);
+        int fudgefactor = 3;    // Conservative value for compensation of possible error in calculated text size
+                                // (observed on a Nexus 6 AVD running API 24; value of 1 was sufficent to compensate)
+        views.setTextViewTextSize(R.id.appwidget_text, TypedValue.COMPLEX_UNIT_DIP, textsize-fudgefactor);
     }
 
     @Override
@@ -270,7 +346,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         // onAppWidgetOptionsChanged that may occur while the user is resizing a widget
         RemoteViews views = updateTimeDisplay(context, SETTINGS_KICK, appWidgetId);
 
-        setTimeTextSize(views, newOptions);
+        setTimeTextSize(context, views, appWidgetId, newOptions);
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 }
