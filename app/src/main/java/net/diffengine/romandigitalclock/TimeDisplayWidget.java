@@ -30,6 +30,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -289,7 +290,13 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 
             paint.setTextSize(textSize);
             paint.getTextBounds(refText, 0, refText.length(), rect);
-            if (rect.width() >= maxRect.width()) {
+
+            int orientation = context.getResources().getConfiguration().orientation;
+            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                rect.bottom += paint.getFontSpacing();
+            }
+
+            if ((rect.width() >= maxRect.width()) || (rect.height() >= maxRect.height())) {
                 hiSize = midSize;
             } else {
                 loSize = midSize;
