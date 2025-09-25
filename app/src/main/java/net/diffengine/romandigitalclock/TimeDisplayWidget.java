@@ -310,13 +310,16 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm = sp.getBoolean("switch_format" + appWidgetId, false);
         String maxlengthText = context.getString((ampm == MainActivity.left) ? R.string.civ_fill : R.string.mil_fill);
-        int widgetWidth = 0;
-        int widgetHeight = 0;
+        int widgetWidth;
+        int widgetHeight;
 
         // Set up Rect containing widget rectangle into which to fit text
         // 1) Get widget width and height in DIP
-        int widgetWidthDp = bundle.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-        int widgetHeightDp = bundle.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+        boolean isPortrait = (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT);
+        String widthOption = (isPortrait) ? AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH : AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH;
+        String heightOption = (isPortrait) ? AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT : AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT;
+        int widgetWidthDp = bundle.getInt(widthOption);
+        int widgetHeightDp = bundle.getInt(heightOption);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             // 2) Assign the DIP width and height directly to the variables used in setting up Rect
             widgetWidth = widgetWidthDp;
@@ -332,9 +335,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         }
         Rect maxRect = new Rect(0, 0, widgetWidth-1, widgetHeight-1);
 
-        int maxTextSize = findMaxTextSize(context, maxRect, maxlengthText);
-
-        return maxTextSize;
+        return findMaxTextSize(context, maxRect, maxlengthText);
     }
 
     static private void setTimeTextSize(Context context, RemoteViews views, int appWidgetId, Bundle widgetOptions) {
