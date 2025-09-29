@@ -38,7 +38,7 @@
     android:configure="net.diffengine.romandigitalclock.TimeDisplayWidgetConfigActivity"
     android:widgetFeatures="reconfigurable"
     android:minWidth="180dp"
-    android:minResizeWidth="180dp"
+    android:minResizeWidth="115dp"
     android:minHeight="40dp"
     android:minResizeHeight="40dp"
     android:updatePeriodMillis="86400000"
