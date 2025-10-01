@@ -74,6 +74,15 @@ This product is licensed under the terms of the Apache Software License 2.0. See
 
 for the full license text."
     </string>
+
+    <string name="credits">
+"Motivation to implement autosizing of the RomanDigital app widget text was provided by observation of the digital clock widget text autosizing in the excellent Clock app by BlackHawky (https://github.com/BlackyHawky/Clock). Being licensed under GNU GPL v3.0 and thus incompatible with RomanDigital's Apache 2.0 license without relicensing, BlackHawky Clock code was neither copied nor reviewed in development of the RomanDigital app widget."
+    </string>
+
+    <string name="thanks">
+"If you like RomanDigital and would like to tangibly express your thanks, dropping the value of a coffee of the quality of your choice at https://paypal.me/dfyockey would be greatly appreciated 🙂"
+    </string>
+
     <string name="source">
 "You may obtain RomanDigital in source form at
 

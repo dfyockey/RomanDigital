@@ -8,6 +8,14 @@ This project aims to adhere to [Semantic Versioning](https://server.org).
 
 Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
 
+## [2.2.0] - 2025-10-01
+
+### Added
+* Autosizing of app widget time display text to be as large as possible while fitting within the dimensions of the widget.
+
+### Fixed
+* Issue of widget text possibly being too large for the time to be properly displayed due to system-wide font being set to a large size (Issue #36). 
+
 ## [2.1.1] - 2025-06-18
 
 ### Changed

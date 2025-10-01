@@ -1,0 +1,5 @@
+Added
+* Autosizing of app widget time display text to be as large as possible while fitting within the dimensions of the widget.
+
+Fixed
+* Issue of widget text possibly being too large for the time to be properly displayed due to system-wide font being set to a large size.

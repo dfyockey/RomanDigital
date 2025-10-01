@@ -54,7 +54,7 @@ RomanDigital further includes:
 
 ![Portrait screenshot of phone cropped to show a Time Color dialog enabling setting of app display color by 6-character hex code or by setting red, green, and blue sliders, and including a clock display preview](/.github/images/Screenshot_20250603_104752_RomanDigital.jpg)
 
-* A widget for providing a Roman digital clock display on a device's Home screen:
+* A widget for providing a Roman digital clock display on a device's Home screen, with display text automatically sized to fit the widget's dimensions:
 
 ![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240910_174429_One_UI_Home_scaled.jpg)
 
@@ -100,6 +100,8 @@ a more technical explanation of this "permission", see the full commit message a
 https://gitlab.com/fdroid/fdroidserver/-/merge_requests/1336/diffs?commit_id=71697f9c88ec73980f63be5955f36cdc3ba7a02c
 
 ## Known Issues
+
+As widget updating is currently implemented, text of a widget rotated between portrait and landscape may not be automatically resized until the next widget update, which may be up to a minute after the rotation. This is not an issue for devices that do not support home screen rotation or that are set not to rotate the home screen. It is also not an issue for any device having a UI/launcher rendering the device's home screen on which the widget is installed that notifies widgets when the device is rotated (e.g. Samsung One UI 6.1 and 7.0). 
 
 After building and updating the app in Android Studio, a widget that had previously been added to the home screen may stop updating. It may be 'kickstarted' by simply opening and then closing the widget's settings screen.
 
@@ -150,6 +152,7 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 > Note:
 > 
 > * I get nothing if you click on the "Lock Screen Widgets and Drawer" link and/or buy the app, and my purchase and use of it are not meant as an endorsement. There may be other such apps that would work as well or better.
+> * This doesn't work so well after my Galaxy A14 was updated from Android 14 to 15 and from One UI 6.1 to 7.0. The power management of Android 15 is understood to be more aggressive and apparently stops apps, including the widget on the lock screen, after a much shorter period when the phone is locked. :slightly_frowning_face:
 
 > Q: "Why no version specifically for a watch?"
 > 
