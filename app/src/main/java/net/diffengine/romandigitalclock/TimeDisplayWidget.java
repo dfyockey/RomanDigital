@@ -21,14 +21,17 @@
 package net.diffengine.romandigitalclock;
 
 import static androidx.core.content.ContextCompat.getColor;
+import static androidx.core.content.ContextCompat.registerReceiver;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Paint;
@@ -37,9 +40,11 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 
+import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import java.util.Calendar;
@@ -204,12 +209,26 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         }
     }
 
+    // Instantiate receiver to kickstart widget on device unlock
+    private final BroadcastReceiver userPresenceBroadcastReceiver = new UserPresenceBroadcastReceiver();
+
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+
+        // Remove userPresenceBroadcastReceiver if registered so it can be reregistered later
+        try {
+            context.unregisterReceiver(userPresenceBroadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            Log.d("RomanDigital", "userPresenceBroadcastReceiver not yet registered");
+        }
+
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, SETTINGS_KICK, appWidgetId);
         }
+
+        // Register userPresenceBroadcastReceiver
+        registerReceiver(context, userPresenceBroadcastReceiver, new IntentFilter(Intent.ACTION_USER_PRESENT), ContextCompat.RECEIVER_EXPORTED);
     }
 
     private static PendingIntent getPendingIntent(Context context, int[] appWidgetIds) {
