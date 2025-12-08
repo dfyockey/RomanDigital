@@ -47,6 +47,8 @@ import android.widget.RemoteViews;
 import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
+import net.diffengine.romandigitalclock.receivers.UserPresenceBroadcastReceiver;
+
 import java.util.Calendar;
 import java.util.TimeZone;
 

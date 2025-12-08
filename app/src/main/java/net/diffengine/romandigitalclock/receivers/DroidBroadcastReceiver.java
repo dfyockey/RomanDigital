@@ -1,5 +1,5 @@
 /*
- * UserPresenceBroadcastReceiver.java
+ * BootCompletedBroadcastReceiver.java
  * - This file is part of the Android app RomanDigital
  *
  * Copyright 2025 David Yockey
@@ -18,25 +18,26 @@
  *
  */
 
-/*
- * Yes, yes, I know this is a horribly redundant slight modification of
- * BootCompletedBroadcastReceiver. But I'm in a hurry! I'll fix it later!
- * (Said every corner-cutting dev ever.)
- */
-
-package net.diffengine.romandigitalclock;
+package net.diffengine.romandigitalclock.receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-public class UserPresenceBroadcastReceiver extends BroadcastReceiver {
+import net.diffengine.romandigitalclock.TimeDisplayWidget;
+
+abstract class DroidBroadcastReceiver extends BroadcastReceiver {
+    String targetAction;
+
+    DroidBroadcastReceiver(String action) {
+        targetAction = action;
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
 
-        if (action != null && action.equals(Intent.ACTION_USER_PRESENT)) {
+        if (action != null && action.equals(targetAction)) {
             Intent kickstart = new Intent(context, TimeDisplayWidget.class);
             kickstart.setAction(TimeDisplayWidget.MINUTE_TICK);
             kickstart.setPackage(context.getPackageName());
