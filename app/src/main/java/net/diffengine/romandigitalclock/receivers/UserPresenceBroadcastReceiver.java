@@ -22,6 +22,8 @@ package net.diffengine.romandigitalclock.receivers;
 
 import static android.content.Intent.ACTION_USER_PRESENT;
 
+// public access specifiers needed to enable access from TimeDisplayWidget
+// (i.e. a non-subclass outside of the package)
 public class UserPresenceBroadcastReceiver extends DroidBroadcastReceiver {
     public UserPresenceBroadcastReceiver() {
         super(ACTION_USER_PRESENT);

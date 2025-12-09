@@ -1,5 +1,5 @@
 /*
- * BootCompletedBroadcastReceiver.java
+ * DroidBroadcastReceiver.java
  * - This file is part of the Android app RomanDigital
  *
  * Copyright 2025 David Yockey
