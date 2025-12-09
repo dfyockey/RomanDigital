@@ -141,7 +141,7 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 
 > Q: "I want to change widget time zone labels to particular place names. Is there any way to do this?"
 > 
-> A: Not right now, but it should be added pretty soon since I want that option myself and it should be easy to implement.
+> A: Not right now, but it should be added at some point since I want that option myself and it should be easy to implement.
 
 > Q: "Can I put the widget on my phone's lock screen?"
 >
