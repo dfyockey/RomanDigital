@@ -1,0 +1,2 @@
+Reverted
+* Fixed crashes and/or failure to restart widget on device boot by reverting code to version 2.2.0, with apologies to users effected.

@@ -8,6 +8,16 @@ This project aims to adhere to [Semantic Versioning](https://server.org).
 
 Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
 
+## [2.2.2] - 2025-12-14
+
+### Reverted
+* Fixed problems noted in Issues #41 and #42 by reverting to version 2.2.0, with apologies to users effected.
+
+## [2.2.1] - 2025-12-09
+
+### Fixed
+* Issue of the widget clock display not updating on some devices after unlocking the device's lock screen (Issue #38).
+
 ## [2.2.0] - 2025-10-01
 
 ### Added
