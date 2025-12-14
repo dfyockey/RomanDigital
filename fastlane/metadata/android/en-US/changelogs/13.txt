@@ -1,2 +1,0 @@
-Fixed
-* Issue of the widget clock display not updating on some devices after unlocking the device's lock screen.
