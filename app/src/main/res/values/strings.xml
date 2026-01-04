@@ -89,6 +89,17 @@ for the full license text."
     https://github.com/dfyockey/RomanDigital"
     </string>
 
+    <!-- Service-related Strings -->
+    <string name="relay_service_description">Service to relay Android\'s minute tick to RomanDigital\'s widgets</string>
+    <string name="service_special_use_explanation">Service passes an application-defined intent to a Roman numeral digital clock widget to update its time display upon receipt of each Intent.ACTION_TIME_TICK, which does not fit any of the standard use cases.</string>
+
+    <string name="channel_id">RelayServiceChannel</string>
+    <string name="channel_name">Minute Tick Relay Service</string>
+    <string name="channel_description">Notify the user that the service to inform widgets when to update is running</string>
+
+    <string name="notification_tag">rd_notification</string>
+    <string name="notification_id">1</string>
+
     <!-- Appwidget Strings -->
     <string name="appwidget_text">XIII:XXXVIII</string>
     <string name="app_widget_description">Digital Clock with Roman Numeral Display</string>

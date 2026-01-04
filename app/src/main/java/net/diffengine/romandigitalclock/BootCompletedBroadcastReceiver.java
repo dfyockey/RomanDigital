@@ -25,6 +25,7 @@ import static android.content.Intent.ACTION_BOOT_COMPLETED;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 public class BootCompletedBroadcastReceiver extends BroadcastReceiver {
 
@@ -37,6 +38,13 @@ public class BootCompletedBroadcastReceiver extends BroadcastReceiver {
             kickstart.setAction(TimeDisplayWidget.MINUTE_TICK);
             kickstart.setPackage(context.getPackageName());
             context.sendBroadcast(kickstart);
+
+            Intent serviceIntent = new Intent(context, TimeTickRelay.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent);
+            } else {
+                context.startService(serviceIntent);
+            }
         }
     }
 }
