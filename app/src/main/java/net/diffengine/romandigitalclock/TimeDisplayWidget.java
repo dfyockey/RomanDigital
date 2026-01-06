@@ -251,6 +251,9 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         if (alarmManager != null && alarmPendingIntent != null) {
             alarmManager.cancel(alarmPendingIntent);
         }
+
+        Intent serviceIntent = new Intent(context, TimeTickRelay.class);
+        context.stopService(serviceIntent);
     }
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, String action, int appWidgetId) {

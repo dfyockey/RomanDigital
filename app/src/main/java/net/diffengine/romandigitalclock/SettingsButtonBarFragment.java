@@ -25,8 +25,10 @@ import static android.app.Activity.RESULT_OK;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -110,6 +112,16 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
                 // See https://stackoverflow.com/a/40709721
                 Intent result = new Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
                 parentActivity.setResult(RESULT_OK, result);
+
+                // Since we're here because appWidgetId is valid, we're in a widget config activity,
+                // so make sure the tick relay service is started.
+                Context context = parentActivity;
+                Intent serviceIntent = new Intent(context, TimeTickRelay.class);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(serviceIntent);
+                } else {
+                    context.startService(serviceIntent);
+                }
             }
         } else {
             // In case of some shortsighted modification... :)

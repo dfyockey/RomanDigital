@@ -39,12 +39,12 @@ public class BootCompletedBroadcastReceiver extends BroadcastReceiver {
             kickstart.setPackage(context.getPackageName());
             context.sendBroadcast(kickstart);
 
-            Intent serviceIntent = new Intent(context, TimeTickRelay.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(serviceIntent);
-            } else {
-                context.startService(serviceIntent);
-            }
+//            Intent serviceIntent = new Intent(context, TimeTickRelay.class);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                context.startForegroundService(serviceIntent);
+//            } else {
+//                context.startService(serviceIntent);
+//            }
         }
     }
 }
