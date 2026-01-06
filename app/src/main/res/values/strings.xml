@@ -97,8 +97,8 @@ for the full license text."
     <string name="channel_name">Minute Tick Relay Service</string>
     <string name="channel_description">Notify the user that the service to inform widgets when to update is running</string>
 
-    <string name="notification_tag">rd_notification</string>
-    <string name="notification_id">1</string>
+    <!-- Arbitrary unique id within the app for the service's one notification -->
+    <string name="notification_id">42</string>
 
     <!-- Appwidget Strings -->
     <string name="appwidget_text">XIII:XXXVIII</string>
