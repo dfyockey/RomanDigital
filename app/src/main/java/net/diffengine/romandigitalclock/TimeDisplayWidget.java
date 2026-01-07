@@ -244,6 +244,13 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
         setAlarm(context, Calendar.getInstance().getTimeInMillis());
+
+        Intent serviceIntent = new Intent(context, TimeTickRelay.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(serviceIntent);
+        } else {
+            context.startService(serviceIntent);
+        }
     }
 
     @Override
