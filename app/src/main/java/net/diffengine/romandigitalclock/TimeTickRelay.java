@@ -9,15 +9,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.ServiceCompat;
 
@@ -32,7 +29,10 @@ public class TimeTickRelay extends Service {
     private class TickReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Toast.makeText(context, "Tick!", Toast.LENGTH_LONG).show();
+            Intent tickIntent = new Intent(context, TimeDisplayWidget.class);
+            tickIntent.setAction(TimeDisplayWidget.RELAYED_TIME_TICK);
+            tickIntent.setPackage(context.getPackageName());
+            context.sendBroadcast(tickIntent);
         }
     }
     TickReceiver tickReceiver = new TickReceiver();
@@ -43,14 +43,11 @@ public class TimeTickRelay extends Service {
         String CHANNEL_ID = getString(R.string.channel_id);
         int NOTIFICATION_ID = Integer.parseInt(getString(R.string.notification_id));
 
-        registerReceiver(tickReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
-
         createNotificationChannel(CHANNEL_ID);
+        Notification notification = createNotification(CHANNEL_ID, createClickPendingIntent());
+        ServiceCompat.startForeground(this, NOTIFICATION_ID, notification, getServiceType());
 
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
-            Notification notification = createNotification(CHANNEL_ID, createClickPendingIntent());
-            ServiceCompat.startForeground(this, NOTIFICATION_ID, notification, getServiceType());
-        }
+        registerReceiver(tickReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
     }
 
     private void createNotificationChannel(String channel_id) {
@@ -75,7 +72,7 @@ public class TimeTickRelay extends Service {
     private int getServiceType() {
         int foregroundServiceType = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_SYSTEM_EXEMPTED;
+            foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE;
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_NONE;
         }

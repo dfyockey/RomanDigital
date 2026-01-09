@@ -69,6 +69,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     // also causes update of widget background opacity.
     public static final String MINUTE_TICK = "net.diffengine.romandigitalclock.MINUTE_TICK";
     public static final String SETTINGS_KICK = "net.diffengine.romandigitalclock.SETTINGS_KICK";
+    public static final String RELAYED_TIME_TICK = "net.diffengine.romandigitalclock.RELAYED_TIME_TICK";
 
     private static int getLayoutId(String layoutMoniker) {
         switch (layoutMoniker) {
@@ -179,6 +180,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         if (
             action != null &&
             (
+                action.equals(RELAYED_TIME_TICK) ||
                 action.equals(MINUTE_TICK) ||
                 action.equals(SETTINGS_KICK) ||
                 action.equals(Intent.ACTION_TIMEZONE_CHANGED) ||
@@ -220,25 +222,9 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     }
 
     private static void setAlarm (Context context) {
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.MINUTE, 1);
-        cal.set(Calendar.SECOND, 0);
-        long t = cal.getTimeInMillis();
-        setAlarm(context, t);
     }
 
     private static void setAlarm (Context context, long targetTime) {
-        if (alarmManager == null) {
-            alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        }
-
-        if ( Build.VERSION.SDK_INT <= Build.VERSION_CODES.R || alarmManager.canScheduleExactAlarms() ) {
-            alarmManager.setExact(AlarmManager.RTC, targetTime, alarmPendingIntent);
-        } else {
-            // While USE_EXACT_ALARM should make this superfluous, I imagine it could be used if
-            // canScheduleExactAlarms() is somehow set to false, e.g. by the system running in low-power mode.
-            alarmManager.set(AlarmManager.RTC, targetTime, alarmPendingIntent);
-        }
     }
 
     @Override
