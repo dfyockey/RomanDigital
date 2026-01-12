@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ServiceInfo;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.IBinder;
 
@@ -89,7 +88,6 @@ public class TimeTickRelay extends Service {
     private Notification createNotification(String channel_id, PendingIntent clickPendingIntent) {
         return new NotificationCompat.Builder(this, channel_id)
                 .setSmallIcon(R.drawable.ic_rd_notification_icon)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.rd_launcher_foreground))
                 .setPriority(NotificationCompat.PRIORITY_MIN)
                 .setContentIntent(clickPendingIntent)
                 .build();
