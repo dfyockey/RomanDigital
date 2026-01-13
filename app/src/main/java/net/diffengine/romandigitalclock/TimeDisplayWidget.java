@@ -22,7 +22,6 @@ package net.diffengine.romandigitalclock;
 
 import static androidx.core.content.ContextCompat.getColor;
 
-import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -42,14 +41,10 @@ import android.widget.RemoteViews;
 
 import androidx.preference.PreferenceManager;
 
-import java.util.Calendar;
 import java.util.TimeZone;
 
 /** @noinspection SpellCheckingInspection*/
 public class TimeDisplayWidget extends AppWidgetProvider {
-    static AlarmManager alarmManager;
-    static PendingIntent alarmPendingIntent;
-
     static int[] opacity = {
             (R.drawable.appwidget_bkgnd_0),
             (R.drawable.appwidget_bkgnd_10),
@@ -64,11 +59,6 @@ public class TimeDisplayWidget extends AppWidgetProvider {
             (R.drawable.appwidget_bkgnd_100)
     };
 
-    // While both of the following intent actions will cause update of the time, since a change in
-    // settings may change the time display, the SETTINGS_KICK action indicative of such a change
-    // also causes update of widget background opacity.
-    public static final String MINUTE_TICK = "net.diffengine.romandigitalclock.MINUTE_TICK";
-    public static final String SETTINGS_KICK = "net.diffengine.romandigitalclock.SETTINGS_KICK";
     public static final String RELAYED_TIME_TICK = "net.diffengine.romandigitalclock.RELAYED_TIME_TICK";
 
     private static int getLayoutId(String layoutMoniker) {
@@ -85,10 +75,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         return R.layout.time_display_widget;  // error condition: invalid layoutMoniker
     }
 
-    // Unused action parameter is retained because it may be used later
-    // to handle SETTINGS_KICK or another power-saving action.
-    /** @noinspection unused*/
-    private static RemoteViews updateTimeDisplay(Context context, String action, int appWidgetId) {
+    private RemoteViews updateTimeDisplay(Context context, int appWidgetId) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm          = sp.getBoolean("switch_format" + appWidgetId, false);
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
@@ -99,39 +86,37 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
         CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzid);
-//        widgetText = "VIII:XXXVIII";
+//        widgetText = "VIII:XXXVIII";  // Uncomment at start of line for testing
         RemoteViews views = new RemoteViews(context.getPackageName(), layoutId);
         views.setTextViewText(R.id.appwidget_text, widgetText);
 
         // Update the widget background on instantiation, system boot, or change of settings
         /*
-            Unfortunately, all of the preferences need to be reset for call to updateTimeDisplay so
-            the widget is properly displayed following a complete reset of the device's launcher, at
-            least on Samsung devices running One UI 6.1 on Android 14, or TouchWiz on Android 5.1.
-
-            The check for SETTINGS_KICK is being kept to facilitate possible implementation of an
-            option to save power if it's determined by the user that their launcher doesn't cause
-            the issue observed with Samsung's launchers.
+            Unfortunately, all of the preferences need to be reset for each call to
+            updateTimeDisplay so the widget is properly displayed following a complete reset of the
+            device's launcher, at least on Samsung devices running One UI 6.1 on Android 14, or
+            TouchWiz on Android 5.1. It may be worthwhile to implement a power saving option to
+            bypass update of some or all of the preferences on each call if the user determines that
+            their launcher doesn't cause the issue observed with Samsung's launchers.
         */
-//      if (action.equals(SETTINGS_KICK)) {
-            int opacityValue = sp.getInt("seekbar_opacity" + appWidgetId, 0);
-            views.setInt(R.id.appwidget_bkgnd, "setBackgroundResource", opacity[opacityValue]);
+        int opacityValue = sp.getInt("seekbar_opacity" + appWidgetId, 0);
+        views.setInt(R.id.appwidget_bkgnd, "setBackgroundResource", opacity[opacityValue]);
 
-            int widget_text_color_resource;
-            if (opacityValue < 5) {
-                widget_text_color_resource = R.color.widgetText_LoOpacityBkgnd;
-            } else {
-                widget_text_color_resource = R.color.widgetText_HiOpacityBkgnd;
-            }
-            views.setInt(R.id.appwidget_text, "setTextColor", getColor(context, widget_text_color_resource));
-            if (layoutId != R.layout.time_display_widget) {
-                views.setTextViewText(R.id.appwidget_label, tzid);
-                views.setInt(R.id.appwidget_label, "setTextColor", getColor(context, widget_text_color_resource));
-            }
+        int widget_text_color_resource;
+        if (opacityValue < 5) {
+            widget_text_color_resource = R.color.widgetText_LoOpacityBkgnd;
+        } else {
+            widget_text_color_resource = R.color.widgetText_HiOpacityBkgnd;
+        }
+        views.setInt(R.id.appwidget_text, "setTextColor", getColor(context, widget_text_color_resource));
+        if (layoutId != R.layout.time_display_widget) {
+            views.setTextViewText(R.id.appwidget_label, tzid);
+            views.setInt(R.id.appwidget_label, "setTextColor", getColor(context, widget_text_color_resource));
+        }
 
-            Bundle widgetOptions = AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId);
-            setTimeTextSize(context, views, appWidgetId, widgetOptions);
-//        }
+        Bundle widgetOptions = AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId);
+        setTimeTextSize(context, views, appWidgetId, widgetOptions);
+        // End of Update
 
         Intent intent;
 
@@ -153,23 +138,12 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         return views;
     }
 
-    private void onTick (Context context, String action, int[] appWidgetIds) {
+    private void onTick (Context context) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         ComponentName widgetName = new ComponentName(context.getPackageName(), TimeDisplayWidget.class.getName());
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(widgetName);
 
-        // SETTINGS_KICK may be received without any extra appWidgetIds array;
-        // if so, get the array of current appWidgetIds
-        if (appWidgetIds == null) {
-            appWidgetIds = appWidgetManager.getAppWidgetIds(widgetName);
-        }
-
-        for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, action, appWidgetId);
-        }
-
-        int[] allAppWidgetIds = AppWidgetManager.getInstance(context).getAppWidgetIds(widgetName);
-        alarmPendingIntent = getPendingIntent(context, allAppWidgetIds);
-        setAlarm(context);
+        onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
     @Override
@@ -177,32 +151,19 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         String action = intent.getAction();
+
+        // Treating changes in either system date, time, or timezone
+        // as a time tick insures immediate update of time display on such changes
         if (
             action != null &&
             (
                 action.equals(RELAYED_TIME_TICK) ||
-                action.equals(MINUTE_TICK) ||
-                action.equals(SETTINGS_KICK) ||
                 action.equals(Intent.ACTION_TIMEZONE_CHANGED) ||
                 action.equals(Intent.ACTION_TIME_CHANGED) ||
-                //
-                // Update time if date changes in case there's a switch between STD Time and DST
-                action.equals(Intent.ACTION_DATE_CHANGED) ||
-                //
-                // The following AlarmManager intent is only sent when the permission is granted,
-                // not when the permission is revoked, and should only occur in Android 12 or 12L
-                // due to use of USE_EXACT_ALARM permission.
-                (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && action.equals(AlarmManager.ACTION_SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED))
+                action.equals(Intent.ACTION_DATE_CHANGED)
             )
         ) {
-            int[] appWidgetIds = null;
-            if (intent.hasExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS)) {
-                appWidgetIds = intent.getIntArrayExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS);
-            }
-
-            // Treating a change in any of exact alarm permission, system time, or system timezone
-            // as a minute tick insures immediate update of time display on such changes
-            onTick(context, action, appWidgetIds);
+            onTick(context);
         }
     }
 
@@ -210,43 +171,27 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, SETTINGS_KICK, appWidgetId);
+            appWidgetManager.updateAppWidget(appWidgetId, updateTimeDisplay(context, appWidgetId));
         }
-    }
-
-    private static PendingIntent getPendingIntent(Context context, int[] appWidgetIds) {
-        Intent tickIntent = new Intent(context, TimeDisplayWidget.class);
-        tickIntent.setAction(MINUTE_TICK);
-        tickIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-        return PendingIntent.getBroadcast(context, 0, tickIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-    }
-
-    private static void setAlarm (Context context) {
-    }
-
-    private static void setAlarm (Context context, long targetTime) {
     }
 
     @Override
     public void onEnabled(Context context) {
-        setAlarm(context, Calendar.getInstance().getTimeInMillis());
+        /*
+            Don't start the TimeTickRelay service here because the widget may not be in the
+            foreground yet, in which case it throw an exception. Instead, start it in the Save
+            button handler of the SettingsButtonBarFragment so it will be started when the widget
+            is added but while the SettingsActivity is still in the foreground.
+        */
     }
 
     @Override
     public void onDisabled(Context context) {
-        if (alarmManager != null && alarmPendingIntent != null) {
-            alarmManager.cancel(alarmPendingIntent);
-        }
-
         Intent serviceIntent = new Intent(context, TimeTickRelay.class);
         context.stopService(serviceIntent);
     }
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, String action, int appWidgetId) {
-        appWidgetManager.updateAppWidget(appWidgetId, updateTimeDisplay(context, action, appWidgetId));
-    }
-
-    static private int findMaxTextSize(Context context, Rect maxRect, String refText) {
+    private int findMaxTextSize(Context context, Rect maxRect, String refText) {
         /*
             Use a binary search to find the largest TextSize such that the provided reference text
             refText fits within the provided rectangle maxRect, where the variable loSize will
@@ -294,7 +239,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         return loSize;
     }
 
-    static private int calcTimeDisplayTextSize(Context context, int appWidgetId, Bundle bundle) {
+    private int calcTimeDisplayTextSize(Context context, int appWidgetId, Bundle bundle) {
         // Get text of max length equal to the clock's max width display
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm = sp.getBoolean("switch_format" + appWidgetId, false);
@@ -327,7 +272,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         return findMaxTextSize(context, maxRect, maxlengthText);
     }
 
-    static private void setTimeTextSize(Context context, RemoteViews views, int appWidgetId, Bundle widgetOptions) {
+    private void setTimeTextSize(Context context, RemoteViews views, int appWidgetId, Bundle widgetOptions) {
         int textsize = calcTimeDisplayTextSize(context, appWidgetId, widgetOptions);
         int fudgefactor = 3;    // Conservative value for compensation of possible error in calculated text size
                                 // (observed on a Nexus 6 AVD running API 24; value of 1 was sufficent to compensate)
@@ -341,7 +286,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         // This call needs to be here rather than just instantiating a new RemoteViews
         // object so the display will be updated for each of the multiple calls to
         // onAppWidgetOptionsChanged that may occur while the user is resizing a widget
-        RemoteViews views = updateTimeDisplay(context, SETTINGS_KICK, appWidgetId);
+        RemoteViews views = updateTimeDisplay(context, appWidgetId);
 
         setTimeTextSize(context, views, appWidgetId, newOptions);
         appWidgetManager.updateAppWidget(appWidgetId, views);

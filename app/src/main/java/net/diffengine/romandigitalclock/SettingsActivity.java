@@ -2,7 +2,7 @@
  * SettingsActivity.java
  * - This file is part of the Android app RomanDigital
  *
- * Copyright 2024-2025 David Yockey
+ * Copyright 2024-2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -256,15 +256,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
-        // Kick the widgets so they'll update time immediately in case some broadcast intent has
-        // been missed. This may be unnecessary; I tend to think of intents as similar to messages
-        // used in controlling other systems' GUIs, which may not be the case.
-        Intent kickstart = new Intent(this, TimeDisplayWidget.class);
-        kickstart.setAction(TimeDisplayWidget.MINUTE_TICK);
-        kickstart.setPackage(this.getPackageName());
-        this.sendBroadcast(kickstart);
-
         unregisterReceiver(updateReceiver);
         unregisterReceiver(broadcastReceiver);
     }
@@ -272,7 +263,6 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
         ContextCompat.registerReceiver(this, updateReceiver, new IntentFilter(UPDATE_PREVIEW), ContextCompat.RECEIVER_NOT_EXPORTED);
     }

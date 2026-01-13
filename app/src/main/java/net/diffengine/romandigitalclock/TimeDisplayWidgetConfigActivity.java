@@ -2,7 +2,7 @@
  * TimeDisplayWidgetConfigActivity.java
  * - This file is part of the Android app RomanDigital
  *
- * Copyright 2024-2025 David Yockey
+ * Copyright 2024-2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -156,13 +156,13 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        // Since the widget's alarms may have been canceled on pause,
-        // broadcast an intent to kickstart the widget when it resumes
-        // along with immediately updating the widget
-        Intent kickstart = new Intent(this, TimeDisplayWidget.class);
-        kickstart.setAction(TimeDisplayWidget.SETTINGS_KICK);
-        kickstart.setPackage(this.getPackageName());
-        this.sendBroadcast(kickstart);
+        // Broadcast an intent immediately after either Close or Save is pressed
+        // and the config activity is closed. This updates the widget immediately
+        // rather than waiting for the next relayed ACTION_TIME_TICK to arrive.
+        Intent update_widget = new Intent(this, TimeDisplayWidget.class);
+        update_widget.setAction(TimeDisplayWidget.RELAYED_TIME_TICK);
+        update_widget.setPackage(this.getPackageName());
+        this.sendBroadcast(update_widget);
     }
 
     @Override

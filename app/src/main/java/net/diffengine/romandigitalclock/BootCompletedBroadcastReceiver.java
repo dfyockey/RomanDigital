@@ -36,11 +36,6 @@ public class BootCompletedBroadcastReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (action != null && action.equals(ACTION_BOOT_COMPLETED)) {
-            Intent kickstart = new Intent(context, TimeDisplayWidget.class);
-            kickstart.setAction(TimeDisplayWidget.MINUTE_TICK);
-            kickstart.setPackage(context.getPackageName());
-            context.sendBroadcast(kickstart);
-
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, TimeDisplayWidget.class));
             if (appWidgetIds.length > 0) {
