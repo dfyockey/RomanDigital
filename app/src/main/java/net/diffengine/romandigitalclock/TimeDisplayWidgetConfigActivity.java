@@ -82,6 +82,8 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
             fragmentTransaction.add(R.id.widget_bkgnd, new WidgetBkgndSettingsFragment(appWidgetId));
             fragmentTransaction.add(R.id.button_bar, new SettingsButtonBarFragment()).commit();
         }
+
+        BootCompletedBroadcastReceiver.startRelayIfWidgets(this);
     }
 
     public static class WidgetBkgndSettingsFragment extends PreferenceFragmentCompat {
