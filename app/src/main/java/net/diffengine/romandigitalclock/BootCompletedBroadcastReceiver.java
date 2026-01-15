@@ -36,15 +36,19 @@ public class BootCompletedBroadcastReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (action != null && action.equals(ACTION_BOOT_COMPLETED)) {
-            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, TimeDisplayWidget.class));
-            if (appWidgetIds.length > 0) {
-                Intent serviceIntent = new Intent(context, TimeTickRelay.class);
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    context.startForegroundService(serviceIntent);
-                } else {
-                    context.startService(serviceIntent);
-                }
+            startRelayIfWidgets(context);
+        }
+    }
+
+    public static void startRelayIfWidgets(Context context) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, TimeDisplayWidget.class));
+        if (appWidgetIds.length > 0) {
+            Intent serviceIntent = new Intent(context, TimeTickRelay.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent);
+            } else {
+                context.startService(serviceIntent);
             }
         }
     }
