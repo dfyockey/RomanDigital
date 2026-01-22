@@ -4,14 +4,14 @@ plugins {
 
 android {
     namespace = "net.diffengine.romandigitalclock"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "net.diffengine.romandigitalclock"
         minSdk = 21
-        targetSdk = 34
-        versionCode = 14
-        versionName = "3.0.1 Alpha"
+        targetSdk = 35
+        versionCode = 15
+        versionName = "3.0.0 Beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -33,7 +33,7 @@ android {
 }
 
 dependencies {
-    val acraVersion = "5.11.3"
+    val acraVersion = "5.13.1"
 
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("com.google.android.material:material:1.11.0")
