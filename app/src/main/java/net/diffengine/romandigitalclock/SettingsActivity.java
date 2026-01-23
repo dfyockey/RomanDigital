@@ -28,12 +28,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.ListPreference;
 import androidx.preference.Preference;
@@ -54,6 +59,22 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+
+        // Compensate for forced edge-to-edge in SDK 35 (Android 15) and later
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            View containerView = findViewById(android.R.id.content);
+            ViewCompat.setOnApplyWindowInsetsListener(containerView, (v, insets) -> {
+
+                Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(bars.left, 0, bars.right, bars.bottom);
+
+                View spacer = findViewById(R.id.spacerAppSettings);
+                spacer.getLayoutParams().height = bars.top;
+
+                return WindowInsetsCompat.CONSUMED;
+            });
+        }
+
         if (savedInstanceState == null) {
             displayColorFragment = new DisplayColorFragment();
             FragmentManager supportFragmentManager = getSupportFragmentManager();

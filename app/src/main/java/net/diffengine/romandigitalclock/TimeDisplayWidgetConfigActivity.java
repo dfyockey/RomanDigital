@@ -23,6 +23,9 @@ package net.diffengine.romandigitalclock;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
@@ -34,7 +37,9 @@ import androidx.preference.SeekBarPreference;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 
 import java.util.Objects;
 
@@ -67,6 +72,22 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setResultCanceled();
         setContentView(R.layout.activity_time_display_widget_config);
+
+        // Compensate for forced edge-to-edge in SDK 35 (Android 15) and later
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            View containerView = findViewById(android.R.id.content);
+//            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layoutWidgetSettings), (v, insets) -> {
+            ViewCompat.setOnApplyWindowInsetsListener(containerView, (v, insets) -> {
+
+                Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(bars.left, 0, bars.right, bars.bottom);
+
+                View spacer = findViewById(R.id.spacerWidgetSettings);
+                spacer.getLayoutParams().height = bars.top;
+
+                return WindowInsetsCompat.CONSUMED;
+            });
+        }
 
         if(BuildConfig.DEBUG) {
             String activityTitle = (String) getTitle();
