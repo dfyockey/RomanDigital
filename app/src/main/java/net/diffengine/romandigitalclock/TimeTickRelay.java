@@ -45,6 +45,7 @@ public class TimeTickRelay extends Service {
         return null;
     }
 
+    @SuppressWarnings("InnerClassMayBeStatic")
     private class TickReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -89,13 +90,8 @@ public class TimeTickRelay extends Service {
     }
 
     private int getServiceType() {
-        int foregroundServiceType = 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE;
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            foregroundServiceType = ServiceInfo.FOREGROUND_SERVICE_TYPE_NONE;
-        }
-        return foregroundServiceType;
+        boolean isSDK34 = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE);
+        return (isSDK34 ? ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE : 0);
     }
 
     private PendingIntent createClickPendingIntent() {
@@ -109,6 +105,7 @@ public class TimeTickRelay extends Service {
         return new NotificationCompat.Builder(this, channel_id)
                 .setSmallIcon(R.drawable.ic_rd_notification_icon)
                 .setPriority(NotificationCompat.PRIORITY_MIN)
+                .setContentText(getString(R.string.notification_content_text))
                 .setContentIntent(clickPendingIntent)
                 .build();
     }
