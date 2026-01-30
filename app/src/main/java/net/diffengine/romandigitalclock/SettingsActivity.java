@@ -44,6 +44,8 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreferenceCompat;
 
+import net.diffengine.romandigitalclock.fragment.preference.ScreenSettingsFragment;
+
 import java.util.Objects;
 import java.util.TimeZone;
 
@@ -201,13 +203,6 @@ public class SettingsActivity extends AppCompatActivity {
                 setSeparatorEnableState(pFormat);
             }
             return super.onPreferenceTreeClick(preference);
-        }
-    }
-
-    public static class ScreenSettingsFragment extends PreferenceFragmentCompat {
-        @Override
-        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-            setPreferencesFromResource(R.xml.screen_preferences, rootKey);
         }
     }
 
