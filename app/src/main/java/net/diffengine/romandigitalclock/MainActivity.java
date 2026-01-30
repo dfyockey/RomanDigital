@@ -43,6 +43,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -154,6 +155,9 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        Typeface[] typeface = {Typeface.MONOSPACE, Typeface.SANS_SERIF, Typeface.SERIF};
+        int index = Integer.parseInt(prefs.getString("list_typeface", "0"));
+        TimeDisplay.setTypeface(typeface[index]);
         TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, pxCurrentControlTextSize);
         TimeDisplay.setText(now);
         setKeepScreenOn();

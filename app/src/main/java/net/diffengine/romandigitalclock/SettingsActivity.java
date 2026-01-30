@@ -28,6 +28,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -98,6 +99,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         Context prefManagerContext;
         PreferenceCategory category;
+        SwitchPreferenceCompat pAlignment = null;
 
         private void addABSwitchPreference (String key, String aText, String bText) {
             SwitchPreferenceCompat pref = new SwitchPreferenceCompat(prefManagerContext);
@@ -109,7 +111,7 @@ public class SettingsActivity extends AppCompatActivity {
             category.addPreference(pref);
         }
 
-        private void addSeparator (String key) {
+        private void addSeparator (@SuppressWarnings("SameParameterValue") String key) {
             Preference pref = new Preference(prefManagerContext);
             pref.setLayoutResource(R.layout.separator_layout);
             pref.setKey(key);
@@ -122,14 +124,8 @@ public class SettingsActivity extends AppCompatActivity {
             pref.setKey(key + postfix);
             pref.setTitle(title);
 
-            // "%s" is documented in the doc for the deprecated android.preference.ListPreference at
-            // https://developer.android.com/reference/android/preference/ListPreference.html#setSummary(java.lang.CharSequence),
-            // but not in the doc for its replacement androidx.preference.ListPreference at
-            // https://developer.android.com/reference/androidx/preference/ListPreference#setSummary(java.lang.CharSequence).
-            //
-            // Consequently, while it's EXTREMELY useful, it should be considered deprecated unless
-            // and until it is documented in the androidx.preference.ListPreference documentation.
-            pref.setSummary("%s");
+            ListPreference.SimpleSummaryProvider summaryProvider = ListPreference.SimpleSummaryProvider.getInstance();
+            pref.setSummaryProvider(summaryProvider);
 
             pref.setEntries(entries);
             pref.setEntryValues(entryValues);
@@ -153,7 +149,7 @@ public class SettingsActivity extends AppCompatActivity {
                     addABSwitchPreference("switch_alignment", "Align to Center", "Align to Divider");
                     addABSwitchPreference("switch_separator", ": for All", "· for AM\n: for PM");
 
-                    if (!postfix.equals("")) {
+                    if (!postfix.isEmpty()) {
                         addSeparator("S1");
 
                         String[] timezoneIds = TimeZone.getAvailableIDs();
@@ -173,6 +169,23 @@ public class SettingsActivity extends AppCompatActivity {
             SwitchPreferenceCompat pFormat = findPreference("switch_format" + postfix);
             //noinspection DataFlowIssue
             setSeparatorEnableState(pFormat);
+
+            if (postfix.isEmpty()) {
+                //noinspection DataFlowIssue
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String typefaceValue = sp.getString("list_typeface", "0");
+                pAlignment = findPreference("switch_alignment");
+                setAlignmentEnableState(typefaceValue);
+            }
+        }
+
+        private void setAlignmentEnableState(String typefaceValue) {
+            if (typefaceValue.equals("0")) {
+                pAlignment.setEnabled(true);
+            } else {
+                pAlignment.setChecked(MainActivity.left);
+                pAlignment.setEnabled(false);
+            }
         }
 
         @Override
@@ -202,9 +215,40 @@ public class SettingsActivity extends AppCompatActivity {
         return !( hex == null || !hex.matches("[0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f][0-9A-Fa-f]") );
     }
 
+    // This fragment MUST be added after SettingsFragment in onCreate so postfix is properly defined.
     public static class DisplayColorFragment extends PreferenceFragmentCompat {
         Context prefManagerContext;
         PreferenceCategory category;
+
+        private void addTypefaceListPreference () {
+            ListPreference pref = new ListPreference(prefManagerContext);
+            pref.setIconSpaceReserved(true);    // Required for some devices that default this to false
+            pref.setKey("list_typeface");
+            pref.setTitle("Typeface");
+            String[] typefaces = {"monospace", "sans", "serif"};
+            String[] typefaceValues = {"0", "1", "2"};
+
+            pref.setEntries(typefaces);
+            pref.setEntryValues(typefaceValues);
+            pref.setValue(typefaceValues[0]);
+
+            ListPreference.SimpleSummaryProvider summaryProvider = ListPreference.SimpleSummaryProvider.getInstance();
+            pref.setSummaryProvider(summaryProvider);
+
+//            pref.setOnPreferenceChangeListener((preference, newValue) -> {
+//                SwitchPreferenceCompat pAlignment = SettingsFragment.pAlignment;
+//
+//                if (newValue.equals("0")) {
+//                    pAlignment.setEnabled(true);
+//                } else {
+//                    pAlignment.setChecked(MainActivity.left);
+//                    pAlignment.setEnabled(false);
+//                }
+//                return true;
+//            });
+
+            category.addPreference(pref);
+        }
 
         @Override
         public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
@@ -217,10 +261,14 @@ public class SettingsActivity extends AppCompatActivity {
                 category.setTitle("Style");
                 screen.addPreference(category);
 
-                ColorDialogPreference colorPref = new ColorDialogPreference(prefManagerContext, getChildFragmentManager());
-                colorPref.setTitle("Time Color");
-                colorPref.setKey("hexcolor");
-                category.addPreference(colorPref);
+                    ColorDialogPreference colorPref = new ColorDialogPreference(prefManagerContext, getChildFragmentManager());
+                    colorPref.setTitle("Time Color");
+                    colorPref.setKey("hexcolor");
+                    category.addPreference(colorPref);
+
+                    if (SettingsFragment.postfix.isEmpty()) {
+                        addTypefaceListPreference();
+                    }
 
             setPreferenceScreen(screen);
         }
