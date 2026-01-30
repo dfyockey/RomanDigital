@@ -64,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatTextView TimeDisplaySizeControl;
     private View     bkgndView;
 
-    static boolean left  = false;
-    static boolean right = true;
+    public static boolean left  = false;
+    public static boolean right = true;
 
     private WindowInsetsControllerCompat windowInsetsControllerCompat;
 

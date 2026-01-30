@@ -36,6 +36,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import net.diffengine.romandigitalclock.fragment.preference.SettingsFragment;
+
 import java.util.Objects;
 
 public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
@@ -78,7 +80,7 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
                     .beginTransaction()
                     .setReorderingAllowed(true);
 
-            fragmentTransaction.add(R.id.widget_settings, new SettingsActivity.SettingsFragment(false, appWidgetId));
+            fragmentTransaction.add(R.id.widget_settings, new SettingsFragment(false, appWidgetId));
             fragmentTransaction.add(R.id.widget_bkgnd, new WidgetBkgndSettingsFragment(appWidgetId));
             fragmentTransaction.add(R.id.button_bar, new SettingsButtonBarFragment()).commit();
         }
