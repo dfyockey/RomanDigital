@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 import androidx.preference.ListPreference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
@@ -12,6 +13,7 @@ import androidx.preference.PreferenceManager;
 import androidx.preference.PreferenceScreen;
 
 import net.diffengine.romandigitalclock.ColorDialogPreference;
+import net.diffengine.romandigitalclock.R;
 
 import java.util.Objects;
 
@@ -34,6 +36,17 @@ public class DisplayColorFragment extends PreferenceFragmentCompat {
 
         ListPreference.SimpleSummaryProvider summaryProvider = ListPreference.SimpleSummaryProvider.getInstance();
         pref.setSummaryProvider(summaryProvider);
+
+        pref.setOnPreferenceChangeListener((preference, newValue) -> {
+            FragmentManager supportFragmentManager = requireActivity().getSupportFragmentManager();
+            SettingsFragment settingsFragment = (SettingsFragment) supportFragmentManager.findFragmentById(R.id.app_settings_frame);
+
+            if (settingsFragment != null) {
+                settingsFragment.setAlignmentEnableState(newValue.toString());
+            }
+
+            return true;
+        });
 
         category.addPreference(pref);
     }

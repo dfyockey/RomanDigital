@@ -125,7 +125,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         }
     }
 
-    private void setAlignmentEnableState(String typefaceValue) {
+    public void setAlignmentEnableState(String typefaceValue) {
         if (typefaceValue.equals("0")) {
             pAlignment.setEnabled(true);
         } else {
