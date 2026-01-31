@@ -44,12 +44,13 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
         if (savedInstanceState == null) {
-            displayColorFragment = new DisplayColorFragment();
+            int inApp = AppWidgetManager.INVALID_APPWIDGET_ID;
+            displayColorFragment = new DisplayColorFragment(inApp);
             FragmentManager supportFragmentManager = getSupportFragmentManager();
             supportFragmentManager
                     .beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.app_settings_frame, new SettingsFragment(true, AppWidgetManager.INVALID_APPWIDGET_ID))
+                    .add(R.id.app_settings_frame, new SettingsFragment(inApp))
                     .add(R.id.display_color_frame, displayColorFragment)
                     .add(R.id.screen_settings_frame, new ScreenSettingsFragment())
                     .add(R.id.button_bar_2, new SettingsButtonBarFragment())

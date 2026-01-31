@@ -1,5 +1,6 @@
 package net.diffengine.romandigitalclock.fragment.preference;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,15 +21,11 @@ import java.util.TimeZone;
 
 public class SettingsFragment extends PreferenceFragmentCompat {
 
-    public static String postfix;
+    public String postfix;
 
-    public SettingsFragment () {
-    }
-
-    public SettingsFragment (Boolean isApp, int appWidgetId) {
-        final String appPostfix = "";
-        final String widgetPostfix = String.valueOf(appWidgetId);
-        postfix = ( (isApp) ? appPostfix : widgetPostfix );
+    public SettingsFragment (int appWidgetId) {
+        super();
+        postfix = ( (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) ? String.valueOf(appWidgetId) : "" );
     }
 
     private void setSeparatorEnableState(SwitchPreferenceCompat pFormat) {

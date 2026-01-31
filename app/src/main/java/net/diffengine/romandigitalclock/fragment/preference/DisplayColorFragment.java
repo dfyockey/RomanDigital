@@ -1,6 +1,7 @@
 package net.diffengine.romandigitalclock.fragment.preference;
 
 import android.app.Dialog;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -17,8 +18,15 @@ import net.diffengine.romandigitalclock.R;
 
 import java.util.Objects;
 
-// This fragment MUST be added after SettingsFragment in onCreate so postfix is properly defined.
 public class DisplayColorFragment extends PreferenceFragmentCompat {
+
+    public String postfix;
+
+    public DisplayColorFragment (int appWidgetId) {
+        super();
+        postfix = ( (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) ? String.valueOf(appWidgetId) : "" );
+    }
+
     Context prefManagerContext;
     PreferenceCategory category;
 
@@ -67,7 +75,7 @@ public class DisplayColorFragment extends PreferenceFragmentCompat {
         colorPref.setKey("hexcolor");
         category.addPreference(colorPref);
 
-        if (SettingsFragment.postfix.isEmpty()) {
+        if (postfix.isEmpty()) {
             addTypefaceListPreference();
         }
 

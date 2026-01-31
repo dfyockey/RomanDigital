@@ -80,7 +80,7 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
                     .beginTransaction()
                     .setReorderingAllowed(true);
 
-            fragmentTransaction.add(R.id.widget_settings, new SettingsFragment(false, appWidgetId));
+            fragmentTransaction.add(R.id.widget_settings, new SettingsFragment(appWidgetId));
             fragmentTransaction.add(R.id.widget_bkgnd, new WidgetBkgndSettingsFragment(appWidgetId));
             fragmentTransaction.add(R.id.button_bar, new SettingsButtonBarFragment()).commit();
         }
