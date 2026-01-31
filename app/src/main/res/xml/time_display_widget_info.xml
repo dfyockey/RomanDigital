@@ -35,7 +35,7 @@
 
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:configure="net.diffengine.romandigitalclock.TimeDisplayWidgetConfigActivity"
+    android:configure="net.diffengine.romandigitalclock.WidgetSettingsActivity"
     android:widgetFeatures="reconfigurable"
     android:minWidth="180dp"
     android:minResizeWidth="115dp"

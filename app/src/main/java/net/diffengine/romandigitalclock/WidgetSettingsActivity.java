@@ -1,5 +1,5 @@
 /*
- * TimeDisplayWidgetConfigActivity.java
+ * WidgetSettingsActivity.java
  * - This file is part of the Android app RomanDigital
  *
  * Copyright 2024-2025 David Yockey
@@ -36,14 +36,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
-import net.diffengine.romandigitalclock.fragment.preference.SettingsFragment;
+import net.diffengine.romandigitalclock.fragment.preference.TimeFormatFragment;
 
 import java.util.Objects;
 
-public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
+public class WidgetSettingsActivity extends AppCompatActivity {
     int appWidgetId;
 
-    public TimeDisplayWidgetConfigActivity() {
+    public WidgetSettingsActivity() {
         super(R.layout.activity_time_display_widget_config);
     }
 
@@ -80,7 +80,7 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
                     .beginTransaction()
                     .setReorderingAllowed(true);
 
-            fragmentTransaction.add(R.id.widget_settings, new SettingsFragment(appWidgetId));
+            fragmentTransaction.add(R.id.widget_settings, new TimeFormatFragment(appWidgetId));
             fragmentTransaction.add(R.id.widget_bkgnd, new WidgetBkgndSettingsFragment(appWidgetId));
             fragmentTransaction.add(R.id.button_bar, new SettingsButtonBarFragment()).commit();
         }

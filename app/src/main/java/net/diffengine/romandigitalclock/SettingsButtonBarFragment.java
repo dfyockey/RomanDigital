@@ -73,8 +73,8 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
         //noinspection ReassignedVariable
         int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
         String cls = parentActivity.getComponentName().getClassName();
-        if (cls.equals("net.diffengine.romandigitalclock.TimeDisplayWidgetConfigActivity")) {
-            TimeDisplayWidgetConfigActivity widgetConfigActivity = (TimeDisplayWidgetConfigActivity) parentActivity;
+        if (cls.equals("net.diffengine.romandigitalclock.WidgetSettingsActivity")) {
+            WidgetSettingsActivity widgetConfigActivity = (WidgetSettingsActivity) parentActivity;
             appWidgetId = widgetConfigActivity.appWidgetId;
         }
 

@@ -18,11 +18,11 @@ import net.diffengine.romandigitalclock.R;
 
 import java.util.Objects;
 
-public class DisplayColorFragment extends PreferenceFragmentCompat {
+public class TimeStyleFragment extends PreferenceFragmentCompat {
 
     public String postfix;
 
-    public DisplayColorFragment (int appWidgetId) {
+    public TimeStyleFragment(int appWidgetId) {
         super();
         postfix = ( (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) ? String.valueOf(appWidgetId) : "" );
     }
@@ -47,10 +47,10 @@ public class DisplayColorFragment extends PreferenceFragmentCompat {
 
         pref.setOnPreferenceChangeListener((preference, newValue) -> {
             FragmentManager supportFragmentManager = requireActivity().getSupportFragmentManager();
-            SettingsFragment settingsFragment = (SettingsFragment) supportFragmentManager.findFragmentById(R.id.app_settings_frame);
+            TimeFormatFragment timeFormatFragment = (TimeFormatFragment) supportFragmentManager.findFragmentById(R.id.app_settings_frame);
 
-            if (settingsFragment != null) {
-                settingsFragment.setAlignmentEnableState(newValue.toString());
+            if (timeFormatFragment != null) {
+                timeFormatFragment.setAlignmentEnableState(newValue.toString());
             }
 
             return true;

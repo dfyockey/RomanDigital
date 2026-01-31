@@ -19,11 +19,11 @@ import net.diffengine.romandigitalclock.R;
 
 import java.util.TimeZone;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class TimeFormatFragment extends PreferenceFragmentCompat {
 
     public String postfix;
 
-    public SettingsFragment (int appWidgetId) {
+    public TimeFormatFragment(int appWidgetId) {
         super();
         postfix = ( (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) ? String.valueOf(appWidgetId) : "" );
     }

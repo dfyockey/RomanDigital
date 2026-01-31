@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity {
     public static String getHexColor(Context context, SharedPreferences sp, String key) {
         String defaultColorHexStr = getHexFromColorRes(context, R.color.clock_red);
         String hexcolor = sp.getString(key, defaultColorHexStr);
-        if (!SettingsActivity.isHexColor(hexcolor)) {
+        if (!AppSettingsActivity.isHexColor(hexcolor)) {
             hexcolor = defaultColorHexStr;
         }
         return hexcolor;
@@ -323,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
 
                 if(itemId == R.id.item_settings) {
-                    showActivity(SettingsActivity.class);
+                    showActivity(AppSettingsActivity.class);
                 } else if (itemId == R.id.item_about) {
                     showActivity(AboutActivity.class);
                 } else {

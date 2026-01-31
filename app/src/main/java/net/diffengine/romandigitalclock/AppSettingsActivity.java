@@ -1,5 +1,5 @@
 /*
- * SettingsActivity.java
+ * AppSettingsActivity.java
  * - This file is part of the Android app RomanDigital
  *
  * Copyright 2024-2025 David Yockey
@@ -35,9 +35,9 @@ import androidx.fragment.app.FragmentManager;
 
 import net.diffengine.romandigitalclock.fragment.preference.*;
 
-public class SettingsActivity extends AppCompatActivity {
+public class AppSettingsActivity extends AppCompatActivity {
 
-    DisplayColorFragment displayColorFragment;
+    TimeStyleFragment timeStyleFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,19 +45,19 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.settings_activity);
         if (savedInstanceState == null) {
             int inApp = AppWidgetManager.INVALID_APPWIDGET_ID;
-            displayColorFragment = new DisplayColorFragment(inApp);
+            timeStyleFragment = new TimeStyleFragment(inApp);
             FragmentManager supportFragmentManager = getSupportFragmentManager();
             supportFragmentManager
                     .beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.app_settings_frame, new SettingsFragment(inApp))
-                    .add(R.id.display_color_frame, displayColorFragment)
+                    .add(R.id.app_settings_frame, new TimeFormatFragment(inApp))
+                    .add(R.id.display_color_frame, timeStyleFragment)
                     .add(R.id.screen_settings_frame, new ScreenSettingsFragment())
                     .add(R.id.button_bar_2, new SettingsButtonBarFragment())
                     .commit();
         } else {
             FragmentManager supportFragmentManager = getSupportFragmentManager();
-            displayColorFragment = (DisplayColorFragment) supportFragmentManager.findFragmentById(R.id.display_color_frame);
+            timeStyleFragment = (TimeStyleFragment) supportFragmentManager.findFragmentById(R.id.display_color_frame);
         }
     }
 
@@ -68,8 +68,8 @@ public class SettingsActivity extends AppCompatActivity {
     private class BroadcastReceiverEx extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (displayColorFragment != null) {
-                displayColorFragment.updateDialogTimeDisplayPreview();
+            if (timeStyleFragment != null) {
+                timeStyleFragment.updateDialogTimeDisplayPreview();
             }
         }
     }
