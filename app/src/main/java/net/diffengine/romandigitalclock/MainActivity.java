@@ -155,9 +155,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        Typeface[] typeface = {Typeface.MONOSPACE, Typeface.SANS_SERIF, Typeface.SERIF};
-        int index = Integer.parseInt(prefs.getString("list_typeface", "0"));
-        TimeDisplay.setTypeface(typeface[index]);
         TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, pxCurrentControlTextSize);
         TimeDisplay.setText(now);
         setKeepScreenOn();
@@ -269,6 +266,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void setDisplayFont(String family) {
+        if( prefs != null) {
+            String face[] = {"mono", "sans", "serif"};
+            int index = Integer.parseInt(prefs.getString("list_typeface", "0"));
+            String fontfile = "fonts/" + family + "_" + face[index] + ".ttf";
+            Typeface typeface = Typeface.createFromAsset(getAssets(), fontfile);
+            TimeDisplay.setTypeface(typeface);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // Set this because, as emperically determined, this weight is used for the default
+                // weight of devices used in development. Also, it keeps the appearance the same on
+                // my phone. A selfish reason, but I'm the developer and rank has its privileges. :)
+                TimeDisplay.setFontVariationSettings("'wght' 370");
+            }
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -360,6 +373,7 @@ public class MainActivity extends AppCompatActivity {
         TimeDisplaySizeControl.setText(maxtime_fill);
         TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
         setDisplayColorFromPref();
+        setDisplayFont("roboto");
 
         registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
         ContextCompat.registerReceiver(context, updateReceiver, new IntentFilter(UPDATE_DISPLAY), ContextCompat.RECEIVER_NOT_EXPORTED);
