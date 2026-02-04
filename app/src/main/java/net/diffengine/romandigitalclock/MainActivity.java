@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.OnApplyWindowInsetsListener;
@@ -56,6 +57,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import java.util.AbstractMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.TimeZone;
 
 /** @noinspection Convert2Lambda, SpellCheckingInspection */
@@ -268,10 +272,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void setDisplayFont(String family) {
         if( prefs != null) {
-            String face[] = {"mono", "sans", "serif"};
+            // Add a new AbstractMap for each font family to be used. See https://www.baeldung.com/java-initialize-hashmap
+            Map<String, int[]> font = Map.ofEntries(
+                    new AbstractMap.SimpleEntry<>("roboto", new int[]{R.font.roboto_mono, R.font.roboto_sans, R.font.roboto_serif})
+            );
             int index = Integer.parseInt(prefs.getString("list_typeface", "0"));
-            String fontfile = "fonts/" + family + "_" + face[index] + ".ttf";
-            Typeface typeface = Typeface.createFromAsset(getAssets(), fontfile);
+            Typeface typeface = ResourcesCompat.getFont(context, Objects.requireNonNull(font.get(family))[index]);
             TimeDisplay.setTypeface(typeface);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 // Set this because, as emperically determined, this weight is used for the default
