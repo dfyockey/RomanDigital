@@ -96,6 +96,7 @@ for the full license text."
     <string name="tz_above_time">Time zone label above time</string>
     <string name="time_only">Time only</string>
     <string name="tz_below_time">Time zone label below time</string>
+    <string name="default_tz">America/New_York</string>
 
     <!-- Time Preferences Strings -->
     <string name="left">false</string>

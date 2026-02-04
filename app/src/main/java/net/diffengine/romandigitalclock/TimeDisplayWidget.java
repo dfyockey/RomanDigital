@@ -20,6 +20,8 @@
 
 package net.diffengine.romandigitalclock;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static androidx.core.content.ContextCompat.getColor;
 
 import android.app.AlarmManager;
@@ -43,6 +45,7 @@ import android.widget.RemoteViews;
 import androidx.preference.PreferenceManager;
 
 import java.util.Calendar;
+import java.util.Map;
 import java.util.TimeZone;
 
 /** @noinspection SpellCheckingInspection*/
@@ -70,19 +73,23 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     public static final String MINUTE_TICK = "net.diffengine.romandigitalclock.MINUTE_TICK";
     public static final String SETTINGS_KICK = "net.diffengine.romandigitalclock.SETTINGS_KICK";
 
-    private static int getLayoutId(String layoutMoniker) {
-        switch (layoutMoniker) {
-            case "hi_label":
-                return R.layout.time_display_widget_hi_label;
-            case "no_label":
-                return R.layout.time_display_widget;
-            case "lo_label":
-                return R.layout.time_display_widget_lo_label;
-            default:
-                break;
+    ///////
+    // Convertion to indices obviates need to do string comparisons to set up both layout and
+    // label color without having to change existing preference data format from strings to ints.
+        private static final Map<String, Integer> map = Map.of(
+                "hi_label", 0,
+                "no_label", 1,
+                "lo_label", 2
+        );
+
+        private static Integer getLayoutConfigId(String layoutMoniker) {
+            return map.get(layoutMoniker);
         }
-        return R.layout.time_display_widget;  // error condition: invalid layoutMoniker
-    }
+    //
+    ///////
+
+    // This is assignment is temporary until typeface selection is set up...
+    static int appwidget_clock = R.id.appwidget_clock_mono;
 
     // Unused action parameter is retained because it may be used later
     // to handle SETTINGS_KICK or another power-saving action.
@@ -93,14 +100,21 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
         boolean alignment     = sp.getBoolean("switch_alignment" + appWidgetId, false);
         String  tzid          = sp.getString("list_timezone" + appWidgetId, TimeZone.getDefault().getID());
-        int layoutId          = getLayoutId( sp.getString("list_widget_layout" + appWidgetId, "no_label" ) );
+        String layoutMoniker  = sp.getString("list_widget_layout" + appWidgetId, "no_label" );
+        int layoutId          = R.layout.time_display_widget;
+        int layoutConfigId    = getLayoutConfigId(layoutMoniker);
 
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
         CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzid);
 //        widgetText = "VIII:XXXVIII";
         RemoteViews views = new RemoteViews(context.getPackageName(), layoutId);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+
+        // Setup layout
+            views.setTextViewText(appwidget_clock, widgetText);
+            views.setViewVisibility(R.id.appwidget_tzlabel_hi, (layoutConfigId == 0 ? VISIBLE : GONE));
+            views.setViewVisibility(R.id.appwidget_tzlabel_lo, (layoutConfigId == 2 ? VISIBLE : GONE));
+        //
 
         // Update the widget background on instantiation, system boot, or change of settings
         /*
@@ -122,10 +136,18 @@ public class TimeDisplayWidget extends AppWidgetProvider {
             } else {
                 widget_text_color_resource = R.color.widgetText_HiOpacityBkgnd;
             }
-            views.setInt(R.id.appwidget_text, "setTextColor", getColor(context, widget_text_color_resource));
-            if (layoutId != R.layout.time_display_widget) {
-                views.setTextViewText(R.id.appwidget_label, tzid);
-                views.setInt(R.id.appwidget_label, "setTextColor", getColor(context, widget_text_color_resource));
+            views.setInt(appwidget_clock, "setTextColor", getColor(context, widget_text_color_resource));
+
+            // Set label color
+            if (layoutConfigId != 1) {
+                int tzlabel = 0;
+                if (layoutConfigId == 0) {
+                    tzlabel = R.id.appwidget_tzlabel_hi;
+                } else if (layoutConfigId == 2) {
+                    tzlabel = R.id.appwidget_tzlabel_lo;
+                }
+                views.setTextViewText(tzlabel, tzid);
+                views.setInt(tzlabel, "setTextColor", getColor(context, widget_text_color_resource));
             }
 
             Bundle widgetOptions = AppWidgetManager.getInstance(context).getAppWidgetOptions(appWidgetId);
@@ -342,7 +364,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         int textsize = calcTimeDisplayTextSize(context, appWidgetId, widgetOptions);
         int fudgefactor = 3;    // Conservative value for compensation of possible error in calculated text size
                                 // (observed on a Nexus 6 AVD running API 24; value of 1 was sufficent to compensate)
-        views.setTextViewTextSize(R.id.appwidget_text, TypedValue.COMPLEX_UNIT_DIP, textsize-fudgefactor);
+        views.setTextViewTextSize(appwidget_clock, TypedValue.COMPLEX_UNIT_DIP, textsize-fudgefactor);
     }
 
     @Override

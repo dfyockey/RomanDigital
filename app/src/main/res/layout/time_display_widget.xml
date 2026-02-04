@@ -23,35 +23,34 @@
  */
 -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/appwidget_bkgnd"
     style="@style/Widget.RomanDigitalClock.AppWidget.Container"
+    android:theme="@style/Theme.RomanDigitalClock.AppWidgetContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/appwidget_bkgnd_50"
-    android:theme="@style/Theme.RomanDigitalClock.AppWidgetContainer">
+    android:orientation="vertical"
+    android:gravity="center">
 
     <TextView
-        android:id="@+id/appwidget_text"
+        android:id="@+id/appwidget_tzlabel_hi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_tz"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/appwidget_clock_mono"
         style="@style/Widget.RomanDigitalClock.AppWidget.InnerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
-        android:layout_marginRight="0dp"
-        android:layout_marginBottom="0dp"
         android:clickable="false"
         android:contentDescription="@string/app_widget_description"
         android:gravity="center_horizontal|center_vertical"
         android:lines="1"
-        android:paddingStart="0dp"
-        android:paddingLeft="0dp"
-        android:paddingEnd="0dp"
-        android:paddingRight="0dp"
         android:shadowDx="-2"
         android:shadowDy="3"
         android:shadowRadius="8"
@@ -59,5 +58,53 @@
         android:textColor="@color/widgetText_HiOpacityBkgnd"
         android:textSize="24sp"
         android:typeface="monospace"
+        android:visibility="visible"
         tools:ignore="TextContrastCheck" />
-</RelativeLayout>
+
+    <TextView
+        android:id="@+id/appwidget_clock_sans"
+        style="@style/Widget.RomanDigitalClock.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:contentDescription="@string/app_widget_description"
+        android:gravity="center_horizontal|center_vertical"
+        android:lines="1"
+        android:shadowDx="-2"
+        android:shadowDy="3"
+        android:shadowRadius="8"
+        android:text="@string/appwidget_text"
+        android:textColor="@color/widgetText_HiOpacityBkgnd"
+        android:textSize="24sp"
+        android:typeface="sans"
+        android:visibility="gone"
+        tools:ignore="TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/appwidget_clock_serif"
+        style="@style/Widget.RomanDigitalClock.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:contentDescription="@string/app_widget_description"
+        android:gravity="center_horizontal|center_vertical"
+        android:lines="1"
+        android:shadowDx="-2"
+        android:shadowDy="3"
+        android:shadowRadius="8"
+        android:text="@string/appwidget_text"
+        android:textColor="@color/widgetText_HiOpacityBkgnd"
+        android:textSize="24sp"
+        android:typeface="serif"
+        android:visibility="gone"
+        tools:ignore="TextContrastCheck" />
+
+    <TextView
+        android:id="@+id/appwidget_tzlabel_lo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/default_tz"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
+</LinearLayout>
