@@ -37,6 +37,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import net.diffengine.romandigitalclock.fragment.preference.TimeFormatFragment;
+import net.diffengine.romandigitalclock.fragment.preference.TimeStyleFragment;
 
 import java.util.Objects;
 
@@ -44,7 +45,7 @@ public class WidgetSettingsActivity extends AppCompatActivity {
     int appWidgetId;
 
     public WidgetSettingsActivity() {
-        super(R.layout.activity_time_display_widget_config);
+        super(R.layout.widget_settings_activity);
     }
 
     private void setResultCanceled() {
@@ -68,7 +69,7 @@ public class WidgetSettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setResultCanceled();
-        setContentView(R.layout.activity_time_display_widget_config);
+        setContentView(R.layout.widget_settings_activity);
 
         if(BuildConfig.DEBUG) {
             String activityTitle = (String) getTitle();
@@ -80,7 +81,8 @@ public class WidgetSettingsActivity extends AppCompatActivity {
                     .beginTransaction()
                     .setReorderingAllowed(true);
 
-            fragmentTransaction.add(R.id.widget_settings, new TimeFormatFragment(appWidgetId));
+            fragmentTransaction.add(R.id.settings_frame, new TimeFormatFragment(appWidgetId));
+            fragmentTransaction.add(R.id.style_frame, new TimeStyleFragment(appWidgetId));
             fragmentTransaction.add(R.id.widget_bkgnd, new WidgetBkgndSettingsFragment(appWidgetId));
             fragmentTransaction.add(R.id.button_bar, new SettingsButtonBarFragment()).commit();
         }

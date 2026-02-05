@@ -33,7 +33,7 @@ public class TimeStyleFragment extends PreferenceFragmentCompat {
     private void addTypefaceListPreference () {
         ListPreference pref = new ListPreference(prefManagerContext);
         pref.setIconSpaceReserved(true);    // Required for some devices that default this to false
-        pref.setKey("list_typeface");
+        pref.setKey("list_typeface" + postfix);
         pref.setTitle("Typeface");
         String[] typefaces = {"monospace", "sans", "serif"};
         String[] typefaceValues = {"0", "1", "2"};
@@ -47,7 +47,7 @@ public class TimeStyleFragment extends PreferenceFragmentCompat {
 
         pref.setOnPreferenceChangeListener((preference, newValue) -> {
             FragmentManager supportFragmentManager = requireActivity().getSupportFragmentManager();
-            TimeFormatFragment timeFormatFragment = (TimeFormatFragment) supportFragmentManager.findFragmentById(R.id.app_settings_frame);
+            TimeFormatFragment timeFormatFragment = (TimeFormatFragment) supportFragmentManager.findFragmentById(R.id.settings_frame);
 
             if (timeFormatFragment != null) {
                 timeFormatFragment.setAlignmentEnableState(newValue.toString());
@@ -70,14 +70,14 @@ public class TimeStyleFragment extends PreferenceFragmentCompat {
         category.setTitle("Style");
         screen.addPreference(category);
 
-        ColorDialogPreference colorPref = new ColorDialogPreference(prefManagerContext, getChildFragmentManager());
-        colorPref.setTitle("Time Color");
-        colorPref.setKey("hexcolor");
-        category.addPreference(colorPref);
-
         if (postfix.isEmpty()) {
-            addTypefaceListPreference();
+            ColorDialogPreference colorPref = new ColorDialogPreference(prefManagerContext, getChildFragmentManager());
+            colorPref.setTitle("Time Color");
+            colorPref.setKey("hexcolor");
+            category.addPreference(colorPref);
         }
+
+        addTypefaceListPreference();
 
         setPreferenceScreen(screen);
     }

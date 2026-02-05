@@ -42,7 +42,7 @@ public class AppSettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.settings_activity);
+        setContentView(R.layout.app_settings_activity);
         if (savedInstanceState == null) {
             int inApp = AppWidgetManager.INVALID_APPWIDGET_ID;
             timeStyleFragment = new TimeStyleFragment(inApp);
@@ -50,14 +50,14 @@ public class AppSettingsActivity extends AppCompatActivity {
             supportFragmentManager
                     .beginTransaction()
                     .setReorderingAllowed(true)
-                    .add(R.id.app_settings_frame, new TimeFormatFragment(inApp))
-                    .add(R.id.display_color_frame, timeStyleFragment)
+                    .add(R.id.settings_frame, new TimeFormatFragment(inApp))
+                    .add(R.id.style_frame, timeStyleFragment)
                     .add(R.id.screen_settings_frame, new ScreenSettingsFragment())
                     .add(R.id.button_bar_2, new SettingsButtonBarFragment())
                     .commit();
         } else {
             FragmentManager supportFragmentManager = getSupportFragmentManager();
-            timeStyleFragment = (TimeStyleFragment) supportFragmentManager.findFragmentById(R.id.display_color_frame);
+            timeStyleFragment = (TimeStyleFragment) supportFragmentManager.findFragmentById(R.id.style_frame);
         }
     }
 

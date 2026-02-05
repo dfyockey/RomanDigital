@@ -113,13 +113,11 @@ public class TimeFormatFragment extends PreferenceFragmentCompat {
         //noinspection DataFlowIssue
         setSeparatorEnableState(pFormat);
 
-        if (postfix.isEmpty()) {
-            //noinspection DataFlowIssue
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
-            String typefaceValue = sp.getString("list_typeface", "0");
-            pAlignment = findPreference("switch_alignment");
-            setAlignmentEnableState(typefaceValue);
-        }
+        //noinspection DataFlowIssue
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String typefaceValue = sp.getString("list_typeface" + postfix, "0");
+        pAlignment = findPreference("switch_alignment" + postfix);
+        setAlignmentEnableState(typefaceValue);
     }
 
     public void setAlignmentEnableState(String typefaceValue) {

@@ -2,11 +2,11 @@
 
 <!--
 /*
- * activity_time_display_widget_config.xml
+ * app_settings_activity.xml
  * - This file is part of the Android app RomanDigital
  *   and is a layout resource
  *
- * Copyright 2024 David Yockey
+ * Copyright 2024-2025 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,13 +28,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".WidgetSettingsActivity">
+    tools:context=".AppSettingsActivity">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/widget_settings_scrollview"
-        app:layout_constraintBottom_toTopOf="@+id/button_bar"
+        android:contentDescription="@string/app_settings_scrollview"
+        app:layout_constraintBottom_toTopOf="@+id/button_bar_2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -46,27 +46,34 @@
             android:layout_height="wrap_content">
 
             <FrameLayout
-                android:id="@+id/widget_settings"
-                android:layout_width="0dp"
+                android:id="@+id/settings_frame"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
-                android:id="@+id/widget_bkgnd"
-                android:layout_width="0dp"
+                android:id="@+id/style_frame"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/widget_settings" />
+                app:layout_constraintTop_toBottomOf="@id/settings_frame" />
+
+            <FrameLayout
+                android:id="@+id/screen_settings_frame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/style_frame" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </ScrollView>
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@id/button_bar"
+        android:id="@id/button_bar_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"

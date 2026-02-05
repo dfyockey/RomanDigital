@@ -88,8 +88,9 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     //
     ///////
 
-    // This is assignment is temporary until typeface selection is set up...
-    static int appwidget_clock = R.id.appwidget_clock_mono;
+    private static final int[] typefaceIds = {R.id.appwidget_clock_mono, R.id.appwidget_clock_sans, R.id.appwidget_clock_serif};
+
+    private static int appwidget_clock;
 
     // Unused action parameter is retained because it may be used later
     // to handle SETTINGS_KICK or another power-saving action.
@@ -99,18 +100,25 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         boolean ampm          = sp.getBoolean("switch_format" + appWidgetId, false);
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
         boolean alignment     = sp.getBoolean("switch_alignment" + appWidgetId, false);
-        String  tzid          = sp.getString("list_timezone" + appWidgetId, TimeZone.getDefault().getID());
+        String  tzId          = sp.getString("list_timezone" + appWidgetId, TimeZone.getDefault().getID());
         String layoutMoniker  = sp.getString("list_widget_layout" + appWidgetId, "no_label" );
         int layoutId          = R.layout.time_display_widget;
         int layoutConfigId    = getLayoutConfigId(layoutMoniker);
+        appwidget_clock       = typefaceIds[Integer.parseInt(sp.getString("list_typeface" + appWidgetId, "0"))];
 
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
-        CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzid);
+        CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzId);
 //        widgetText = "VIII:XXXVIII";
         RemoteViews views = new RemoteViews(context.getPackageName(), layoutId);
 
         // Setup layout
+            // Clear all typefaces
+            for (int typefaceId : typefaceIds) {
+                views.setViewVisibility(typefaceId, GONE);
+            }
+
+            views.setViewVisibility(appwidget_clock, VISIBLE);
             views.setTextViewText(appwidget_clock, widgetText);
             views.setViewVisibility(R.id.appwidget_tzlabel_hi, (layoutConfigId == 0 ? VISIBLE : GONE));
             views.setViewVisibility(R.id.appwidget_tzlabel_lo, (layoutConfigId == 2 ? VISIBLE : GONE));
@@ -146,7 +154,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                 } else if (layoutConfigId == 2) {
                     tzlabel = R.id.appwidget_tzlabel_lo;
                 }
-                views.setTextViewText(tzlabel, tzid);
+                views.setTextViewText(tzlabel, tzId);
                 views.setInt(tzlabel, "setTextColor", getColor(context, widget_text_color_resource));
             }
 
