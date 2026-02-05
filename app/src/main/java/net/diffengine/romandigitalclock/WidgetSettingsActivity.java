@@ -2,7 +2,7 @@
  * WidgetSettingsActivity.java
  * - This file is part of the Android app RomanDigital
  *
- * Copyright 2024-2025 David Yockey
+ * Copyright © 2024-2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,9 @@
 
 package net.diffengine.romandigitalclock;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -140,13 +138,10 @@ public class WidgetSettingsActivity extends AppCompatActivity {
             SeekBarPreference seekBarPreference = findPreference("seekbar_opacity" + postfix);
             Objects.requireNonNull(seekBarPreference).setSummary( buildOpacityLabel(seekBarPreference.getValue()) );
 
-            seekBarPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
-                    SeekBarPreference seekBarPref = (SeekBarPreference) preference;
-                    seekBarPref.setSummary( buildOpacityLabel((int)newValue) );
-                    return true;
-                }
+            seekBarPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                SeekBarPreference seekBarPref = (SeekBarPreference) preference;
+                seekBarPref.setSummary( buildOpacityLabel((int)newValue) );
+                return true;
             });
         }
     }

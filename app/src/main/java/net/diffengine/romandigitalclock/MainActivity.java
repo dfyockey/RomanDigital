@@ -2,7 +2,7 @@
  * MainActivity.java
  * - This file is part of the Android app RomanDigital
  *
- * Copyright 2024-2025 David Yockey
+ * Copyright © 2024-2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -270,6 +270,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void setDisplayFont(String family) {
         if( prefs != null) {
             // Add a new AbstractMap for each font family to be used. See https://www.baeldung.com/java-initialize-hashmap

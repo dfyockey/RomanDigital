@@ -2,7 +2,7 @@
  * TimeDisplayWidget.java
  * - This file is part of the Android app RomanDigital
  *
- * Copyright 2024-2025 David Yockey
+ * Copyright © 2024-2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,7 +109,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
         CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzId);
-//        widgetText = "VIII:XXXVIII";
+//        widgetText = "VIII:XXXVIII";      // Test text; uncomment for constant full-width 12-hour display
         RemoteViews views = new RemoteViews(context.getPackageName(), layoutId);
 
         // Setup layout
@@ -323,7 +323,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 
             int orientation = context.getResources().getConfiguration().orientation;
             if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                rect.bottom += paint.getFontSpacing();
+                rect.bottom += (int) paint.getFontSpacing();
             }
 
             if ((rect.width() >= maxRect.width()) || (rect.height() >= maxRect.height())) {
