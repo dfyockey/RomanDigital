@@ -5,7 +5,7 @@
  * AndroidManifest.xml
  * - This file is part of the Android app RomanDigital
  *
- * Copyright 2024-2025 David Yockey
+ * Copyright © 2024-2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@
         </receiver>
 
         <activity
-            android:name=".TimeDisplayWidgetConfigActivity"
+            android:name=".WidgetSettingsActivity"
             android:exported="false"
             android:label="@string/title_widget_settings"
             android:theme="@style/Theme.Settings"
@@ -78,7 +78,7 @@
             android:parentActivityName=".MainActivity"
             android:theme="@style/Theme.Settings" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".AppSettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings"
             android:theme="@style/Theme.Settings" />

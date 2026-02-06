@@ -2,7 +2,7 @@
  * SettingsButtonBarFragment.java
  * - This file is part of the Android app RomanDigital
  *
- * Copyright 2024-2025 David Yockey
+ * Copyright 2024-2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,8 +73,8 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
         //noinspection ReassignedVariable
         int appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
         String cls = parentActivity.getComponentName().getClassName();
-        if (cls.equals("net.diffengine.romandigitalclock.TimeDisplayWidgetConfigActivity")) {
-            TimeDisplayWidgetConfigActivity widgetConfigActivity = (TimeDisplayWidgetConfigActivity) parentActivity;
+        if (cls.equals("net.diffengine.romandigitalclock.WidgetSettingsActivity")) {
+            WidgetSettingsActivity widgetConfigActivity = (WidgetSettingsActivity) parentActivity;
             appWidgetId = widgetConfigActivity.appWidgetId;
         }
 

@@ -2,11 +2,11 @@
 
 <!--
 /*
- * settings_activity.xml
+ * app_settings_activity.xml
  * - This file is part of the Android app RomanDigital
  *   and is a layout resource
  *
- * Copyright 2024-2025 David Yockey
+ * Copyright © 2024-2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
+    tools:context=".AppSettingsActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content">
 
             <FrameLayout
-                android:id="@+id/app_settings_frame"
+                android:id="@+id/settings_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -54,12 +54,12 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
-                android:id="@+id/display_color_frame"
+                android:id="@+id/style_frame"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/app_settings_frame" />
+                app:layout_constraintTop_toBottomOf="@id/settings_frame" />
 
             <FrameLayout
                 android:id="@+id/screen_settings_frame"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/display_color_frame" />
+                app:layout_constraintTop_toBottomOf="@id/style_frame" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

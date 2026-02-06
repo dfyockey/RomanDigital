@@ -1,8 +1,8 @@
 /*
- * TimeDisplayWidgetConfigActivity.java
+ * WidgetSettingsActivity.java
  * - This file is part of the Android app RomanDigital
  *
- * Copyright 2024-2025 David Yockey
+ * Copyright © 2024-2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,9 @@
 
 package net.diffengine.romandigitalclock;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -36,13 +34,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import net.diffengine.romandigitalclock.fragment.preference.TimeFormatFragment;
+import net.diffengine.romandigitalclock.fragment.preference.TimeStyleFragment;
+
 import java.util.Objects;
 
-public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
+public class WidgetSettingsActivity extends AppCompatActivity {
     int appWidgetId;
 
-    public TimeDisplayWidgetConfigActivity() {
-        super(R.layout.activity_time_display_widget_config);
+    public WidgetSettingsActivity() {
+        super(R.layout.widget_settings_activity);
     }
 
     private void setResultCanceled() {
@@ -66,7 +67,7 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setResultCanceled();
-        setContentView(R.layout.activity_time_display_widget_config);
+        setContentView(R.layout.widget_settings_activity);
 
         if(BuildConfig.DEBUG) {
             String activityTitle = (String) getTitle();
@@ -78,7 +79,8 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
                     .beginTransaction()
                     .setReorderingAllowed(true);
 
-            fragmentTransaction.add(R.id.widget_settings, new SettingsActivity.SettingsFragment(false, appWidgetId));
+            fragmentTransaction.add(R.id.settings_frame, new TimeFormatFragment(appWidgetId));
+            fragmentTransaction.add(R.id.style_frame, new TimeStyleFragment(appWidgetId));
             fragmentTransaction.add(R.id.widget_bkgnd, new WidgetBkgndSettingsFragment(appWidgetId));
             fragmentTransaction.add(R.id.button_bar, new SettingsButtonBarFragment()).commit();
         }
@@ -136,13 +138,10 @@ public class TimeDisplayWidgetConfigActivity extends AppCompatActivity {
             SeekBarPreference seekBarPreference = findPreference("seekbar_opacity" + postfix);
             Objects.requireNonNull(seekBarPreference).setSummary( buildOpacityLabel(seekBarPreference.getValue()) );
 
-            seekBarPreference.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(@NonNull Preference preference, Object newValue) {
-                    SeekBarPreference seekBarPref = (SeekBarPreference) preference;
-                    seekBarPref.setSummary( buildOpacityLabel((int)newValue) );
-                    return true;
-                }
+            seekBarPreference.setOnPreferenceChangeListener((preference, newValue) -> {
+                SeekBarPreference seekBarPref = (SeekBarPreference) preference;
+                seekBarPref.setSummary( buildOpacityLabel((int)newValue) );
+                return true;
             });
         }
     }

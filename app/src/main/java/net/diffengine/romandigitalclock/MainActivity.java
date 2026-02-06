@@ -2,7 +2,7 @@
  * MainActivity.java
  * - This file is part of the Android app RomanDigital
  *
- * Copyright 2024-2025 David Yockey
+ * Copyright © 2024-2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.OnApplyWindowInsetsListener;
@@ -43,6 +44,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
 import android.os.Build;
@@ -55,6 +57,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import java.util.AbstractMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.TimeZone;
 
 /** @noinspection Convert2Lambda, SpellCheckingInspection */
@@ -63,8 +68,8 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatTextView TimeDisplaySizeControl;
     private View     bkgndView;
 
-    static boolean left  = false;
-    static boolean right = true;
+    public static boolean left  = false;
+    public static boolean right = true;
 
     private WindowInsetsControllerCompat windowInsetsControllerCompat;
 
@@ -252,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
     public static String getHexColor(Context context, SharedPreferences sp, String key) {
         String defaultColorHexStr = getHexFromColorRes(context, R.color.clock_red);
         String hexcolor = sp.getString(key, defaultColorHexStr);
-        if (!SettingsActivity.isHexColor(hexcolor)) {
+        if (!AppSettingsActivity.isHexColor(hexcolor)) {
             hexcolor = defaultColorHexStr;
         }
         return hexcolor;
@@ -262,6 +267,25 @@ public class MainActivity extends AppCompatActivity {
         if(prefs != null) {
             String hexcolor = getHexColor(this, prefs, "hexcolor");
             setDisplayColor(Color.parseColor("#" + hexcolor));
+        }
+    }
+
+    @SuppressWarnings("SameParameterValue")
+    private void setDisplayFont(String family) {
+        if( prefs != null) {
+            // Add a new AbstractMap for each font family to be used. See https://www.baeldung.com/java-initialize-hashmap
+            Map<String, int[]> font = Map.ofEntries(
+                    new AbstractMap.SimpleEntry<>("roboto", new int[]{R.font.roboto_mono, R.font.roboto_sans, R.font.roboto_serif})
+            );
+            int index = Integer.parseInt(prefs.getString("list_typeface", "0"));
+            Typeface typeface = ResourcesCompat.getFont(context, Objects.requireNonNull(font.get(family))[index]);
+            TimeDisplay.setTypeface(typeface);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // Set this because, as emperically determined, this weight is used for the default
+                // weight of devices used in development. Also, it keeps the appearance the same on
+                // my phone. A selfish reason, but I'm the developer and rank has its privileges. :)
+                TimeDisplay.setFontVariationSettings("'wght' 370");
+            }
         }
     }
 
@@ -319,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
 
                 if(itemId == R.id.item_settings) {
-                    showActivity(SettingsActivity.class);
+                    showActivity(AppSettingsActivity.class);
                 } else if (itemId == R.id.item_about) {
                     showActivity(AboutActivity.class);
                 } else {
@@ -356,6 +380,7 @@ public class MainActivity extends AppCompatActivity {
         TimeDisplaySizeControl.setText(maxtime_fill);
         TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
         setDisplayColorFromPref();
+        setDisplayFont("roboto");
 
         registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
         ContextCompat.registerReceiver(context, updateReceiver, new IntentFilter(UPDATE_DISPLAY), ContextCompat.RECEIVER_NOT_EXPORTED);

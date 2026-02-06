@@ -2,7 +2,7 @@
  * ColorDialogPreference.java
  * - This file is part of the Android app RomanDigital
  *
- * Copyright 2025 David Yockey
+ * Copyright © 2025-2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,6 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.Preference;
 
-import java.util.Objects;
 import java.util.TimeZone;
 
 public class ColorDialogPreference extends Preference implements Preference.OnPreferenceClickListener {
@@ -151,7 +150,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
         }
 
         private void setProgress(ColorSeekBarView[] colorBars, String hexcolor) {
-            if (SettingsActivity.isHexColor(hexcolor)) {
+            if (AppSettingsActivity.isHexColor(hexcolor)) {
                 int i = 0;
                 for (ColorSeekBarView colorbar:colorBars) {
                     setProgress(colorbar, hexcolor, i, (i+2));
@@ -218,7 +217,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
                     public void onClick(DialogInterface dialog, int id) {
                         // User okays the selected color.
                         String colorText = etHexcode.getText().toString();
-                        if (SettingsActivity.isHexColor(colorText)) {
+                        if (AppSettingsActivity.isHexColor(colorText)) {
                             sp.edit().putString(key, colorText).apply();
                             pref.setSummary("#" + colorText);
                             dialog.dismiss();
@@ -259,7 +258,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     hexcolor = s.toString();
-                    if (SettingsActivity.isHexColor(hexcolor)) {
+                    if (AppSettingsActivity.isHexColor(hexcolor)) {
                         tvPreview.setTextColor(Color.parseColor("#" + s));
                         setProgress(colorSeekBarViews, hexcolor);
                     } else {
