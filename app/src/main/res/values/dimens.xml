@@ -30,6 +30,7 @@
 
     <dimen name="txtblk_horiz_padding">25sp</dimen>
     <dimen name="txtblk_vert_padding">14sp</dimen>
+    <dimen name="license_horiz_padding">12.5sp</dimen>
 
     <dimen name="widget_divider_top_margin">18dp</dimen>
 

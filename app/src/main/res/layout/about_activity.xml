@@ -6,7 +6,7 @@
  * - This file is part of the Android app RomanDigital
  *   and is a layout resource
  *
- * Copyright 2024 David Yockey
+ * Copyright 2024, 2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,9 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25sp"
+            android:layout_marginEnd="25sp" >
 
             <!-- Start of Masthead -->
 
@@ -107,9 +109,7 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/txtblk_horiz_padding"
                 android:paddingTop="@dimen/txtblk_vert_padding"
-                android:paddingRight="@dimen/txtblk_horiz_padding"
                 android:paddingBottom="@dimen/txtblk_vert_padding"
                 android:text="@string/copyright"
                 android:typeface="sans"
@@ -123,8 +123,6 @@
                 android:autoLink="web"
                 android:linksClickable="true"
                 android:maxWidth="600dp"
-                android:paddingLeft="@dimen/txtblk_horiz_padding"
-                android:paddingRight="@dimen/txtblk_horiz_padding"
                 android:paddingBottom="@dimen/txtblk_vert_padding"
                 android:singleLine="false"
                 android:text="@string/license_notice"
@@ -145,21 +143,93 @@
                 app:layout_constraintTop_toBottomOf="@id/textView4" />
 
             <TextView
-                android:id="@+id/tvDependencyHeader"
+                android:id="@+id/solicitation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:linksClickable="true"
-                android:paddingLeft="@dimen/txtblk_horiz_padding"
                 android:paddingTop="@dimen/txtblk_vert_padding"
-                android:paddingRight="@dimen/txtblk_horiz_padding"
                 android:paddingBottom="@dimen/txtblk_vert_padding"
-                android:text="@string/dependencies_header"
+                android:text="@string/solicitation"
                 android:textSize="14sp"
                 android:typeface="sans"
                 app:layout_constraintStart_toStartOf="@id/textView4"
                 app:layout_constraintTop_toBottomOf="@id/divider2"
                 tools:ignore="TextContrastCheck" />
+
+            <View
+                android:id="@+id/divide_rdinfo"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/solicitation" />
+
+            <TextView
+                android:id="@+id/source_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:paddingTop="@dimen/txtblk_vert_padding"
+                android:paddingBottom="@dimen/txtblk_vert_padding"
+                android:text="@string/source"
+                android:textSize="14sp"
+                android:typeface="sans"
+                app:layout_constraintStart_toStartOf="@id/textView4"
+                app:layout_constraintTop_toBottomOf="@id/divide_rdinfo"
+                tools:ignore="TextContrastCheck" />
+
+            <View
+                android:id="@+id/divide_from_code"
+                android:layout_width="0dp"
+                android:layout_height="3dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/source_code" />
+
+            <TextView
+                android:id="@+id/appreciation_and_licensing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:paddingTop="@dimen/txtblk_vert_padding"
+                android:paddingBottom="@dimen/txtblk_vert_padding"
+                android:text="@string/credits"
+                android:textSize="14sp"
+                android:typeface="sans"
+                app:layout_constraintStart_toStartOf="@id/textView4"
+                app:layout_constraintTop_toBottomOf="@id/divide_from_code"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/tvDependencyHeader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:paddingBottom="@dimen/txtblk_vert_padding"
+                android:text="@string/dependencies_header"
+                android:textSize="14sp"
+                android:typeface="sans"
+                app:layout_constraintStart_toStartOf="@id/textView4"
+                app:layout_constraintTop_toBottomOf="@id/appreciation_and_licensing"
+                tools:ignore="TextContrastCheck" />
+
+            <View
+                android:id="@+id/divide_from_dependency_header"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvDependencyHeader" />
 
             <TextView
                 android:id="@+id/tvACRA"
@@ -168,9 +238,9 @@
                 android:autoLink="web"
                 android:linksClickable="true"
                 android:maxWidth="600dp"
-                android:paddingLeft="@dimen/txtblk_horiz_padding"
+                android:paddingLeft="@dimen/license_horiz_padding"
                 android:paddingTop="0sp"
-                android:paddingRight="@dimen/txtblk_horiz_padding"
+                android:paddingRight="@dimen/license_horiz_padding"
                 android:paddingBottom="@dimen/txtblk_vert_padding"
                 android:text="@string/acra_license_notice"
                 android:textSize="14sp"
@@ -181,86 +251,30 @@
                 tools:ignore="TextContrastCheck" />
 
             <View
-                android:id="@+id/divider3"
+                android:id="@+id/divide_from_ACRA"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvACRA" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/tvGoogleFonts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:linksClickable="true"
-                android:paddingLeft="@dimen/txtblk_horiz_padding"
                 android:paddingTop="@dimen/txtblk_vert_padding"
-                android:paddingRight="@dimen/txtblk_horiz_padding"
+                android:paddingLeft="@dimen/license_horiz_padding"
+                android:paddingRight="@dimen/license_horiz_padding"
                 android:paddingBottom="@dimen/txtblk_vert_padding"
-                android:text="@string/credits"
+                android:text="@string/googlefonts_license_notice"
                 android:textSize="14sp"
                 android:typeface="sans"
                 app:layout_constraintStart_toStartOf="@id/textView4"
-                app:layout_constraintTop_toBottomOf="@id/divider3"
+                app:layout_constraintTop_toBottomOf="@id/divide_from_ACRA"
                 tools:ignore="TextContrastCheck" />
-
-            <View
-                android:id="@+id/divider4"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView6" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:linksClickable="true"
-                android:paddingLeft="@dimen/txtblk_horiz_padding"
-                android:paddingTop="@dimen/txtblk_vert_padding"
-                android:paddingRight="@dimen/txtblk_horiz_padding"
-                android:paddingBottom="@dimen/txtblk_vert_padding"
-                android:text="@string/thanks"
-                android:textSize="14sp"
-                android:typeface="sans"
-                app:layout_constraintStart_toStartOf="@id/textView4"
-                app:layout_constraintTop_toBottomOf="@id/divider4"
-                tools:ignore="TextContrastCheck" />
-
-            <View
-                android:id="@+id/divider5"
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textView7" />
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:autoLink="web"
-                android:linksClickable="true"
-                android:paddingLeft="@dimen/txtblk_horiz_padding"
-                android:paddingTop="@dimen/txtblk_vert_padding"
-                android:paddingRight="@dimen/txtblk_horiz_padding"
-                android:paddingBottom="@dimen/txtblk_vert_padding"
-                android:text="@string/source"
-                android:textSize="14sp"
-                android:typeface="sans"
-                app:layout_constraintStart_toStartOf="@id/textView4"
-                app:layout_constraintTop_toBottomOf="@id/divider5"
-                tools:ignore="TextContrastCheck" />
-
             <!-- End of Content -->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
