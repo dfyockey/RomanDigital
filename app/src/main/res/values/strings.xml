@@ -79,7 +79,7 @@ The BlackyHawky Clock source code is unfortunately licensed under GNU GPL v3.0 w
     </string>
 
     <string name="dependencies_header">
-"A note of appreciation also goes to the developers of the following dependency included in RomanDigital:"
+"A note of appreciation also goes to the developers of the following software included in RomanDigital:"
     </string>
 
     <string name="acra_license_notice">
@@ -97,12 +97,12 @@ for the full license text."
     <string name="googlefonts_license_notice">
 "Google Fonts
 
-Copyright 2011 The Roboto Project Authors
-    (https://github.com/googlefonts/roboto-classic)
-Copyright 2020 The Roboto Serif Project Authors
-    (https://github.com/googlefonts/RobotoSerif)
-Copyright Unknown - Designed by Christian Robertson
-    (https://fonts.google.com/specimen/Roboto+Mono)
+* Copyright 2011 The Roboto Project Authors
+  (https://github.com/googlefonts/roboto-classic)
+* Copyright 2015 The Roboto Mono Project Authors
+  (https://github.com/googlefonts/robotomono)
+* Copyright 2020 The Roboto Serif Project Authors
+  (https://github.com/googlefonts/RobotoSerif)
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is copied below, and is also available with a FAQ at: https://openfontlicense.org
 
