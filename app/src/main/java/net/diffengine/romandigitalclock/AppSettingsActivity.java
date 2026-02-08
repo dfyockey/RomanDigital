@@ -22,18 +22,38 @@ package net.diffengine.romandigitalclock;
 
 import static net.diffengine.romandigitalclock.ColorDialogPreference.UPDATE_PREVIEW;
 
+import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
+import androidx.preference.ListPreference;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
+import androidx.preference.PreferenceScreen;
+import androidx.preference.SwitchPreferenceCompat;
 
-import net.diffengine.romandigitalclock.fragment.preference.*;
+import net.diffengine.romandigitalclock.fragment.preference.ScreenSettingsFragment;
+import net.diffengine.romandigitalclock.fragment.preference.TimeFormatFragment;
+import net.diffengine.romandigitalclock.fragment.preference.TimeStyleFragment;
+
+import java.util.Objects;
+import java.util.TimeZone;
 
 public class AppSettingsActivity extends AppCompatActivity {
 
@@ -43,6 +63,22 @@ public class AppSettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.app_settings_activity);
+
+        // Compensate for forced edge-to-edge in SDK 35 (Android 15) and later
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            View containerView = findViewById(android.R.id.content);
+            ViewCompat.setOnApplyWindowInsetsListener(containerView, (v, insets) -> {
+
+                Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(bars.left, 0, bars.right, bars.bottom);
+
+                View spacer = findViewById(R.id.spacerAppSettings);
+                spacer.getLayoutParams().height = bars.top;
+
+                return WindowInsetsCompat.CONSUMED;
+            });
+        }
+
         if (savedInstanceState == null) {
             int inApp = AppWidgetManager.INVALID_APPWIDGET_ID;
             timeStyleFragment = new TimeStyleFragment(inApp);
@@ -83,15 +119,6 @@ public class AppSettingsActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-
-        // Kick the widgets so they'll update time immediately in case some broadcast intent has
-        // been missed. This may be unnecessary; I tend to think of intents as similar to messages
-        // used in controlling other systems' GUIs, which may not be the case.
-        Intent kickstart = new Intent(this, TimeDisplayWidget.class);
-        kickstart.setAction(TimeDisplayWidget.MINUTE_TICK);
-        kickstart.setPackage(this.getPackageName());
-        this.sendBroadcast(kickstart);
-
         unregisterReceiver(updateReceiver);
         unregisterReceiver(broadcastReceiver);
     }
@@ -99,7 +126,6 @@ public class AppSettingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
         ContextCompat.registerReceiver(this, updateReceiver, new IntentFilter(UPDATE_PREVIEW), ContextCompat.RECEIVER_NOT_EXPORTED);
     }

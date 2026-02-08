@@ -2,7 +2,7 @@
  * BootCompletedBroadcastReceiver.java
  * - This file is part of the Android app RomanDigital
  *
- * Copyright 2025 David Yockey
+ * Copyright 2025-2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,9 +22,12 @@ package net.diffengine.romandigitalclock;
 
 import static android.content.Intent.ACTION_BOOT_COMPLETED;
 
+import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 
 public class BootCompletedBroadcastReceiver extends BroadcastReceiver {
 
@@ -33,10 +36,20 @@ public class BootCompletedBroadcastReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (action != null && action.equals(ACTION_BOOT_COMPLETED)) {
-            Intent kickstart = new Intent(context, TimeDisplayWidget.class);
-            kickstart.setAction(TimeDisplayWidget.MINUTE_TICK);
-            kickstart.setPackage(context.getPackageName());
-            context.sendBroadcast(kickstart);
+            startRelayIfWidgets(context);
+        }
+    }
+
+    public static void startRelayIfWidgets(Context context) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, TimeDisplayWidget.class));
+        if (appWidgetIds.length > 0) {
+            Intent serviceIntent = new Intent(context, TimeTickRelay.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(serviceIntent);
+            } else {
+                context.startService(serviceIntent);
+            }
         }
     }
 }

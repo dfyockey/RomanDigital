@@ -20,9 +20,14 @@
 
 package net.diffengine.romandigitalclock;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
@@ -32,7 +37,9 @@ import androidx.preference.SeekBarPreference;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 
 import net.diffengine.romandigitalclock.fragment.preference.TimeFormatFragment;
 import net.diffengine.romandigitalclock.fragment.preference.TimeStyleFragment;
@@ -69,6 +76,22 @@ public class WidgetSettingsActivity extends AppCompatActivity {
         setResultCanceled();
         setContentView(R.layout.widget_settings_activity);
 
+        // Compensate for forced edge-to-edge in SDK 35 (Android 15) and later
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            View containerView = findViewById(android.R.id.content);
+//            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layoutWidgetSettings), (v, insets) -> {
+            ViewCompat.setOnApplyWindowInsetsListener(containerView, (v, insets) -> {
+
+                Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(bars.left, 0, bars.right, bars.bottom);
+
+                View spacer = findViewById(R.id.spacerWidgetSettings);
+                spacer.getLayoutParams().height = bars.top;
+
+                return WindowInsetsCompat.CONSUMED;
+            });
+        }
+
         if(BuildConfig.DEBUG) {
             String activityTitle = (String) getTitle();
             setTitle(activityTitle + " - " + appWidgetId);
@@ -84,6 +107,8 @@ public class WidgetSettingsActivity extends AppCompatActivity {
             fragmentTransaction.add(R.id.widget_bkgnd, new WidgetBkgndSettingsFragment(appWidgetId));
             fragmentTransaction.add(R.id.button_bar, new SettingsButtonBarFragment()).commit();
         }
+
+        BootCompletedBroadcastReceiver.startRelayIfWidgets(this);
     }
 
     public static class WidgetBkgndSettingsFragment extends PreferenceFragmentCompat {
@@ -155,13 +180,13 @@ public class WidgetSettingsActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        // Since the widget's alarms may have been canceled on pause,
-        // broadcast an intent to kickstart the widget when it resumes
-        // along with immediately updating the widget
-        Intent kickstart = new Intent(this, TimeDisplayWidget.class);
-        kickstart.setAction(TimeDisplayWidget.SETTINGS_KICK);
-        kickstart.setPackage(this.getPackageName());
-        this.sendBroadcast(kickstart);
+        // Broadcast an intent immediately after either Close or Save is pressed
+        // and the config activity is closed. This updates the widget immediately
+        // rather than waiting for the next relayed ACTION_TIME_TICK to arrive.
+        Intent update_widget = new Intent(this, TimeDisplayWidget.class);
+        update_widget.setAction(TimeDisplayWidget.RELAYED_TIME_TICK);
+        update_widget.setPackage(this.getPackageName());
+        this.sendBroadcast(update_widget);
     }
 
     @Override

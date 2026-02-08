@@ -356,6 +356,8 @@ public class MainActivity extends AppCompatActivity {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         setDisplayColorFromPref();
+
+        BootCompletedBroadcastReceiver.startRelayIfWidgets(context);
     }
 
     //---------------------------------------------------------------
@@ -364,6 +366,15 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(updateReceiver);
         unregisterReceiver(broadcastReceiver);
         findViewById(R.id.my_toolbar).setVisibility(View.INVISIBLE);
+
+        // Broadcast an intent immediately after either Close or Save is pressed
+        // and the config activity is closed. This updates the widget immediately
+        // rather than waiting for the next relayed ACTION_TIME_TICK to arrive.
+        Intent update_widget = new Intent(this, TimeDisplayWidget.class);
+        update_widget.setAction(TimeDisplayWidget.RELAYED_TIME_TICK);
+        update_widget.setPackage(this.getPackageName());
+        this.sendBroadcast(update_widget);
+
         super.onPause();
     }
 

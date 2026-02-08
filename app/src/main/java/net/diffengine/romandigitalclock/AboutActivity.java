@@ -2,7 +2,7 @@
  * AboutActivity.java
  * - This file is part of the Android app RomanDigital
  *
- * Copyright 2024 David Yockey
+ * Copyright 2024,2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,8 +22,13 @@ package net.diffengine.romandigitalclock;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 public class AboutActivity extends AppCompatActivity {
@@ -32,6 +37,21 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_activity);
+
+        // Compensate for forced edge-to-edge in SDK 35 (Android 15) and later
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            View containerView = findViewById(android.R.id.content);
+            ViewCompat.setOnApplyWindowInsetsListener(containerView, (v, insets) -> {
+
+                Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+                v.setPadding(bars.left, 0, bars.right, bars.bottom);
+
+                View spacer = findViewById(R.id.spacerAbout);
+                spacer.getLayoutParams().height = bars.top;
+
+                return WindowInsetsCompat.CONSUMED;
+            });
+        }
 
         TextView tv = findViewById(R.id.tvVersion);
 
