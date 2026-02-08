@@ -6,7 +6,7 @@
  * - This file is part of the Android app RomanDigital
  *   and is a layout resource
  *
- * Copyright 2024,2026 David Yockey
+ * Copyright © 2024,2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,8 +102,8 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/textView4"
+                app:layout_constraintEnd_toEndOf="@id/textView4"
                 app:layout_constraintTop_toBottomOf="@id/tvVersion" />
 
             <!-- End of Masthead -->
@@ -118,15 +118,17 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/txtblk_vert_padding"
                 android:paddingBottom="@dimen/txtblk_vert_padding"
                 android:text="@string/copyright"
                 android:typeface="sans"
-                app:layout_constraintStart_toStartOf="@+id/textView4"
+                app:layout_constraintEnd_toEndOf="@id/textView4"
+                app:layout_constraintStart_toStartOf="@id/textView4"
                 app:layout_constraintTop_toBottomOf="@id/divider" />
 
+            <!-- This view's width controls the maximum width of the display! -->
             <TextView
                 android:id="@id/textView4"
                 android:layout_width="wrap_content"
@@ -148,14 +150,13 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/textView4"
+                app:layout_constraintEnd_toEndOf="@id/textView4"
                 app:layout_constraintTop_toBottomOf="@id/textView4" />
 
             <TextView
                 android:id="@+id/solicitation"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:linksClickable="true"
@@ -165,22 +166,22 @@
                 android:textSize="14sp"
                 android:typeface="sans"
                 app:layout_constraintStart_toStartOf="@id/textView4"
+                app:layout_constraintEnd_toEndOf="@id/textView4"
                 app:layout_constraintTop_toBottomOf="@id/divider2"
                 tools:ignore="TextContrastCheck" />
 
             <View
-                android:id="@+id/divide_rdinfo"
+                android:id="@+id/divide_from_solicitation"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/textView4"
+                app:layout_constraintEnd_toEndOf="@id/textView4"
                 app:layout_constraintTop_toBottomOf="@id/solicitation" />
 
             <TextView
                 android:id="@+id/source_code"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:linksClickable="true"
@@ -190,7 +191,8 @@
                 android:textSize="14sp"
                 android:typeface="sans"
                 app:layout_constraintStart_toStartOf="@id/textView4"
-                app:layout_constraintTop_toBottomOf="@id/divide_rdinfo"
+                app:layout_constraintEnd_toEndOf="@id/textView4"
+                app:layout_constraintTop_toBottomOf="@id/divide_from_solicitation"
                 tools:ignore="TextContrastCheck" />
 
             <View
@@ -198,14 +200,13 @@
                 android:layout_width="0dp"
                 android:layout_height="3dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/textView4"
+                app:layout_constraintEnd_toEndOf="@id/textView4"
                 app:layout_constraintTop_toBottomOf="@id/source_code" />
 
             <TextView
                 android:id="@+id/appreciation_and_licensing"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:linksClickable="true"
@@ -215,12 +216,13 @@
                 android:textSize="14sp"
                 android:typeface="sans"
                 app:layout_constraintStart_toStartOf="@id/textView4"
+                app:layout_constraintEnd_toEndOf="@id/textView4"
                 app:layout_constraintTop_toBottomOf="@id/divide_from_code"
                 tools:ignore="TextContrastCheck" />
 
             <TextView
                 android:id="@+id/tvDependencyHeader"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:linksClickable="true"
@@ -229,6 +231,7 @@
                 android:textSize="14sp"
                 android:typeface="sans"
                 app:layout_constraintStart_toStartOf="@id/textView4"
+                app:layout_constraintEnd_toEndOf="@id/textView4"
                 app:layout_constraintTop_toBottomOf="@id/appreciation_and_licensing"
                 tools:ignore="TextContrastCheck" />
 
@@ -237,13 +240,13 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/textView4"
+                app:layout_constraintEnd_toEndOf="@id/textView4"
                 app:layout_constraintTop_toBottomOf="@id/tvDependencyHeader" />
 
             <TextView
                 android:id="@+id/tvACRA"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:linksClickable="true"
@@ -256,6 +259,7 @@
                 android:textSize="14sp"
                 android:typeface="sans"
                 app:layout_constraintStart_toStartOf="@id/textView4"
+                app:layout_constraintEnd_toEndOf="@id/textView4"
                 app:layout_constraintTop_toBottomOf="@id/divide_from_dependency_header"
                 tools:ignore="TextContrastCheck" />
 
@@ -264,13 +268,13 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/textView4"
+                app:layout_constraintEnd_toEndOf="@id/textView4"
                 app:layout_constraintTop_toBottomOf="@id/tvACRA" />
 
             <TextView
                 android:id="@+id/tvGoogleFonts"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:linksClickable="true"
@@ -282,6 +286,7 @@
                 android:textSize="14sp"
                 android:typeface="sans"
                 app:layout_constraintStart_toStartOf="@id/textView4"
+                app:layout_constraintEnd_toEndOf="@id/textView4"
                 app:layout_constraintTop_toBottomOf="@id/divide_from_ACRA"
                 tools:ignore="TextContrastCheck" />
 
