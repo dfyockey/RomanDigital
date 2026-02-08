@@ -220,6 +220,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < childCount; ++i) {
             View view = myToolbar.getChildAt(i);
             if (view instanceof ActionMenuView) {
+                //noinspection PatternVariableCanBeUsed
                 ActionMenuView actionMenuView = (ActionMenuView) view;
                 Menu actionMenu = actionMenuView.getMenu();
                 for (int j = 0; j < actionMenu.size(); ++j) {

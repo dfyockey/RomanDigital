@@ -22,7 +22,6 @@ package net.diffengine.romandigitalclock;
 
 import static net.diffengine.romandigitalclock.ColorDialogPreference.UPDATE_PREVIEW;
 
-import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -32,28 +31,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.ListPreference;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceCategory;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.preference.PreferenceManager;
-import androidx.preference.PreferenceScreen;
-import androidx.preference.SwitchPreferenceCompat;
 
 import net.diffengine.romandigitalclock.fragment.preference.ScreenSettingsFragment;
 import net.diffengine.romandigitalclock.fragment.preference.TimeFormatFragment;
 import net.diffengine.romandigitalclock.fragment.preference.TimeStyleFragment;
-
-import java.util.Objects;
-import java.util.TimeZone;
 
 public class AppSettingsActivity extends AppCompatActivity {
 

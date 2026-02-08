@@ -6,7 +6,7 @@
  * - This file is part of the Android app RomanDigital
  *   and is a layout resource
  *
- * Copyright 2025 David Yockey
+ * Copyright © 2025 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,7 +82,8 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -124,7 +125,8 @@
                 app:layout_constraintBottom_toBottomOf="@+id/etHexcode"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/etHexcode"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.0"
+                tools:ignore="HardcodedText" />
 
             <!-- etHexcode height needs to be flexible to accommodate a large font size in system settings -->
             <EditText
@@ -144,7 +146,8 @@
                 android:textAlignment="textStart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/colorPrefix"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="HardcodedText" />
 
             <net.diffengine.romandigitalclock.ColorSeekBarView
                 android:id="@+id/sbRed"

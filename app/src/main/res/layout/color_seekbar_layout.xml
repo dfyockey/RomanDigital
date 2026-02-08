@@ -6,7 +6,7 @@
  * - This file is part of the Android app RomanDigital
  *   and is a layout resource
  *
- * Copyright 2025 David Yockey
+ * Copyright © 2025 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal">
@@ -35,7 +36,8 @@
         android:gravity="center_vertical"
         android:text="C"
         android:textAppearance="?android:attr/textAppearanceListItem"
-        android:typeface="monospace" />
+        android:typeface="monospace"
+        tools:ignore="HardcodedText" />
 
     <androidx.appcompat.widget.AppCompatSeekBar
         android:id="@+id/colorBar"

@@ -27,7 +27,6 @@ import static net.diffengine.romandigitalclock.MainActivity.left;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -213,30 +212,24 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             // Use the Builder class for convenient dialog construction.
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
             builder.setTitle(pref.getTitle())
-                .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User okays the selected color.
-                        String colorText = etHexcode.getText().toString();
-                        if (AppSettingsActivity.isHexColor(colorText)) {
-                            sp.edit().putString(key, colorText).apply();
-                            pref.setSummary("#" + colorText);
-                            dialog.dismiss();
-                        } else {
-                            // Placing this here instead of in an onCancel method prevents it
-                            // from from firing if the user taps outside the dialog to cancel.
-                            new AlertDialog.Builder(requireActivity())
-                                    .setTitle("Invalid Color Value")
-                                    .setMessage("Value must be a six-character hexadecimal.")
-                                    .show();
-                            dialog.cancel();
-                        }
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
+                .setPositiveButton(R.string.save, (dialog, id) -> {
+                    // User okays the selected color.
+                    String colorText = etHexcode.getText().toString();
+                    if (AppSettingsActivity.isHexColor(colorText)) {
+                        sp.edit().putString(key, colorText).apply();
+                        pref.setSummary("#" + colorText);
+                        dialog.dismiss();
+                    } else {
+                        // Placing this here instead of in an onCancel method prevents it
+                        // from from firing if the user taps outside the dialog to cancel.
+                        new AlertDialog.Builder(requireActivity())
+                                .setTitle("Invalid Color Value")
+                                .setMessage("Value must be a six-character hexadecimal.")
+                                .show();
                         dialog.cancel();
                     }
-                });
+                })
+                .setNegativeButton(R.string.cancel, (dialog, id) -> dialog.cancel());
 
             // Customize Dialog View //
             etHexcode.setText(hexcolor);
