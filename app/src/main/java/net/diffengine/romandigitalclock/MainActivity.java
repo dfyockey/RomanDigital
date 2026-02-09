@@ -298,7 +298,9 @@ public class MainActivity extends AppCompatActivity {
         // Make MainActivity window extend beneath the System Bars to the edges of the screen.
         // From info at https://stackoverflow.com/questions/49190381/fullscreen-app-with-displaycutout
         WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.R)  {
+            layoutParams.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             layoutParams.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
         }
 
@@ -320,7 +322,7 @@ public class MainActivity extends AppCompatActivity {
             @NonNull
             @Override
             public WindowInsetsCompat onApplyWindowInsets(@NonNull View v, @NonNull WindowInsetsCompat windowInsets) {
-                Insets insets = windowInsets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars());
+                Insets insets = windowInsets.getInsetsIgnoringVisibility(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
 
                 // Set Toolbar margins to avoid overlapping with insets
                 ViewGroup.MarginLayoutParams lpToolbar = (ViewGroup.MarginLayoutParams) myToolbar.getLayoutParams();
