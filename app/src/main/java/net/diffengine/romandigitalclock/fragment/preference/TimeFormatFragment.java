@@ -44,8 +44,12 @@ public class TimeFormatFragment extends PreferenceFragmentCompat {
 
     public String postfix;
 
+    // A no-args constructor is needed for reconstruction on device orientation change
+    public TimeFormatFragment() {
+        /* NOP */
+    }
+
     public TimeFormatFragment(int appWidgetId) {
-        super();
         postfix = ( (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) ? String.valueOf(appWidgetId) : "" );
     }
 
@@ -100,6 +104,10 @@ public class TimeFormatFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        if (savedInstanceState != null) {
+            postfix = savedInstanceState.getString("postfix");
+        }
+
         PreferenceManager manager = getPreferenceManager();
         prefManagerContext = manager.getContext();
         PreferenceScreen screen = manager.createPreferenceScreen(prefManagerContext);
@@ -163,5 +171,11 @@ public class TimeFormatFragment extends PreferenceFragmentCompat {
             setSeparatorEnableState(pFormat);
         }
         return super.onPreferenceTreeClick(preference);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("postfix", postfix);
     }
 }

@@ -26,6 +26,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.ListPreference;
@@ -43,8 +44,12 @@ public class TimeStyleFragment extends PreferenceFragmentCompat {
 
     public String postfix;
 
+    // A no-args constructor is needed for reconstruction on device orientation change
+    public TimeStyleFragment() {
+        /* NOP */
+    }
+
     public TimeStyleFragment(int appWidgetId) {
-        super();
         postfix = ( (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) ? String.valueOf(appWidgetId) : "" );
     }
 
@@ -82,6 +87,10 @@ public class TimeStyleFragment extends PreferenceFragmentCompat {
 
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
+        if (savedInstanceState != null) {
+            postfix = savedInstanceState.getString("postfix");
+        }
+
         PreferenceManager manager = getPreferenceManager();
         prefManagerContext = manager.getContext();
         PreferenceScreen screen = manager.createPreferenceScreen(prefManagerContext);
@@ -113,5 +122,11 @@ public class TimeStyleFragment extends PreferenceFragmentCompat {
                 colorDialogFragment.updatePreviewTime();
             }
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("postfix", postfix);
     }
 }
