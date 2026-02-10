@@ -22,6 +22,8 @@ package net.diffengine.romandigitalclock;
 
 import static android.app.Activity.RESULT_OK;
 
+import static net.diffengine.romandigitalclock.AppClass.origprefs;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.appwidget.AppWidgetManager;
@@ -29,6 +31,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
 
@@ -37,7 +40,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class SettingsButtonBarFragment extends Fragment implements View.OnClickListener {
@@ -45,7 +47,6 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
     Button btnCancel;
     Button btnSave;
 
-    Map<String, ?> origprefs;   // Storage for backup of original preference values
     SharedPreferences prefs;
 
     public SettingsButtonBarFragment() {
@@ -62,7 +63,9 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
 
         parentActivity = requireActivity();
         prefs = PreferenceManager.getDefaultSharedPreferences(requireContext());
-        origprefs = prefs.getAll();
+        if (savedInstanceState == null) {
+            origprefs = prefs.getAll();
+        }
     }
 
     @SuppressLint("ApplySharedPref")
@@ -113,9 +116,10 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
             }
         } else {
             // In case of some shortsighted modification... :)
-            return;
+            throw new RuntimeException("Unknown button detected in SettingsButtonBarFragment.onClick");
         }
 
+        origprefs = null;
         parentActivity.finish();
     }
 
@@ -131,5 +135,11 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
         btnSave.setOnClickListener(this);
 
         return v;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        outState.put
     }
 }

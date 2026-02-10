@@ -30,7 +30,12 @@ import org.acra.config.MailSenderConfigurationBuilder;
 import org.acra.data.StringFormat;
 import org.acra.mail.BuildConfig;
 
+import java.util.Map;
+
 public class AppClass extends Application {
+    // Storage for backup of original preference values to recover after settings activity rotation.
+    public static Map<String, ?> origprefs = null;
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
