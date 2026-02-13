@@ -21,6 +21,8 @@
 
 package net.diffengine.romandigitalclock.fragment.preference;
 
+import static java.util.Arrays.copyOfRange;
+
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
@@ -61,9 +63,16 @@ public class TimeStyleFragment extends PreferenceFragmentCompat {
         pref.setIconSpaceReserved(true);    // Required for some devices that default this to false
         pref.setKey("list_typeface" + postfix);
         pref.setTitle("Typeface");
-        String[] typefaces = {"monospace", "sans", "serif"};
-        String[] typefaceValues = {"0", "1", "2"};
+        String[] typefaces = {"device default", "monospace", "sans", "serif"};
+        String[] typefaceValues = {"0", "1", "2", "3"};
 
+        if (!postfix.isEmpty()) {
+            // For use with widgets, which are always 'device default' from which the other
+            // typefaces are selected, drop 'device default'...
+            typefaces = copyOfRange(typefaces, 1, typefaces.length);
+            // ...and drop the last value
+            typefaceValues = copyOfRange(typefaceValues, 0, typefaces.length - 1);
+        }
         pref.setEntries(typefaces);
         pref.setEntryValues(typefaceValues);
         pref.setValue(typefaceValues[0]);

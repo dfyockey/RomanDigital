@@ -274,13 +274,22 @@ public class MainActivity extends AppCompatActivity {
     @SuppressWarnings("SameParameterValue")
     private void setDisplayFont(String family) {
         if( prefs != null) {
-            // Add a new AbstractMap for each font family to be used. See https://www.baeldung.com/java-initialize-hashmap
-            Map<String, int[]> font = Map.ofEntries(
-                    new AbstractMap.SimpleEntry<>("roboto", new int[]{R.font.roboto_mono, R.font.roboto_sans, R.font.roboto_serif})
-            );
+            Typeface typeface = Typeface.DEFAULT;
             int index = Integer.parseInt(prefs.getString("list_typeface", "0"));
-            Typeface typeface = ResourcesCompat.getFont(context, Objects.requireNonNull(font.get(family))[index]);
+
+            if (index > 0) {
+                index -= 1;
+
+                // Add a new AbstractMap for each font family to be used. See https://www.baeldung.com/java-initialize-hashmap
+                Map<String, int[]> font = Map.ofEntries(
+                        new AbstractMap.SimpleEntry<>("roboto", new int[]{R.font.roboto_mono, R.font.roboto_sans, R.font.roboto_serif})
+                );
+
+                typeface = ResourcesCompat.getFont(context, Objects.requireNonNull(font.get(family))[index]);
+            }
+
             TimeDisplay.setTypeface(typeface);
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 // Set this because, as emperically determined, this weight is used for the default
                 // weight of devices used in development. Also, it keeps the appearance the same on
