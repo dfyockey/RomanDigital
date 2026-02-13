@@ -68,10 +68,10 @@ public class TimeStyleFragment extends PreferenceFragmentCompat {
 
         if (!postfix.isEmpty()) {
             // For use with widgets, which are always 'device default' from which the other
-            // typefaces are selected, drop 'device default'...
+            // typefaces are selected, drop the 'device default' typeface...
             typefaces = copyOfRange(typefaces, 1, typefaces.length);
             // ...and drop the last value
-            typefaceValues = copyOfRange(typefaceValues, 0, typefaces.length - 1);
+            typefaceValues = copyOfRange(typefaceValues, 0, typefaceValues.length - 1);
         }
         pref.setEntries(typefaces);
         pref.setEntryValues(typefaceValues);
