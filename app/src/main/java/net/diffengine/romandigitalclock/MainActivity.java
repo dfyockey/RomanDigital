@@ -43,6 +43,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -287,7 +288,15 @@ public class MainActivity extends AppCompatActivity {
                         new AbstractMap.SimpleEntry<>("roboto", new int[]{R.font.roboto_mono, R.font.roboto_sans, R.font.roboto_serif})
                 );
 
-                typeface = ResourcesCompat.getFont(context, Objects.requireNonNull(font.get(family))[index]);
+                try {
+                    typeface = ResourcesCompat.getFont(context, Objects.requireNonNull(font.get(family))[index]);
+                } catch(Resources.NotFoundException e) {
+                    /*
+                     Ignore the exception, and typeface will still equal Typeface.DEFAULT.
+                     Causes a minor display error that will correct itself at the next time tick,
+                     which is much better than a crash.
+                    */
+                }
             }
 
             TimeDisplay.setTypeface(typeface);
