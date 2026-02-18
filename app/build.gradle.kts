@@ -13,7 +13,7 @@ android {
         //noinspection OldTargetApi
         targetSdk = 35
         versionCode = 15
-        versionName = "3.0.1 Beta"
+        versionName = "3.0.0 Pre-Release"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,6 +36,8 @@ android {
 
 dependencies {
     val acraVersion = "5.13.1"
+
+    implementation("com.github.dfyockey:FreeDroidWarn:V1.6-Mod3")
 
     implementation("androidx.appcompat:appcompat:1.7.1")
     implementation("com.google.android.material:material:1.13.0")

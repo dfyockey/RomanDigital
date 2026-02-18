@@ -42,6 +42,8 @@ import android.view.View;
 import net.diffengine.romandigitalclock.fragment.preference.TimeFormatFragment;
 import net.diffengine.romandigitalclock.fragment.preference.TimeStyleFragment;
 
+import org.woheller69.freeDroidWarn.FreeDroidWarn;
+
 import java.util.Objects;
 
 public class WidgetSettingsActivity extends AppCompatActivity {
@@ -172,6 +174,7 @@ public class WidgetSettingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        FreeDroidWarn.showWarningOnUpgrade(this, BuildConfig.VERSION_CODE, getString(R.string.app_name));
     }
 
     @Override

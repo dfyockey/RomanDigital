@@ -57,6 +57,8 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import org.woheller69.freeDroidWarn.FreeDroidWarn;
+
 import java.util.AbstractMap;
 import java.util.Map;
 import java.util.Objects;
@@ -392,6 +394,8 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onResume() {
         super.onResume();
+        FreeDroidWarn.showWarningOnUpgrade(this, BuildConfig.VERSION_CODE, getString(R.string.app_name));
+
         windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
 
         TimeDisplay.setVisibility(View.INVISIBLE);
