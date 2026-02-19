@@ -150,7 +150,11 @@ public class TimeFormatFragment extends PreferenceFragmentCompat {
     }
 
     public void setAlignmentEnableState(String typefaceValue) {
-        if (typefaceValue.equals("0")) {
+        boolean pfEmpty = postfix.isEmpty();
+        boolean monoInApp = (typefaceValue.equals("1") && pfEmpty);
+        boolean monoInWidgetOrDefaultInApp = typefaceValue.equals("0");
+
+        if ( monoInWidgetOrDefaultInApp || monoInApp ) {
             pAlignment.setEnabled(true);
         } else {
             pAlignment.setChecked(MainActivity.left);
