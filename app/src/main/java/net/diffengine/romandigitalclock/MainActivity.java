@@ -292,21 +292,13 @@ public class MainActivity extends AppCompatActivity {
                     typeface = ResourcesCompat.getFont(context, Objects.requireNonNull(font.get(family))[index]);
                 } catch(Resources.NotFoundException e) {
                     /*
-                     Ignore the exception, and typeface will still equal Typeface.DEFAULT.
-                     Causes a minor display error that will correct itself at the next time tick,
-                     which is much better than a crash.
+                     Ignore any exception if a font's not found, and typeface will still equal Typeface.DEFAULT.
+                     May cause display of an unintended typeface, but that's better than a crash.
                     */
                 }
             }
 
             TimeDisplay.setTypeface(typeface);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                // Set this because, as emperically determined, this weight is used for the default
-                // weight of devices used in development. Also, it keeps the appearance the same on
-                // my phone. A selfish reason, but I'm the developer and rank has its privileges. :)
-                TimeDisplay.setFontVariationSettings("'wght' 370");
-            }
         }
     }
 
