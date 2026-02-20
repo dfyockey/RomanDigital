@@ -42,7 +42,7 @@
     <string name="ampm_on">Show as \'·\' for AM and \':\' for PM</string>
 
     <string name="keepon_title">Keep screen on</string>
-    <string name="charging_title">     Only when charging</string>
+    <string name="charging_title">^^^ only when charging</string>
 
     <string name="civ_fill">XXXXXXXXXXXX</string>
     <string name="mil_fill">XXXXXXXXXXXXX</string>

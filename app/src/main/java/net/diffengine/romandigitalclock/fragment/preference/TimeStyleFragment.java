@@ -58,6 +58,14 @@ public class TimeStyleFragment extends PreferenceFragmentCompat {
     Context prefManagerContext;
     PreferenceCategory category;
 
+    private void addColorDialogPreference() {
+        ColorDialogPreference colorPref = new ColorDialogPreference(prefManagerContext, getChildFragmentManager());
+        colorPref.setIconSpaceReserved(true);    // Required for some devices that default this to false
+        colorPref.setTitle("Color");
+        colorPref.setKey("hexcolor");
+        category.addPreference(colorPref);
+    }
+
     private void addTypefaceListPreference () {
         ListPreference pref = new ListPreference(prefManagerContext);
         pref.setIconSpaceReserved(true);    // Required for some devices that default this to false
@@ -110,10 +118,7 @@ public class TimeStyleFragment extends PreferenceFragmentCompat {
         screen.addPreference(category);
 
         if (postfix.isEmpty()) {
-            ColorDialogPreference colorPref = new ColorDialogPreference(prefManagerContext, getChildFragmentManager());
-            colorPref.setTitle("Time Color");
-            colorPref.setKey("hexcolor");
-            category.addPreference(colorPref);
+            addColorDialogPreference();
         }
 
         addTypefaceListPreference();

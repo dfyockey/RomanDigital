@@ -103,7 +103,10 @@ public class WidgetSettingsActivity extends AppCompatActivity {
                     .setReorderingAllowed(true);
 
             fragmentTransaction.add(R.id.settings_frame, new TimeFormatFragment(appWidgetId));
-            fragmentTransaction.add(R.id.style_frame, new TimeStyleFragment(appWidgetId));
+            // No style setting currently works in SDK 21, so exclude the style fragment from there
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                fragmentTransaction.add(R.id.style_frame, new TimeStyleFragment(appWidgetId));
+            }
             fragmentTransaction.add(R.id.widget_bkgnd, new WidgetBkgndSettingsFragment(appWidgetId));
             fragmentTransaction.add(R.id.button_bar, new SettingsButtonBarFragment()).commit();
         }

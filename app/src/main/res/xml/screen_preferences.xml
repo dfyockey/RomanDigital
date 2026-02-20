@@ -31,13 +31,13 @@
             android:defaultValue="false"
             android:key="switch_keep_on"
             android:title="@string/keepon_title"
-            app:iconSpaceReserved="false" />
+            app:iconSpaceReserved="true" />
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="switch_when_charging"
             android:title="@string/charging_title"
             app:dependency="switch_keep_on"
-            app:iconSpaceReserved="false" />
+            app:iconSpaceReserved="true" />
     </PreferenceCategory>
 
 </PreferenceScreen>
