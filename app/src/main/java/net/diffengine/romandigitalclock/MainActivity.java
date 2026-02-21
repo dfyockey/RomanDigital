@@ -369,7 +369,8 @@ public class MainActivity extends AppCompatActivity {
                     showActivity(AboutActivity.class);
                 } else if (itemId == R.id.item_reset_setting) {
                     // Should only be used in DEBUG build
-                    AboutActivity.clearAboutOnUpgrade(context);
+//                    AboutActivity.clearAboutOnUpgrade(context, "lastVersionAboutShownOnUpgrade");
+                    AboutActivity.clearAboutOnUpgrade(context, "aboutLicenseExpanded");
                 } else {
                         returnState = false;
                 }

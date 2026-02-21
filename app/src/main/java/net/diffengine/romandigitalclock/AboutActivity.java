@@ -66,6 +66,19 @@ public class AboutActivity extends AppCompatActivity {
 
         tv.setText(getString(R.string.app_version_label, appversion));
 
+        TextView license = findViewById(R.id.tvLicense);
+        license.setSingleLine(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("aboutLicenseExpanded", true));
+
+        license.setOnClickListener(view -> {
+            TextView license1 = (TextView)view;
+
+            SharedPreferences prefManager1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            boolean singleLine = prefManager1.getBoolean("aboutLicenseExpanded", true);
+
+            license1.setSingleLine(!singleLine);
+            prefManager1.edit().putBoolean("aboutLicenseExpanded", !singleLine).apply();
+        });
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -94,9 +107,9 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     // For debugging only : call on click of a button only shown and enabled in a DEBUG build.
-    public static void clearAboutOnUpgrade(Context context) {
+    public static void clearAboutOnUpgrade(Context context, String prefToRemove) {
         SharedPreferences prefManager = PreferenceManager.getDefaultSharedPreferences(context);
-        prefManager.edit().remove("lastVersionAboutShownOnUpgrade").apply();
-        Toast.makeText(context, "Removed lastVersionAboutShownOnUpgrade", Toast.LENGTH_LONG).show();
+        prefManager.edit().remove(prefToRemove).apply();
+        Toast.makeText(context, "Removed " + prefToRemove, Toast.LENGTH_LONG).show();
     }
 }
