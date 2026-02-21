@@ -20,6 +20,8 @@
 
 package net.diffengine.romandigitalclock;
 
+import static android.view.View.VISIBLE;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
@@ -156,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
             if ( (int)pxCurrentControlTextSize >= (int)pxDefaultControlTextSize && text_resize_attempt_count++ < R.dimen.text_resize_attempt_limit ) {
                 sendBroadcast(makeIntent(UPDATE_DISPLAY));
             } else {
-                TimeDisplay.setVisibility(View.VISIBLE);
+                TimeDisplay.setVisibility(VISIBLE);
             }
         }
 
@@ -191,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
                 vToolbar.setVisibility(View.INVISIBLE);
                 windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
             } else {
-                vToolbar.setVisibility(View.VISIBLE);
+                vToolbar.setVisibility(VISIBLE);
                 windowInsetsControllerCompat.show(WindowInsetsCompat.Type.systemBars());
             }
         }
@@ -349,6 +351,12 @@ public class MainActivity extends AppCompatActivity {
         // Needed so the menu resource is loaded into the toolbar!
         myToolbar.inflateMenu(R.menu.main_menu);
 
+        if (BuildConfig.DEBUG) {
+            MenuItem item = myToolbar.getMenu().findItem(R.id.item_reset_setting);
+            item.setEnabled(true);
+            item.setVisible(true);
+        }
+
         myToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -359,8 +367,11 @@ public class MainActivity extends AppCompatActivity {
                     showActivity(AppSettingsActivity.class);
                 } else if (itemId == R.id.item_about) {
                     showActivity(AboutActivity.class);
+                } else if (itemId == R.id.item_reset_setting) {
+                    // Should only be used in DEBUG build
+                    AboutActivity.clearAboutOnUpgrade(context);
                 } else {
-                    returnState = false;
+                        returnState = false;
                 }
 
                 return returnState;
@@ -393,6 +404,9 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onResume() {
         super.onResume();
+
+        AboutActivity.showAboutOnUpgrade(this, BuildConfig.VERSION_CODE);
+
         windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
 
         TimeDisplay.setVisibility(View.INVISIBLE);

@@ -175,6 +175,7 @@ public class WidgetSettingsActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        AboutActivity.showAboutOnUpgrade(this, BuildConfig.VERSION_CODE);
     }
 
     @Override

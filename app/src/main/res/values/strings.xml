@@ -182,4 +182,7 @@ THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
 
     <!-- Color Dialog Strings -->
     <string name="hexcode_hint">RRGGBB hex color code</string>
+
+    <!-- String for GUI object only used when BuildConfig.DEBUG is true -->
+    <string name="reset_setting">Reset Setting</string>
 </resources>

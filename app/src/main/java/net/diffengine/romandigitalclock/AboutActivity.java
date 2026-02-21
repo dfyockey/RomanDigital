@@ -25,11 +25,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.preference.PreferenceManager;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -64,5 +70,33 @@ public class AboutActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            getOnBackPressedDispatcher().onBackPressed();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // Call in onResume method of MainActivity and WidgetSettingsActivity
+    // to show the About activity on app installation or update.
+    public static void showAboutOnUpgrade(Context context, int buildVersion) {
+        SharedPreferences prefManager = PreferenceManager.getDefaultSharedPreferences(context);
+        int versionCode = prefManager.getInt("lastVersionAboutShownOnUpgrade",0);
+        if (BuildConfig.VERSION_CODE > versionCode){
+            Intent showActivityIntent = new Intent(context, AboutActivity.class);
+            context.startActivity(showActivityIntent);
+            prefManager.edit().putInt("lastVersionAboutShownOnUpgrade", buildVersion).apply();
+        }
+    }
+
+    // For debugging only : call on click of a button only shown and enabled in a DEBUG build.
+    public static void clearAboutOnUpgrade(Context context) {
+        SharedPreferences prefManager = PreferenceManager.getDefaultSharedPreferences(context);
+        prefManager.edit().remove("lastVersionAboutShownOnUpgrade").apply();
+        Toast.makeText(context, "Removed lastVersionAboutShownOnUpgrade", Toast.LENGTH_LONG).show();
     }
 }

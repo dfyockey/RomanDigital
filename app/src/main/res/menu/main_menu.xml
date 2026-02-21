@@ -42,4 +42,13 @@
         android:layout_height="wrap_content"
         android:title="@string/menuitem_about"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/item_reset_setting"
+        android:icon="@drawable/ic_reset_settings_24px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="@string/reset_setting"
+        android:enabled="false"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
 </menu>
