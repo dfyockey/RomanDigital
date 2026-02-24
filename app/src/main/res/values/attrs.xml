@@ -33,5 +33,9 @@
         <attr name="barColor" format="reference" />
         <attr name="barBackgroundColor" format="reference" />
     </declare-styleable>
+    
+    <declare-styleable name="TextViewEC">
+        <attr name="initCollapsed" format="boolean" />
+    </declare-styleable>
 
 </resources>

@@ -70,16 +70,18 @@ Unless required by applicable law or agreed to in writing, software distributed 
     https://github.com/dfyockey/RomanDigital"
     </string>
 
-    <string name="credits">
-"APPRECIATION &amp; LICENSING
+    <string name="credits_header">
+APPRECIATION &amp; THIRD-PARTY LICENSING
+    </string>
 
-Motivation to implement autosizing of the RomanDigital app widget text was provided by observation of the digital clock widget text autosizing in the excellent Clock app by BlackyHawky and their contributors (https://github.com/BlackyHawky/Clock). Thanks to the app's widget, I knew it could be done.
+    <string name="BlackyHawky_thanks">
+"Thanks go to BlackyHawky and their contributors for indirectly providing motivation to implement autosizing of the RomanDigital app widget text; this was provided by observation of the digital clock widget text autosizing in their excellent Clock app (https://github.com/BlackyHawky/Clock). Seeing the app's widget convinced me that such autosizing could actually be done.
 
 The BlackyHawky Clock source code is unfortunately licensed under GNU GPL v3.0 which is incompatible with RomanDigital's Apache 2.0 license without relicensing RomanDigital. Consequently, to avoid potential legal entanglements, the BlackyHawky Clock source code was neither copied nor reviewed in development of the RomanDigital app widget."
     </string>
 
     <string name="dependencies_header">
-"A note of appreciation also goes to the developers of the following software included in RomanDigital:"
+"Notes of appreciation also go to the developers of the following software included in RomanDigital:"
     </string>
 
     <string name="acra_license_notice">
@@ -94,7 +96,8 @@ This product is licensed under the terms of the Apache Software License 2.0. See
 for the full license text."
     </string>
 
-    <string name="googlefonts_license_notice">
+
+    <string name="googlefonts_copyright_notice">
 "Google Fonts
 
 * Copyright 2011 The Roboto Project Authors
@@ -103,8 +106,10 @@ for the full license text."
   (https://github.com/googlefonts/robotomono)
 * Copyright 2020 The Roboto Serif Project Authors
   (https://github.com/googlefonts/RobotoSerif)
+    </string>
 
-This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is copied below, and is also available with a FAQ at: https://openfontlicense.org
+    <string name="googlefonts_license_notice">
+"This Font Software is licensed under the SIL Open Font License, Version 1.1. This license is copied below, and is also available with a FAQ at: https://openfontlicense.org
 
 -----------------------------------------------------------
 SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
@@ -143,7 +148,7 @@ TERMINATION
 This license becomes null and void if any of the above conditions are not met.
 
 DISCLAIMER
-THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER DEALINGS IN THE FONT SOFTWARE.
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER DEALINGS IN THE FONT SOFTWARE."
     </string>
 
     <!-- Service-related Strings -->

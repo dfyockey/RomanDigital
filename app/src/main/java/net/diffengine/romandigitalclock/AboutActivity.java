@@ -35,7 +35,6 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -66,19 +65,6 @@ public class AboutActivity extends AppCompatActivity {
 
         tv.setText(getString(R.string.app_version_label, appversion));
 
-        TextView license = findViewById(R.id.tvLicense);
-        license.setSingleLine(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("aboutLicenseExpanded", true));
-
-        license.setOnClickListener(view -> {
-            TextView license1 = (TextView)view;
-
-            SharedPreferences prefManager1 = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            boolean singleLine = prefManager1.getBoolean("aboutLicenseExpanded", true);
-
-            license1.setSingleLine(!singleLine);
-            prefManager1.edit().putBoolean("aboutLicenseExpanded", !singleLine).apply();
-        });
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -104,12 +90,5 @@ public class AboutActivity extends AppCompatActivity {
             context.startActivity(showActivityIntent);
             prefManager.edit().putInt("lastVersionAboutShownOnUpgrade", buildVersion).apply();
         }
-    }
-
-    // For debugging only : call on click of a button only shown and enabled in a DEBUG build.
-    public static void clearAboutOnUpgrade(Context context, String prefToRemove) {
-        SharedPreferences prefManager = PreferenceManager.getDefaultSharedPreferences(context);
-        prefManager.edit().remove(prefToRemove).apply();
-        Toast.makeText(context, "Removed " + prefToRemove, Toast.LENGTH_LONG).show();
     }
 }

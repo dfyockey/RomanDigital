@@ -351,11 +351,12 @@ public class MainActivity extends AppCompatActivity {
         // Needed so the menu resource is loaded into the toolbar!
         myToolbar.inflateMenu(R.menu.main_menu);
 
-        if (BuildConfig.DEBUG) {
-            MenuItem item = myToolbar.getMenu().findItem(R.id.item_reset_setting);
-            item.setEnabled(true);
-            item.setVisible(true);
-        }
+//        // Uncomment to include a toolbar button to reset something while debugging
+//        if (BuildConfig.DEBUG) {
+//            MenuItem item = myToolbar.getMenu().findItem(R.id.item_reset_setting);
+//            item.setEnabled(true);
+//            item.setVisible(true);
+//        }
 
         myToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -368,9 +369,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (itemId == R.id.item_about) {
                     showActivity(AboutActivity.class);
                 } else if (itemId == R.id.item_reset_setting) {
-                    // Should only be used in DEBUG build
-//                    AboutActivity.clearAboutOnUpgrade(context, "lastVersionAboutShownOnUpgrade");
-                    AboutActivity.clearAboutOnUpgrade(context, "aboutLicenseExpanded");
+                    // Add code here to reset something in DEBUG build on click of the reset button
                 } else {
                         returnState = false;
                 }
