@@ -146,16 +146,81 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textView2"
-                tools:ignore="VisualLintLongText,TouchTargetSizeCheck" />
+                tools:ignore="TouchTargetSizeCheck" />
 
             <View
-                android:id="@+id/divider2"
+                android:id="@+id/after_tvLicence"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
                 app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/tvLicense" />
+
+            <TextView
+                android:id="@+id/notice_re_google"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:paddingTop="@dimen/txtblk_vert_padding"
+                android:paddingLeft="@dimen/txtblk_horiz_padding"
+                android:paddingRight="@dimen/txtblk_horiz_padding"
+                android:paddingBottom="@dimen/txtblk_vert_padding"
+                android:text="@string/notice_re_google"
+                android:textSize="14sp"
+                android:typeface="sans"
+                android:textColor="#90000000"
+                android:background="#60FF8000"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
+                app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintTop_toBottomOf="@id/after_tvLicence" />
+
+<!--            <TextView-->
+<!--                android:id="@+id/new_in_version_heading"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:autoLink="web"-->
+<!--                android:linksClickable="true"-->
+<!--                android:layout_marginTop="@dimen/txtblk_vert_padding"-->
+<!--                android:text="@string/new_in_version_heading"-->
+<!--                android:textSize="14sp"-->
+<!--                android:typeface="sans"-->
+<!--                android:background="#16A0A0A0"-->
+<!--                app:layout_constraintStart_toStartOf="@id/tvLicense"-->
+<!--                app:layout_constraintEnd_toEndOf="@id/tvLicense"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/divider2"-->
+<!--                tools:ignore="TextContrastCheck" />-->
+
+            <View
+                android:id="@+id/after_notice_re_google"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
+                app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintTop_toBottomOf="@id/notice_re_google" />
+
+            <TextView
+                android:id="@+id/new_in_version"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/txtblk_vert_padding"
+                android:paddingBottom="@dimen/txtblk_vert_padding"
+                android:text="@string/new_in_version"
+                android:textSize="14sp"
+                android:typeface="sans"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
+                app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintTop_toBottomOf="@id/after_notice_re_google" />
+
+            <View
+                android:id="@+id/after_new_in_version"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
+                app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintTop_toBottomOf="@id/new_in_version" />
 
             <TextView
                 android:id="@+id/solicitation"
@@ -170,7 +235,7 @@
                 android:typeface="sans"
                 app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
-                app:layout_constraintTop_toBottomOf="@id/divider2"
+                app:layout_constraintTop_toBottomOf="@id/after_new_in_version"
                 tools:ignore="TextContrastCheck" />
 
             <View

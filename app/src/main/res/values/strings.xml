@@ -60,6 +60,19 @@
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License."
     </string>
 
+    <string name="notice_re_google">"<b>NOTICE</b> :
+        Starting in September 2026, Google is planning to restrict what we are allowed to install on our Android devices. For more information, see https://keepandroidopen.org/"</string>
+
+    <string name="new_in_version_heading">"<b>New in this Version</b>"</string>
+
+    <string name="new_in_version">
+"NEW IN THIS VERSION
+
+* About activity pop-up on installation and update
+* Clock typeface selection for app and each widget
+* More reliable updating of widgets' time display"
+    </string>
+
     <string name="solicitation">
 "If you like RomanDigital and would like to tangibly express your thanks, dropping the value of a coffee of the quality of your choice at https://paypal.me/dfyockey would be greatly appreciated 🙂"
     </string>
