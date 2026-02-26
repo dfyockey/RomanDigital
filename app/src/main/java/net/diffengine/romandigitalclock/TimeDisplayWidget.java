@@ -209,9 +209,11 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     public void onEnabled(Context context) {
         /*
             Don't start the TimeTickRelay service here because the widget may not be in the
-            foreground yet, in which case it throw an exception. Instead, start it in the Save
-            button handler of the SettingsButtonBarFragment so it will be started when the widget
-            is added but while the AppSettingsActivity is still in the foreground.
+            foreground yet, in which case it throws an exception. Instead, start it in the onCreate
+            method of each of MainActivity and WidgetSettingsActivity. That way, it will be started
+            when the widget is added but while the AppSettingsActivity is still in the foreground
+            or, if it hadn't been started or had been stopped, when either the main activity or a
+            widget settings activity is started.
         */
     }
 

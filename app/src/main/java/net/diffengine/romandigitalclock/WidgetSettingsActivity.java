@@ -182,8 +182,8 @@ public class WidgetSettingsActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
 
-        // Broadcast an intent immediately after either Close or Save is pressed
-        // and the config activity is closed. This updates the widget immediately
+        // Broadcast an intent immediately after either Close or Save is pressed and
+        // the config activity is closed. This should update the widget immediately
         // rather than waiting for the next relayed ACTION_TIME_TICK to arrive.
         Intent update_widget = new Intent(this, TimeDisplayWidget.class);
         update_widget.setAction(TimeDisplayWidget.RELAYED_TIME_TICK);

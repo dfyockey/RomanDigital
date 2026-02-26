@@ -140,6 +140,5 @@ public class SettingsButtonBarFragment extends Fragment implements View.OnClickL
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.put
     }
 }

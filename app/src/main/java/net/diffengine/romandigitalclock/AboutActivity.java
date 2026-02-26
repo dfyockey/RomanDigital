@@ -91,4 +91,13 @@ public class AboutActivity extends AppCompatActivity {
             prefManager.edit().putInt("lastVersionAboutShownOnUpgrade", buildVersion).apply();
         }
     }
+
+///// Retain the following as a template for similar setting clearance methods in the future...
+//
+//    // For debugging only : call on click of a button only shown and enabled in a DEBUG build.
+//    public static void clearAboutOnUpgrade(Context context, String prefToRemove) {
+//        SharedPreferences prefManager = PreferenceManager.getDefaultSharedPreferences(context);
+//        prefManager.edit().remove(prefToRemove).apply();
+//        Toast.makeText(context, "Removed " + prefToRemove, Toast.LENGTH_LONG).show();
+//    }
 }

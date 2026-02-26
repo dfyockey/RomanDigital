@@ -114,7 +114,7 @@
                 Start of Content
 
                 Note: constraintStart_toStartOf of the following TextViews except @id/tvLicense are
-                set to the same @id/tvLicense's Start so that all content TextViews float
+                set to the same @id/tvLicense's Start and End so that all content TextViews float
                 horizontally as a block centered on the screen.
             -->
 
@@ -176,22 +176,6 @@
                 app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/after_tvLicence" />
-
-<!--            <TextView-->
-<!--                android:id="@+id/new_in_version_heading"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:autoLink="web"-->
-<!--                android:linksClickable="true"-->
-<!--                android:layout_marginTop="@dimen/txtblk_vert_padding"-->
-<!--                android:text="@string/new_in_version_heading"-->
-<!--                android:textSize="14sp"-->
-<!--                android:typeface="sans"-->
-<!--                android:background="#16A0A0A0"-->
-<!--                app:layout_constraintStart_toStartOf="@id/tvLicense"-->
-<!--                app:layout_constraintEnd_toEndOf="@id/tvLicense"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/divider2"-->
-<!--                tools:ignore="TextContrastCheck" />-->
 
             <View
                 android:id="@+id/after_notice_re_google"

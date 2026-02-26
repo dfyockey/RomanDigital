@@ -368,8 +368,10 @@ public class MainActivity extends AppCompatActivity {
                     showActivity(AppSettingsActivity.class);
                 } else if (itemId == R.id.item_about) {
                     showActivity(AboutActivity.class);
-                } else if (itemId == R.id.item_reset_setting) {
+                } else //noinspection StatementWithEmptyBody
+                    if (itemId == R.id.item_reset_setting) {
                     // Add code here to reset something in DEBUG build on click of the reset button
+//                    AboutActivity.clearAboutOnUpgrade(context, "lastVersionAboutShownOnUpgrade");
                 } else {
                         returnState = false;
                 }

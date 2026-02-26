@@ -22,7 +22,6 @@ package net.diffengine.romandigitalclock.component;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -48,7 +47,7 @@ public class TextViewEC extends AppCompatTextView {
         String key = getResources().getResourceEntryName(this.getId());
 
         if (!this.isInEditMode()) {
-            Activity activity = getActivity(context);
+            Activity activity = (Activity)context;
             TextViewEC textViewEC = this;   // Needed for use in setOnClickListener lambda expression
             textViewEC.setSingleLine(activity.getPreferences(Context.MODE_PRIVATE).getBoolean(key, initCollapsed));
 
@@ -63,14 +62,6 @@ public class TextViewEC extends AppCompatTextView {
                 prefManager.edit().putBoolean(key, !collapsed).apply();
             });
         }
-    }
-
-    private Activity getActivity(Context context) {
-        if (context != null) {
-            if (context instanceof Activity) return (Activity) context;
-            if (context instanceof ContextWrapper) return getActivity(((ContextWrapper) context).getBaseContext());
-        }
-        return null;
     }
 
     public TextViewEC(@NonNull Context context) {
