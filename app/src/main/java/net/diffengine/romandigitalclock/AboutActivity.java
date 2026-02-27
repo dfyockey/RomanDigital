@@ -21,6 +21,7 @@
 package net.diffengine.romandigitalclock;
 
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -32,6 +33,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -86,8 +88,18 @@ public class AboutActivity extends AppCompatActivity {
         SharedPreferences prefManager = PreferenceManager.getDefaultSharedPreferences(context);
         int versionCode = prefManager.getInt("lastVersionAboutShownOnUpgrade",0);
         if (BuildConfig.VERSION_CODE > versionCode){
-            Intent showActivityIntent = new Intent(context, AboutActivity.class);
-            context.startActivity(showActivityIntent);
+            String appversionName = net.diffengine.romandigitalclock.BuildConfig.VERSION_NAME;
+            new AlertDialog.Builder(context)
+                    .setTitle(Html.fromHtml("<font color='#" + MainActivity.getHexFromColorRes(context, R.color.clock_red) + "'>RomanDigital Upgraded</font>"))
+                    .setMessage("Would you like to see what's new in RomanDigital " + appversionName + "?")
+                    .setPositiveButton("Yes", (dialogInterface, i) -> {
+                        Intent showActivityIntent = new Intent(context, AboutActivity.class);
+                        context.startActivity(showActivityIntent);
+                        dialogInterface.dismiss();
+                    })
+                    .setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel())
+                    .create()
+                    .show();
             prefManager.edit().putInt("lastVersionAboutShownOnUpgrade", buildVersion).apply();
         }
     }
@@ -98,6 +110,6 @@ public class AboutActivity extends AppCompatActivity {
 //    public static void clearAboutOnUpgrade(Context context, String prefToRemove) {
 //        SharedPreferences prefManager = PreferenceManager.getDefaultSharedPreferences(context);
 //        prefManager.edit().remove(prefToRemove).apply();
-//        Toast.makeText(context, "Removed " + prefToRemove, Toast.LENGTH_LONG).show();
+//        android.widget.Toast.makeText(context, "Removed " + prefToRemove, android.widget.Toast.LENGTH_LONG).show();
 //    }
 }

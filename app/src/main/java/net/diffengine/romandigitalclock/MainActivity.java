@@ -239,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    static private String getHexFromColorRes(Context context, @ColorRes int id) {
+    static /*package*/ String getHexFromColorRes(Context context, @ColorRes int id) {
         int colorInt = ContextCompat.getColor(context, id) & 0xFFFFFF;
         return String.format("%06X", colorInt);
     }
@@ -351,12 +351,12 @@ public class MainActivity extends AppCompatActivity {
         // Needed so the menu resource is loaded into the toolbar!
         myToolbar.inflateMenu(R.menu.main_menu);
 
-//        // Uncomment to include a toolbar button to reset something while debugging
-//        if (BuildConfig.DEBUG) {
-//            MenuItem item = myToolbar.getMenu().findItem(R.id.item_reset_setting);
-//            item.setEnabled(true);
-//            item.setVisible(true);
-//        }
+        // Toolbar button to reset intended to reset one or more settings while in DEBUG build
+        if (BuildConfig.DEBUG) {
+            MenuItem item = myToolbar.getMenu().findItem(R.id.item_reset_setting);
+            item.setEnabled(true);
+            item.setVisible(true);
+        }
 
         myToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -370,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
                     showActivity(AboutActivity.class);
                 } else //noinspection StatementWithEmptyBody
                     if (itemId == R.id.item_reset_setting) {
-                    // Add code here to reset something in DEBUG build on click of the reset button
+                    // Add code here to reset setting(s) in DEBUG build on click of the reset button
 //                    AboutActivity.clearAboutOnUpgrade(context, "lastVersionAboutShownOnUpgrade");
                 } else {
                         returnState = false;
