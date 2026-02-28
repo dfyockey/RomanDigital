@@ -8,6 +8,36 @@ This project aims to adhere to [Semantic Versioning](https://server.org).
 
 Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
 
+## [3.0.0] - 2026-02-28
+
+### Added
+* A service that relays a custom intent to the widget(s) on receipt of Intent.ACTION_TIME_TICK from the Android system (which is sent by the system each minute), thereby initiating update of the widget(s) time display each minute and providing improved widget update reliability.
+    * Relay service start on:
+      * first widget addition to home screen.
+      * on device boot if one or more widgets have already been added.
+      * on main app start and widget settings start if one or more widgets have already been added to provide a simply way for the user to restart the service after updating the app or if the service has been otherwise stopped (e.g. by force stop of the app).
+    * Relay service stop on last widget removal.
+* Independent selection of typeface between monospace, sans-serif, and serif of the main app's and each widget's time display.
+    * The main app display also includes a 'device default' typeface option. The typeface for this selection is either hardcoded into the device or determined by the user's selection in system settings, depending on the device's particular Android implementation.
+* Disabling of the clock display alignment preference and forcing 'Align to Center' on selection of sans-serif or serif typeface since non-monospace typefaces don't properly align the time display when using 'Align to Divider'.
+* Display after install or upgrade of a simple dialog on start of either the main or widget settings activity asking the user whether to show what's new in the latest version. The About activity, containing the "what's new" info above the fold, is started on clicking 'Yes'; clicking either 'Yes' or 'No' updates a preference that prevents the dialog's display until the next upgrade.
+* Initially-collapsed text blocks in the About activity with expand/collapse functionality that contain sizable chunks of license info.
+
+### Added (Technical)
+* Internal support facilitating future addition of new fonts for display by the main app clock. See commits f255f747 and d850fffb for particular points relating to adding new fonts.
+* A main app toolbar menu button (R.id.item_reset_setting) that is only enabled and visible if `BuildConfig.DEBUG` is true; the button can be used to, for example, reset one or more preferences during debugging by providing code in the toolbar's `onMenuItemClick` handler.
+* TextViewEC, a simple, reusable custom view extended from AppCompatTextView that provides the expand/collapse functionality in the About activity. It automatically stores its state in SharedPreferences private to the activity in which it is used, with a preference key equal to the id name specified in the activity's layout. It has one custom boolean attribute, initCollapsed, for specifying its initial state.
+
+### Changed
+* Target and compile SDK from 34 to 35.
+* Java source and target compatibility from 8 to 21.
+
+### Fixed
+* Various UI/UX issues.
+
+### Removed
+* Less reliable updating of widget time displays by setting of successive exact alarms that deliver a custom intent to the widget(s) each minute to thereby initiate update.
+
 ## [2.2.2] - 2025-12-14
 
 ### Reverted

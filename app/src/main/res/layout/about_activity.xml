@@ -46,14 +46,16 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/spacerAbout">
+        app:layout_constraintTop_toBottomOf="@id/spacerAbout"
+        app:layout_constraintVertical_bias="0.0">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="25sp"
-            android:layout_marginEnd="25sp" >
+            android:layout_marginEnd="25sp">
 
             <!-- Start of Masthead -->
 
@@ -65,9 +67,9 @@
                 android:paddingTop="25dp"
                 android:text="@string/app_name"
                 android:textColor="@color/clock_red"
+                android:typeface="sans"
                 app:autoSizeMaxTextSize="48sp"
                 app:autoSizeTextType="uniform"
-                android:typeface="sans"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -79,9 +81,9 @@
                 android:gravity="center_horizontal"
                 android:paddingBottom="8dp"
                 android:text="@string/app_subtitle"
+                android:textStyle="bold"
                 app:autoSizeMaxTextSize="16sp"
                 app:autoSizeTextType="uniform"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/mastheadTitle" />
@@ -104,8 +106,8 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintStart_toStartOf="@+id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@+id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/tvVersion" />
 
             <!-- End of Masthead -->
@@ -136,14 +138,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
+                android:background="#16A0A0A0"
+                android:ellipsize="end"
                 android:linksClickable="true"
                 android:maxWidth="600dp"
                 android:paddingBottom="@dimen/txtblk_vert_padding"
-                android:background="#16A0A0A0"
-                android:text="@string/license_notice"
+                android:text="@string/apache_license_notice"
                 android:textSize="14sp"
                 android:typeface="sans"
-                android:ellipsize="end"
                 app:initCollapsed="true"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -155,8 +157,8 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/tvLicense" />
 
             <TextView
@@ -164,17 +166,17 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
-                android:paddingTop="@dimen/txtblk_vert_padding"
+                android:background="#60FF8000"
                 android:paddingLeft="@dimen/txtblk_horiz_padding"
+                android:paddingTop="@dimen/txtblk_vert_padding"
                 android:paddingRight="@dimen/txtblk_horiz_padding"
                 android:paddingBottom="@dimen/txtblk_vert_padding"
                 android:text="@string/notice_re_google"
+                android:textColor="#90000000"
                 android:textSize="14sp"
                 android:typeface="sans"
-                android:textColor="#90000000"
-                android:background="#60FF8000"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/after_tvLicence" />
 
             <View
@@ -182,31 +184,90 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/notice_re_google" />
 
-            <TextView
-                android:id="@+id/new_in_version"
+            <LinearLayout
+                android:id="@+id/whats_new"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:background="#2FFFE000"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/txtblk_horiz_padding"
                 android:paddingTop="@dimen/txtblk_vert_padding"
+                android:paddingRight="@dimen/txtblk_horiz_padding"
                 android:paddingBottom="@dimen/txtblk_vert_padding"
-                android:text="@string/new_in_version"
-                android:textSize="14sp"
-                android:typeface="sans"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
+                android:textColor="#00000000"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
-                app:layout_constraintTop_toBottomOf="@id/after_notice_re_google" />
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
+                app:layout_constraintTop_toBottomOf="@id/after_notice_re_google">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/whats_new" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="* "
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/new_item_1" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="* "
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/new_item_2" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="* "
+                        tools:ignore="HardcodedText" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/new_item_3" />
+                </LinearLayout>
+            </LinearLayout>
 
             <View
                 android:id="@+id/after_new_in_version"
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
-                app:layout_constraintTop_toBottomOf="@id/new_in_version" />
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
+                app:layout_constraintTop_toBottomOf="@id/whats_new" />
 
             <TextView
                 android:id="@+id/solicitation"
@@ -219,8 +280,8 @@
                 android:text="@string/solicitation"
                 android:textSize="14sp"
                 android:typeface="sans"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/after_new_in_version"
                 tools:ignore="TextContrastCheck" />
 
@@ -229,8 +290,8 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/solicitation" />
 
             <TextView
@@ -244,8 +305,8 @@
                 android:text="@string/source"
                 android:textSize="14sp"
                 android:typeface="sans"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/divide_from_solicitation"
                 tools:ignore="TextContrastCheck" />
 
@@ -254,8 +315,8 @@
                 android:layout_width="0dp"
                 android:layout_height="3dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/source_code" />
 
             <TextView
@@ -269,8 +330,8 @@
                 android:text="@string/credits_header"
                 android:textSize="14sp"
                 android:typeface="sans"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/divide_from_code"
                 tools:ignore="TextContrastCheck" />
 
@@ -286,8 +347,8 @@
                 android:text="@string/BlackyHawky_thanks"
                 android:textSize="14sp"
                 android:typeface="sans"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/credits_header"
                 tools:ignore="TextContrastCheck" />
 
@@ -296,9 +357,70 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/BlackyHawky" />
+
+            <TextView
+                android:id="@+id/woheller69"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:paddingLeft="@dimen/license_horiz_padding"
+                android:paddingTop="@dimen/txtblk_vert_padding"
+                android:paddingRight="@dimen/license_horiz_padding"
+                android:text="@string/woheller69_thanks"
+                android:textSize="14sp"
+                android:typeface="sans"
+                app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
+                app:layout_constraintTop_toBottomOf="@id/divide_from_BlackyHawky"
+                tools:ignore="TextContrastCheck" />
+
+            <TextView
+                android:id="@+id/FreeDroidWarn_copyright"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:linksClickable="true"
+                android:paddingLeft="@dimen/license_horiz_padding"
+                android:paddingRight="@dimen/license_horiz_padding"
+                android:paddingBottom="@dimen/txtblk_vert_padding"
+                android:text="@string/FreeDroidWarn_copyright"
+                android:typeface="sans"
+                app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
+                app:layout_constraintTop_toBottomOf="@id/woheller69" />
+
+            <net.diffengine.romandigitalclock.component.TextViewEC
+                android:id="@+id/tvApacheNotice2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoLink="web"
+                android:background="#16A0A0A0"
+                android:ellipsize="end"
+                android:linksClickable="true"
+                android:paddingLeft="@dimen/license_horiz_padding"
+                android:paddingRight="@dimen/license_horiz_padding"
+                android:paddingBottom="@dimen/txtblk_vert_padding"
+                android:text="@string/apache_license_notice"
+                android:textSize="14sp"
+                android:typeface="sans"
+                app:initCollapsed="true"
+                app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
+                app:layout_constraintTop_toBottomOf="@id/FreeDroidWarn_copyright"
+                tools:ignore="TouchTargetSizeCheck,VisualLintLongText" />
+
+            <View
+                android:id="@+id/after_tvApacheNotice2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
+                app:layout_constraintTop_toBottomOf="@id/tvApacheNotice2" />
 
             <TextView
                 android:id="@+id/tvDependencyHeader"
@@ -311,9 +433,9 @@
                 android:text="@string/dependencies_header"
                 android:textSize="14sp"
                 android:typeface="sans"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
-                app:layout_constraintTop_toBottomOf="@id/divide_from_BlackyHawky"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
+                app:layout_constraintTop_toBottomOf="@id/after_tvApacheNotice2"
                 tools:ignore="TextContrastCheck" />
 
             <View
@@ -321,8 +443,8 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/tvDependencyHeader" />
 
             <TextView
@@ -339,8 +461,8 @@
                 android:text="@string/acra_license_notice"
                 android:textSize="14sp"
                 android:typeface="sans"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/divide_from_dependency_header"
                 tools:ignore="TextContrastCheck" />
 
@@ -349,8 +471,8 @@
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:background="?android:attr/listDivider"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/tvACRA" />
 
             <TextView
@@ -359,15 +481,15 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:linksClickable="true"
-                android:paddingTop="@dimen/txtblk_vert_padding"
                 android:paddingLeft="@dimen/license_horiz_padding"
+                android:paddingTop="@dimen/txtblk_vert_padding"
                 android:paddingRight="@dimen/license_horiz_padding"
                 android:paddingBottom="@dimen/txtblk_vert_padding"
                 android:text="@string/googlefonts_copyright_notice"
                 android:textSize="14sp"
                 android:typeface="sans"
-                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/divide_from_ACRA"
                 tools:ignore="TextContrastCheck" />
 
@@ -377,6 +499,7 @@
                 android:layout_height="wrap_content"
                 android:autoLink="web"
                 android:background="#16A0A0A0"
+                android:ellipsize="end"
                 android:linksClickable="true"
                 android:maxWidth="600dp"
                 android:paddingLeft="@dimen/license_horiz_padding"
@@ -385,7 +508,6 @@
                 android:text="@string/googlefonts_license_notice"
                 android:textSize="14sp"
                 android:typeface="sans"
-                android:ellipsize="end"
                 app:initCollapsed="true"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
                 app:layout_constraintStart_toStartOf="@id/tvLicense"

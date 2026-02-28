@@ -10,6 +10,7 @@ RomanDigital includes features expected in an ordinary digital clock, such as:
 
 RomanDigital also includes:
 * Independent configuration of app and widgets.
+* Selectable app and widget time display typeface (monospace, sans-serif, or serif).
 * Variable widget background opacity that can be set from 0% to 100% by tens.
 * Selectable widget time zone.
 * Selectable widget layouts to add a time zone label.

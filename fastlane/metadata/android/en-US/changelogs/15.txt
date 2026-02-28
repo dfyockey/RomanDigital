@@ -1,0 +1,8 @@
+Added:
+* Selection between monospace, sans-serif, and serif typeface to both app and widget settings.
+
+Replaced:
+* Exact-alarm-based widget updating with Service-based widget updating responsive to Android's time tick signal, thereby improving widget time display reliability and reducing battery consumption.
+
+Fixed:
+* various UI/UX issues.

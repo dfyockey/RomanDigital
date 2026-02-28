@@ -52,7 +52,7 @@
 
     <string name="copyright">Copyright © 2024–2026 David Yockey</string>
 
-    <string name="license_notice">
+    <string name="apache_license_notice">
 "Licensed under the Apache License, Version 2.0 (the "License"); you may only use this software in compliance with the License. You may obtain a copy of the License at
 
     https://www.apache.org/licenses/LICENSE-2.0
@@ -62,6 +62,8 @@ Unless required by applicable law or agreed to in writing, software distributed 
 
     <string name="notice_re_google">"<b>NOTICE</b> :
         Starting in September 2026, Google is planning to restrict what we are allowed to install on our Android devices. For more information, see https://keepandroidopen.org"</string>
+
+    <string name="whats_new">"<b>WHAT\'S NEW IN THIS VERSION</b>"</string>
 
     <string name="new_in_version_heading">"<b>New in this Version</b>"</string>
 
@@ -88,13 +90,21 @@ APPRECIATION &amp; THIRD-PARTY LICENSING
     </string>
 
     <string name="BlackyHawky_thanks">
-"Thanks go to BlackyHawky and their contributors for indirectly providing motivation to implement autosizing of the RomanDigital app widget text; this was provided by observation of the digital clock widget text autosizing in their excellent Clock app (https://github.com/BlackyHawky/Clock). Seeing the app's widget convinced me that such autosizing could actually be done.
+"Thanks go to BlackyHawky and their contributors for their excellent Clock app (https://github.com/BlackyHawky/Clock) that provided motivation to implement improved autosizing of the RomanDigital app widget time display through observation of the BlackyHawky Clock digital clock widget.
 
-The BlackyHawky Clock source code is unfortunately licensed under GNU GPL v3.0 which is incompatible with RomanDigital's Apache 2.0 license without relicensing RomanDigital. Consequently, to avoid potential legal entanglements, the BlackyHawky Clock source code was neither copied nor reviewed in development of the RomanDigital app widget."
+The BlackyHawky Clock source code is licensed under GNU GPL v3.0 which is incompatible with RomanDigital's Apache 2.0 license. To avoid possible legal entanglements, the BlackyHawky Clock source code was neither copied nor reviewed in development of the RomanDigital app widget."
     </string>
 
+    <string name="woheller69_thanks">
+"Thanks also to woheller69 and their contributors for their FreeDroidWarn library which provided inspiration for the Google policy change notice in the About activity and provided an implementation example of a popup shown only after both app installation and update. To the extent that it applies to any code in the RomanDigital popup implementation, the following is provided:
+    </string>
+
+    <string name="FreeDroidWarn_copyright">"FreeDroidWarn
+(https://github.com/woheller69/FreeDroidWarn)
+Copyright © 2025–2026 woheller69"</string>
+
     <string name="dependencies_header">
-"Notes of appreciation also go to the developers of the following software included in RomanDigital:"
+"Further thanks go to the developers of the following software included in RomanDigital:"
     </string>
 
     <string name="acra_license_notice">
@@ -202,4 +212,9 @@ THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
 
     <!-- String for GUI object only used when BuildConfig.DEBUG is true -->
     <string name="reset_setting">Reset Setting</string>
+
+    <!-- Strings for About activity's What's New section -->
+    <string name="new_item_1">About activity pop-up on installation and update</string>
+    <string name="new_item_2">Clock typeface selection for app and each widget</string>
+    <string name="new_item_3">More reliable and lower power consuming updates of widget time display</string>
 </resources>

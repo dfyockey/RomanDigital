@@ -25,7 +25,7 @@ a current phone or tablet.
 
 ![Landscape screenshot of phone showing RomanDigital app displaying time as VIII:LVII](/.github/images/Screenshot_20240809_205721_RomanDigital.png)
 
-Further, RomanDigital includes a widget that can be added to a device's Home screen.
+RomanDigital also includes a widget that can be added to a device's Home screen.
 
 ![Portion of a portrait screenshot of a phone Home page showing RomanDigital widget displaying time as XVII:XV, the screenshot portion having a torn-paper-effect bottom edge](/.github/images/Torn_Screenshot_20240913_171548_One_UI_Home.png)
 
@@ -54,7 +54,9 @@ RomanDigital further includes:
 
 ![Portrait screenshot of phone cropped to show a Time Color dialog enabling setting of app display color by 6-character hex code or by setting red, green, and blue sliders, and including a clock display preview](/.github/images/Screenshot_20250603_104752_RomanDigital.jpg)
 
-* A widget for providing a Roman digital clock display on a device's Home screen, with display text automatically sized to fit the widget's dimensions:
+* Choice of clock display typefaces between monospace, sans-serif, and serif.
+
+* The widget provides a Roman digital clock display on a device's Home screen, with display text automatically sized to fit the widget's dimensions (sizing improved in Version 3.0.0):
 
 ![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240910_174429_One_UI_Home_scaled.jpg)
 
@@ -78,18 +80,11 @@ in the normal manner for the particular Android version.
 
 ## Permissions
 
-The USE_EXACT_ALARM permission is set by this app. This permission is
-necessary on Android 13 and greater to enable the widget to provide an
-accurate time display without inconveniencing the user by asking for the permission.
-It cannot be disabled without modifying the source code.
+The FOREGROUND_SERVICE and FOREGROUND_SERVICE_SPECIAL_USE permissions are set by this app. These permissions are required to enable running the TimeTickRelay foreground service that prompts the widgets to update each minute in response to receipt of Android's ACTION_TIME_TICK intent, which the widgets are unable to receive directly.
 
-The SCHEDULE_EXACT_ALARM permission is also set by this app and is
-necessary on Android 12 for the same reason as the USE_EXACT_ALARM
-permission discussed above. This permission can be disabled in the
-_Alarms & Reminders_ section of the system settings. Disabling this
-permission will cause inaccuracy in the widget's time display.
+The POST_NOTIFICATIONS permission is set by this app. This permission is necessary for Android 13 and later to allow the TimeTickRelay service to display a notification indicating that it is running if the user so chooses in the system settings; unless the user so chooses, the notification will not be displayed on these Android versions.
 
-Android versions 11 and lower allow setting of exact alarms by default.
+The RECEIVE_BOOT_COMPLETED permission is set by this app. This permission is necessary for the app to restart the service on receipt of notification that the device has just finished booting.
 
 In addition, net.diffengine.romandigitalclock.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
 is set by this app. This was set during the app build process by use of a particular Android
@@ -101,27 +96,27 @@ https://gitlab.com/fdroid/fdroidserver/-/merge_requests/1336/diffs?commit_id=716
 
 ## Known Issues
 
-As widget updating is currently implemented, text of a widget rotated between portrait and landscape may not be automatically resized until the next widget update, which may be up to a minute after the rotation. This is not an issue for devices that do not support home screen rotation or that are set not to rotate the home screen. It is also not an issue for any device having a UI/launcher rendering the device's home screen on which the widget is installed that notifies widgets when the device is rotated (e.g. Samsung One UI 6.1 and 7.0). 
+Widgets will likely stop running after an update because the update stops the TimeTickRelay service (see Permissions above). They can be restarted easily by just opening the main app or any widget settings activity, which may be closed at any time thereafter.
 
-After building and updating the app in Android Studio, a widget that had previously been added to the home screen may stop updating. It may be 'kickstarted' by simply opening and then closing the widget's settings screen.
+After rebooting a device, the widget(s) will not start running until the app finishes restarting the relay service and then receives an ACTION_TIME_TICK from the system, which may be a couple of minutes. This delay is normal.
+
+Text of a widget rotated between portrait and landscape may not be incorrectly sized until the next widget update, which may be up to a minute after the rotation. This is not an issue for devices that do not support home screen rotation or that are set not to rotate the home screen. It is also not an issue for any device having a UI/launcher rendering the device's home screen on which the widget is installed that notifies widgets when the device is rotated (e.g. Samsung One UI 6.1 and 7.0).
+
+Also, text of a widget may appear incorrectly sized until the next widget update if a widget's settings screen is open while the device is rotated and closed after rotation.
+
+On Android 5.0, the widget(s) typeface cannot be changed.
 
 The 'Align to Divider' option does not correctly align the display when a variable width font is used.
 
-The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is based on Android 5.1, but the widget will not. RomanDigital has not been tested on other Fire versions.
-
 ## FAQ (Foremost Anticipated Questions)
 
-> Q: "I just updated RomanDigital / updated Android / restarted my device, and now the widget doesn't work! How do I get it running again?"
+> Q: "I just updated RomanDigital and now the widget doesn't work! How do I get it running again?"
 >
-> A: As of version 2.0.1, this should only happen when running RomanDigital on a device through Android Studio. The workaround to get the widget going again is to "kickstart" it by simply opening and then canceling a settings screen from any widget or from the app.
+> A: Open the main app or any widget settings activity to restart the relay service and thereby restart the widgets.
 
 > Q: "Why does the position of the divider change when 'Align to Divider' is selected? Isn't it supposed to stay in one place?"
 >
 > A: Yes, it's supposed to stay in one place, but the positioning was designed with the expectation of using a monospace font. Shortsighted of me, I know, but implementation for variable width fonts would be _really hard_. If you've changed a device setting effecting the font used, e.g. your system-wide font, to something that doesn't provide for monospace, then the calculated display position based on expected equal-width characters, and thus the divider position, will unfortunately be off.
-
-> Q: "There's no alarm feature, so why the need to set exact alarms? What's this got to do with an accurate time display?"
-> 
-> A: Android doesn't enable widgets to receive the ACTION_TIME_TICK intent broadcast through the system each minute. Setting an alarm for the exact time of each next minute at the end of a minute is the only straightforward way (that I know of) for the app's widget to know when to update the time display.
 
 > Q: "Will there ever be an alarm feature?"
 > 
@@ -129,7 +124,7 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 
 > Q: "Why can't I change the font/text color/background color/widget corner curvature/etc?"
 > 
-> A: App text color can now be changed, as noted in the **Features** above. Also, background _transparency_ can be changed, with background fully white/black for 100% opacity in light/dark mode. As for other stylistic changes, I haven't gotten to them yet.
+> A: App text color can be changed; widget background _transparency_ can be changed, with background fully white/black for 100% opacity in light/dark mode; and both app and widget(s) clock display typeface can be changed. As for other stylistic changes, I haven't gotten to them yet.
 
 > Q: "Why no seconds?"
 > 
@@ -137,11 +132,11 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 
 > Q: "Why no date?"
 > 
-> A: Because it's just a simple clock. At least for now.
+> A: Because it's just intended to be a clock, and a date would crowd the display and look inelegant. But maybe an option someday? Maybe.
 
 > Q: "I want to change widget time zone labels to particular place names. Is there any way to do this?"
 > 
-> A: Not right now, but it should be added pretty soon since I want that option myself and it should be easy to implement.
+> A: Not right now, but it should be added at some point since I'd like having that option myself and it should be easy to implement.
 
 > Q: "Can I put the widget on my phone's lock screen?"
 >
@@ -152,7 +147,7 @@ The RomanDigital app will run on a 5th Generation Amazon Kindle Fire, which is b
 > Note:
 > 
 > * I get nothing if you click on the "Lock Screen Widgets and Drawer" link and/or buy the app, and my purchase and use of it are not meant as an endorsement. There may be other such apps that would work as well or better.
-> * This doesn't work so well after my Galaxy A14 was updated from Android 14 to 15 and from One UI 6.1 to 7.0. The power management of Android 15 is understood to be more aggressive and apparently stops apps, including the widget on the lock screen, after a much shorter period when the phone is locked. :slightly_frowning_face:
+> * This didn't work so well with RomanDigital 2.x on Android 15 and its more aggressive power management :slightly_frowning_face: But with RomanDigital 3.0.0's overhauled widget updating code, it works great. :slightly_smiling_face: 
 
 > Q: "Why no version specifically for a watch?"
 > 
