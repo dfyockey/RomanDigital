@@ -10,7 +10,7 @@ height="80" align="left">](https://f-droid.org/packages/net.diffengine.romandigi
 <a href="https://f-droid.org/packages/net.diffengine.romandigitalclock/">![F-Droid Version](https://img.shields.io/f-droid/v/net.diffengine.romandigitalclock?label=Latest%20Version)</a><br />
 <br />
 <br />
-[<img src="/.githib/images/get-it-on-izzyondroid.png" height="80" align="left" alt="Get it at IzzyOnDroid">](https://apt.izzysoft.de/packages/net.diffengine.romandigitalclock)<img src="/.github/images/clearpixel.gif" height="23" width="30"><br />
+[<img src="/.github/images/get-it-on-izzyondroid.png" height="80" align="left" alt="Get it at IzzyOnDroid">](https://apt.izzysoft.de/packages/net.diffengine.romandigitalclock)<img src="/.github/images/clearpixel.gif" height="23" width="30"><br />
 <a href="https://apt.izzysoft.de/packages/net.diffengine.romandigitalclock">![IzzyOnDroid Version](https://img.shields.io/f-droid/v/net.diffengine.romandigitalclock?baseUrl=https://apt.izzysoft.de/fdroid&label=Latest%20Version)</a><br />
 <br />
 <br />
