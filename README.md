@@ -58,11 +58,11 @@ RomanDigital further includes:
 
 ![Portrait screenshot of phone cropped to show a Time Color dialog enabling setting of app display color by 6-character hex code or by setting red, green, and blue sliders, and including a clock display preview](/.github/images/Screenshot_20250603_104752_RomanDigital.jpg)
 
-* Choice of app and widget clock display typefaces between monospace, sans-serif, and serif.
+* Choice of app and widget clock display typefaces between monospace, sans-serif, and serif:
 
 ![Three partial phone home screen diagonally-overlapping screenshots, each including a RomanDigital widget showing the time XII:LVIII in different one of monospace, sans-serif, or serif typeface](/.github/images/RD_Widgets_Composite_Image.png)
 
-* The widget time display automatically sized to fit the widget dimensions rather than number of screen cells the widget occupies:
+* Widget time displays are automatically sized to fit the widget dimensions rather than number of screen cells the widget occupies.
 
 * Independent setting of widget background transparency, time zone, and other settings:
 
