@@ -31,7 +31,7 @@ a current phone or tablet.
 
 RomanDigital also includes a widget that can be added to a device's Home screen.
 
-![Portion of a portrait screenshot of a phone Home page showing RomanDigital widget displaying time as XVII:XV, the screenshot portion having a torn-paper-effect bottom edge](/.github/images/Torn_Screenshot_20240913_171548_One_UI_Home.png)
+![Portion of a portrait screenshot of a phone Home page showing RomanDigital widget displaying time as XVII:XV, the screenshot portion having a torn-paper-effect bottom edge](/.github/images/Torn_Screenshot_Showing_Widget.png)
 
 ## Features
 
@@ -58,11 +58,11 @@ RomanDigital further includes:
 
 ![Portrait screenshot of phone cropped to show a Time Color dialog enabling setting of app display color by 6-character hex code or by setting red, green, and blue sliders, and including a clock display preview](/.github/images/Screenshot_20250603_104752_RomanDigital.jpg)
 
-* Choice of clock display typefaces between monospace, sans-serif, and serif.
+* Choice of app and widget clock display typefaces between monospace, sans-serif, and serif.
 
-* The widget provides a Roman digital clock display on a device's Home screen, with display text automatically sized to fit the widget's dimensions (sizing improved in Version 3.0.0):
+![Three partial phone home screen diagonally-overlapping screenshots, each including a RomanDigital widget showing the time XII:LVIII in different one of monospace, sans-serif, or serif typeface](/.github/images/RD_Widgets_Composite_Image.png)
 
-![Portrait screenshot of phone Home screen showing RomanDigital widget](/.github/images/Screenshot_20240910_174429_One_UI_Home_scaled.jpg)
+* The widget time display automatically sized to fit the widget dimensions rather than number of screen cells the widget occupies:
 
 * Independent setting of widget background transparency, time zone, and other settings:
 
@@ -146,7 +146,7 @@ The 'Align to Divider' option does not correctly align the display when a variab
 >
 > A: Maybe. I was able to on my Samsung Galaxy A14 5G by purchasing the awkwardly-named [Lockscreen Widgets and Drawer](https://play.google.com/store/apps/details?id=tk.zwander.lockscreenwidgets) app for the low, low price of $1.49. YMMV. Here's what my lock screen looks like:
 
-![Portrait screenshot of phone lock screen showing RomanDigital widget](/.github/images/Screenshot_20241008_143851_One_UI_Home_scaled.jpg)
+![Portrait screenshot of phone lock screen showing RomanDigital widget](/.github/images/Screenshot_20260309_Lockscreen.jpg)
 
 > Note:
 > 
