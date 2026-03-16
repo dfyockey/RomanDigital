@@ -108,8 +108,6 @@ public class WidgetSettingsActivity extends AppCompatActivity {
             fragmentTransaction.add(R.id.widget_bkgnd, new WidgetBkgndSettingsFragment(appWidgetId));
             fragmentTransaction.add(R.id.button_bar, new SettingsButtonBarFragment()).commit();
         }
-
-        BootCompletedBroadcastReceiver.startRelayIfWidgets(this);
     }
 
     public static class WidgetBkgndSettingsFragment extends PreferenceFragmentCompat {
@@ -176,6 +174,7 @@ public class WidgetSettingsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         AboutActivity.showAboutOnUpgrade(this, BuildConfig.VERSION_CODE);
+        BootCompletedBroadcastReceiver.startRelayIfWidgets(this);
     }
 
     @Override

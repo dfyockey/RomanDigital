@@ -63,17 +63,16 @@ Unless required by applicable law or agreed to in writing, software distributed 
     <string name="notice_re_google">"<b>NOTICE</b> :
         Starting in September 2026, Google is planning to restrict what we are allowed to install on our Android devices. For more information, see https://keepandroidopen.org"</string>
 
+    <string name="bullet">"* "</string>
+
     <string name="whats_new">"<b>WHAT\'S NEW IN THIS VERSION</b>"</string>
+    <string name="new_item_4">Fix to prevent possible crash on start of widget update service</string>
 
-    <string name="new_in_version_heading">"<b>New in this Version</b>"</string>
-
-    <string name="new_in_version">
-"NEW IN THIS VERSION
-
-* About activity pop-up on installation and update
-* Clock typeface selection for app and each widget
-* More reliable updating of widgets' time display"
-    </string>
+    <!-- Strings for About activity's What's New section -->
+    <string name="whats_old">NEW IN VERSION 3.0.0</string>
+    <string name="new_item_1">About activity pop-up on installation and update</string>
+    <string name="new_item_2">Clock typeface selection for app and each widget</string>
+    <string name="new_item_3">More reliable and lower power consuming updates of widget time display</string>
 
     <string name="solicitation">
 "If you like RomanDigital and would like to tangibly express your thanks, dropping the value of a coffee of the quality of your choice at https://paypal.me/dfyockey would be greatly appreciated 🙂"
@@ -213,8 +212,4 @@ THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
     <!-- String for GUI object only used when BuildConfig.DEBUG is true -->
     <string name="reset_setting">Reset Setting</string>
 
-    <!-- Strings for About activity's What's New section -->
-    <string name="new_item_1">About activity pop-up on installation and update</string>
-    <string name="new_item_2">Clock typeface selection for app and each widget</string>
-    <string name="new_item_3">More reliable and lower power consuming updates of widget time display</string>
 </resources>

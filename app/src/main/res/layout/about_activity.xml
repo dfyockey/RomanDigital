@@ -216,8 +216,29 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="* "
-                        tools:ignore="HardcodedText" />
+                        android:text="@string/bullet" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/new_item_4" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/whats_old"
+                    android:paddingTop="@dimen/txtblk_vert_padding"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bullet" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -233,8 +254,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="* "
-                        tools:ignore="HardcodedText" />
+                        android:text="@string/bullet" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -250,8 +270,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="* "
-                        tools:ignore="HardcodedText" />
+                        android:text="@string/bullet" />
 
                     <TextView
                         android:layout_width="wrap_content"

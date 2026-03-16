@@ -382,8 +382,6 @@ public class MainActivity extends AppCompatActivity {
 
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
         setDisplayColorFromPref();
-
-        BootCompletedBroadcastReceiver.startRelayIfWidgets(context);
     }
 
     //---------------------------------------------------------------
@@ -426,5 +424,7 @@ public class MainActivity extends AppCompatActivity {
         ContextCompat.registerReceiver(context, updateReceiver, new IntentFilter(UPDATE_DISPLAY), ContextCompat.RECEIVER_NOT_EXPORTED);
         text_resize_attempt_count = 0;
         sendBroadcast(makeIntent(UPDATE_DISPLAY));
+
+        BootCompletedBroadcastReceiver.startRelayIfWidgets(context);
     }
 }
