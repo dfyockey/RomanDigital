@@ -8,6 +8,12 @@ This project aims to adhere to [Semantic Versioning](https://server.org).
 
 Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
 
+## [3.0.1] - 2026-03-16
+
+### Fixed
+* Possibility of a ForegroundServiceStartNotAllowedException being thrown on start of the relay service, TimeTickRelay, if the activity from which BootCompletedBroadcastReceiver.startRelayIfWidgets is called is not in the foreground when ServiceCompat.startForeground is called by
+  TimeTickRelay.
+
 ## [3.0.0] - 2026-02-28
 
 ### Added
