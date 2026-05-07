@@ -20,6 +20,7 @@
 
 package net.diffengine.romandigitalclock;
 
+import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND_SERVICE;
 import static android.view.View.VISIBLE;
 
 import androidx.annotation.ColorInt;
@@ -40,6 +41,8 @@ import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.preference.PreferenceManager;
 import androidx.appcompat.widget.ActionMenuView;
 
+import android.app.ActivityManager;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -52,6 +55,7 @@ import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -425,6 +429,21 @@ public class MainActivity extends AppCompatActivity {
         text_resize_attempt_count = 0;
         sendBroadcast(makeIntent(UPDATE_DISPLAY));
 
-        BootCompletedBroadcastReceiver.startRelayIfWidgets(context);
+        boolean isTimeTickRelayRunning = false;
+        String relayProcessName = getPackageName() + ":timetickrelay";
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningAppProcessInfo processInfo : activityManager.getRunningAppProcesses()) {
+            Log.d("ROMANDIGITAL", processInfo.processName);
+            Log.d("ROMANDIGITAL", Integer.toString(processInfo.importance));
+            //if (processInfo.importance == IMPORTANCE_FOREGROUND_SERVICE && processInfo.processName.equals(relayProcessName)) {
+            if (processInfo.processName.equals(relayProcessName)) {
+                isTimeTickRelayRunning = true;
+                Log.d("ROMANDIGITAL", "Found a Foreground Service!");
+            }
+        }
+        if (!isTimeTickRelayRunning) {
+            Log.d("ROMANDIGITAL", "Calling startRelayIfWidgets...");
+            BootCompletedBroadcastReceiver.startRelayIfWidgets(context);
+        }
     }
 }
