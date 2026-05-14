@@ -23,6 +23,8 @@ package net.diffengine.romandigitalclock;
 import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND_SERVICE;
 import static android.view.View.VISIBLE;
 
+import static net.diffengine.romandigitalclock.RelayManager.startRelayIfNeeded;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.NonNull;
@@ -429,21 +431,6 @@ public class MainActivity extends AppCompatActivity {
         text_resize_attempt_count = 0;
         sendBroadcast(makeIntent(UPDATE_DISPLAY));
 
-        boolean isTimeTickRelayRunning = false;
-        String relayProcessName = getPackageName() + ":timetickrelay";
-        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningAppProcessInfo processInfo : activityManager.getRunningAppProcesses()) {
-            Log.d("ROMANDIGITAL", processInfo.processName);
-            Log.d("ROMANDIGITAL", Integer.toString(processInfo.importance));
-            //if (processInfo.importance == IMPORTANCE_FOREGROUND_SERVICE && processInfo.processName.equals(relayProcessName)) {
-            if (processInfo.processName.equals(relayProcessName)) {
-                isTimeTickRelayRunning = true;
-                Log.d("ROMANDIGITAL", "Found a Foreground Service!");
-            }
-        }
-        if (!isTimeTickRelayRunning) {
-            Log.d("ROMANDIGITAL", "Calling startRelayIfWidgets...");
-            BootCompletedBroadcastReceiver.startRelayIfWidgets(context);
-        }
+        startRelayIfNeeded(this);
     }
 }

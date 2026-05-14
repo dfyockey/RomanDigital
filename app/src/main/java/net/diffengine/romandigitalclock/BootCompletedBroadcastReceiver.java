@@ -22,12 +22,11 @@ package net.diffengine.romandigitalclock;
 
 import static android.content.Intent.ACTION_BOOT_COMPLETED;
 
-import android.appwidget.AppWidgetManager;
+import static net.diffengine.romandigitalclock.RelayManager.startRelayIfWidgets;
+
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 
 public class BootCompletedBroadcastReceiver extends BroadcastReceiver {
 
@@ -36,20 +35,8 @@ public class BootCompletedBroadcastReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (action != null && action.equals(ACTION_BOOT_COMPLETED)) {
+            // Relsy's never running on boot completion, so call function to start it directly
             startRelayIfWidgets(context);
-        }
-    }
-
-    public static void startRelayIfWidgets(Context context) {
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, TimeDisplayWidget.class));
-        if (appWidgetIds.length > 0) {
-            Intent serviceIntent = new Intent(context, TimeTickRelay.class);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(serviceIntent);
-            } else {
-                context.startService(serviceIntent);
-            }
         }
     }
 }
