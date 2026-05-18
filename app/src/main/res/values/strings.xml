@@ -61,7 +61,7 @@ Unless required by applicable law or agreed to in writing, software distributed 
     </string>
 
     <string name="notice_re_google">"<b>NOTICE</b> :
-        Starting in September 2026, Google is planning to restrict what we are allowed to install on our Android devices. For more information, see https://keepandroidopen.org"</string>
+        Starting in September 2026, Google is planning to significantly impede unapproved app installation on users' Android devices. For more information, see https://itsfoss.com/news/android-developer-verification/"</string>
 
     <string name="bullet">"* "</string>
 
