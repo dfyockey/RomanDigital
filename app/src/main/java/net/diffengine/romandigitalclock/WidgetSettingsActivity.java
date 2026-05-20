@@ -20,6 +20,8 @@
 
 package net.diffengine.romandigitalclock;
 
+import static net.diffengine.romandigitalclock.RelayManager.startRelayIfNeeded;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -174,7 +176,7 @@ public class WidgetSettingsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         AboutActivity.showAboutOnUpgrade(this, BuildConfig.VERSION_CODE);
-        BootCompletedBroadcastReceiver.startRelayIfWidgets(this);
+        startRelayIfNeeded(this);
     }
 
     @Override

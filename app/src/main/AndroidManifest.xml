@@ -73,6 +73,7 @@
         -->
         <service
             android:name=".TimeTickRelay"
+            android:process=":timetickrelay"
             android:description="@string/relay_service_description"
             android:exported="false"
             android:foregroundServiceType="specialUse" >
