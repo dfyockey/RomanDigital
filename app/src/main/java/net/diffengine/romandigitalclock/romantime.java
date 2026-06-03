@@ -20,6 +20,8 @@
 
 package net.diffengine.romandigitalclock;
 
+import androidx.core.util.Pair;
+
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -39,13 +41,27 @@ public class romantime {
 	}
 
 	/** @noinspection ReassignedVariable*/
-	private static String getSeparator (Calendar cal, boolean ampm, boolean ampmSeparator) {
+	private static String getSeparator (boolean ampm, boolean ampmSeparator) {
 		String separator = ":";
 		if (ampm) {
-			separator = ( (ampmSeparator && (cal.get(Calendar.AM_PM) == Calendar.AM) ) ? "·" : ":");
+			separator = ( (ampmSeparator && (Calendar.getInstance().get(Calendar.AM_PM) == Calendar.AM) ) ? "·" : ":" );
 		}
 		return separator;
 	}
+
+    private static Pair<String,String> getTime(boolean ampm, String tzId) {
+		/* GET TIME */
+		Calendar cal = Calendar.getInstance();
+		cal.setTimeZone(TimeZone.getTimeZone(tzId));
+		String rHours	 = getHours(cal, ampm);
+		String rMinutes  = itor(cal.get(Calendar.MINUTE));
+        return Pair.create(rHours,rMinutes);
+    }
+
+    public static String now(boolean ampm, String tzId) {
+        Pair<String, String> rTime = getTime(ampm, tzId);
+        return rTime.first + "\n" + rTime.second;
+    }
 
 	public static String now(boolean ampm, boolean ampmSeparator, boolean center, String tzId) {
 
@@ -54,14 +70,10 @@ public class romantime {
 		// T		F 				12 hr / constant separator
 		// F		- 				24 hr / constant separator
 
-		/* GET TIME */
-		Calendar cal = Calendar.getInstance();
-		cal.setTimeZone(TimeZone.getTimeZone(tzId));
-		String rHours	 = getHours(cal, ampm);
-		String rMinutes  = itor(cal.get(Calendar.MINUTE));
-		String separator = getSeparator(cal, ampm, ampmSeparator);
-		//noinspection ReassignedVariable
-		String rtime     = rHours + separator + rMinutes;
+        Pair<String, String> rTime = getTime(ampm, tzId);
+
+		String separator = getSeparator(ampm, ampmSeparator);
+		String rtime = rTime.first + separator + rTime.second;
 
 		if (!center) {
 			/* ADD PADDING */
@@ -72,8 +84,8 @@ public class romantime {
 			// even though none will then be used for VIII o'clock, because the substring method to
 			// retrieve the appropriate length of padding will throw an exception due to reading
 			// past the end of the string if only three are used. As is, it returns "" for VIII.
-			String lpad = ("    " + ((ampm) ? "" : " ")).substring(rHours.length());
-			String rpad = "       ".substring(rMinutes.length());
+			String lpad = ("    " + ((ampm) ? "" : " ")).substring(rTime.first.length());
+			String rpad = "       ".substring(rTime.second.length());
 			rtime = lpad + rtime + rpad;
 		}
 

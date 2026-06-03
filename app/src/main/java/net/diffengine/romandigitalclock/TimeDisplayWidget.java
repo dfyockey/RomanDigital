@@ -38,6 +38,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 
@@ -88,6 +89,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         boolean ampm          = sp.getBoolean("switch_format" + appWidgetId, false);
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
         boolean alignment     = sp.getBoolean("switch_alignment" + appWidgetId, false);
+        boolean vertLayout    = true;
         String  tzId          = sp.getString("list_timezone" + appWidgetId, TimeZone.getDefault().getID());
         String layoutMoniker  = sp.getString("list_widget_layout" + appWidgetId, "no_label" );
         int layoutId          = R.layout.time_display_widget;
@@ -96,7 +98,12 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
-        CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzId);
+        CharSequence widgetText;
+        if (vertLayout) {
+            widgetText = romantime.now(!ampm, tzId);
+        } else {
+            widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzId);
+        }
 //        widgetText = "VIII:XXXVIII";      // Test text; uncomment for constant full-width 12-hour display
         RemoteViews views = new RemoteViews(context.getPackageName(), layoutId);
 
@@ -262,7 +269,9 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                 rect.bottom += (int) paint.getFontSpacing();
             }
 
-            if ((rect.width() >= maxRect.width()) || (rect.height() >= maxRect.height())) {
+            String s = rect.width() + " >=? " + maxRect.width() + " || " + rect.height() + " >=? " + maxRect.height()/2;
+            Log.d("RD_TIME", s);
+            if ((rect.width() >= maxRect.width()) || (rect.height() >= maxRect.height()/4)) {
                 hiSize = midSize;
             } else {
                 loSize = midSize;
@@ -276,6 +285,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm = sp.getBoolean("switch_format" + appWidgetId, false);
         String maxlengthText = context.getString((ampm == MainActivity.left) ? R.string.civ_fill : R.string.mil_fill);
+        maxlengthText = "XXXXXXX";
         int widgetWidth;
         int widgetHeight;
 
