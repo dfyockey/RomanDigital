@@ -38,6 +38,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 
@@ -84,6 +85,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     private static int appwidget_clock;
 
     private RemoteViews updateTimeDisplay(Context context, int appWidgetId) {
+        Log.d("ROMANDIGITAL", "updateTimeDisplay called");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm          = sp.getBoolean("switch_format" + appWidgetId, false);
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
@@ -314,12 +316,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
                                           int appWidgetId, Bundle newOptions) {
-
-        // This call needs to be here rather than just instantiating a new RemoteViews
-        // object so the display will be updated for each of the multiple calls to
-        // onAppWidgetOptionsChanged that may occur while the user is resizing a widget
-        RemoteViews views = updateTimeDisplay(context, appWidgetId);
-
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
         setTimeTextSize(context, views, appWidgetId, newOptions);
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
