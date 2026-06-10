@@ -84,16 +84,14 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 
     private static int appwidget_clock;
 
-    private RemoteViews updateTimeDisplay(Context context, int appWidgetId) {
-        Log.d("ROMANDIGITAL", "updateTimeDisplay called");
+    private RemoteViews updateAppWidget(Context context, int appWidgetId, boolean clockOnly) {
+        Log.d("ROMANDIGITAL", "updateAppWidget called");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm          = sp.getBoolean("switch_format" + appWidgetId, false);
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
         boolean alignment     = sp.getBoolean("switch_alignment" + appWidgetId, false);
         String  tzId          = sp.getString("list_timezone" + appWidgetId, TimeZone.getDefault().getID());
-        String layoutMoniker  = sp.getString("list_widget_layout" + appWidgetId, "no_label" );
         int layoutId          = R.layout.time_display_widget;
-        int layoutConfigId    = getLayoutConfigId(layoutMoniker);
         appwidget_clock       = typefaceIds[Integer.parseInt(sp.getString("list_typeface" + appWidgetId, "0"))];
 
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
@@ -101,6 +99,15 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzId);
 //        widgetText = "VIII:XXXVIII";      // Test text; uncomment for constant full-width 12-hour display
         RemoteViews views = new RemoteViews(context.getPackageName(), layoutId);
+
+        /* ***** EARLY RETURN ***** */
+        if (clockOnly) {
+            views.setTextViewText(appwidget_clock, widgetText);
+            return views;
+        }
+
+        String layoutMoniker  = sp.getString("list_widget_layout" + appWidgetId, "no_label" );
+        int layoutConfigId    = getLayoutConfigId(layoutMoniker);
 
         // Setup layout
             // Clear all typefaces
@@ -170,12 +177,24 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         return views;
     }
 
+    private RemoteViews updateAppWidgetById(Context context, int appWidgetId) {
+        return updateAppWidget(context, appWidgetId, false);
+    }
+
+    private RemoteViews updateAppWidgetTimeDisplayById(Context context, int appWidgetId) {
+        return updateAppWidget(context, appWidgetId, true);
+    }
+
     private void onTick (Context context) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         ComponentName widgetName = new ComponentName(context.getPackageName(), TimeDisplayWidget.class.getName());
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(widgetName);
 
         onUpdate(context, appWidgetManager, appWidgetIds);
+
+//        for (int appWidgetId : appWidgetIds) {
+//            updateAppWidgetTimeDisplayById(context, appWidgetId);
+//        }
     }
 
     @Override
@@ -203,7 +222,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
-            appWidgetManager.updateAppWidget(appWidgetId, updateTimeDisplay(context, appWidgetId));
+            appWidgetManager.updateAppWidget(appWidgetId, updateAppWidgetById(context, appWidgetId));
         }
     }
 
