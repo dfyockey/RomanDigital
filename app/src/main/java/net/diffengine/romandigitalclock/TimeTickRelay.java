@@ -30,6 +30,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ServiceInfo;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.IBinder;
 
@@ -60,6 +61,17 @@ public class TimeTickRelay extends Service {
         }
     }
     TickReceiver tickReceiver = new TickReceiver();
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        Context context = getApplicationContext();
+        Intent updateIntent = new Intent(context, TimeDisplayWidget.class);
+        updateIntent.setAction(TimeDisplayWidget.UPDATE_ALL_WIDGETS);
+        updateIntent.setPackage(context.getPackageName());
+        context.sendBroadcast(updateIntent);
+    }
 
     @Override
     public void onCreate() {
