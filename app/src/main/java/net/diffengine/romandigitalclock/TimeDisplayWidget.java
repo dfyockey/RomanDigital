@@ -42,6 +42,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 
+import androidx.core.util.Pair;
 import androidx.preference.PreferenceManager;
 
 import java.util.Map;
@@ -64,6 +65,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     };
 
     public static final String RELAYED_TIME_TICK = "net.diffengine.romandigitalclock.RELAYED_TIME_TICK";
+    public static final String SETTINGS_CHANGED = "net.diffengine.romandigitalclock.SETTINGS_CHANGED";
 
     ///////
     // Convertion to indices obviates need to do string comparisons to set up both layout and
@@ -190,11 +192,9 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         ComponentName widgetName = new ComponentName(context.getPackageName(), TimeDisplayWidget.class.getName());
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(widgetName);
 
-        onUpdate(context, appWidgetManager, appWidgetIds);
-
-//        for (int appWidgetId : appWidgetIds) {
-//            updateAppWidgetTimeDisplayById(context, appWidgetId);
-//        }
+        for (int appWidgetId : appWidgetIds) {
+            appWidgetManager.updateAppWidget(appWidgetId, updateAppWidgetTimeDisplayById(context, appWidgetId));
+        }
     }
 
     @Override
@@ -202,19 +202,31 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         String action = intent.getAction();
+        if (action == null) {
+            return;
+        }
 
         // Treating changes in either system date, time, or timezone
         // as a time tick insures immediate update of time display on such changes
         if (
-            action != null &&
-            (
-                action.equals(RELAYED_TIME_TICK) ||
-                action.equals(Intent.ACTION_TIMEZONE_CHANGED) ||
-                action.equals(Intent.ACTION_TIME_CHANGED) ||
-                action.equals(Intent.ACTION_DATE_CHANGED)
-            )
+            action.equals(RELAYED_TIME_TICK) ||
+            action.equals(Intent.ACTION_TIMEZONE_CHANGED) ||
+            action.equals(Intent.ACTION_TIME_CHANGED) ||
+            action.equals(Intent.ACTION_DATE_CHANGED)
         ) {
             onTick(context);
+        }
+        else if (
+            action.equals(SETTINGS_CHANGED)
+        ) {
+            onSettingsChanged(context, intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID));
+        }
+    }
+
+    private void onSettingsChanged(Context context, int appWidgetId) {
+        if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            appWidgetManager.updateAppWidget(appWidgetId, updateAppWidgetById(context, appWidgetId));
         }
     }
 

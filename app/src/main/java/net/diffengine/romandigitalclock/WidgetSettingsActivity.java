@@ -186,8 +186,9 @@ public class WidgetSettingsActivity extends AppCompatActivity {
         // the config activity is closed. This should update the widget immediately
         // rather than waiting for the next relayed ACTION_TIME_TICK to arrive.
         Intent update_widget = new Intent(this, TimeDisplayWidget.class);
-        update_widget.setAction(TimeDisplayWidget.RELAYED_TIME_TICK);
+        update_widget.setAction(TimeDisplayWidget.SETTINGS_CHANGED);
         update_widget.setPackage(this.getPackageName());
+        update_widget.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
         this.sendBroadcast(update_widget);
     }
 }
