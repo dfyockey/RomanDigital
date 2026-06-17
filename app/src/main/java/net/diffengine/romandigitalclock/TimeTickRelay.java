@@ -39,6 +39,8 @@ import androidx.core.app.ServiceCompat;
 
 public class TimeTickRelay extends Service {
 
+    private boolean sentUpdateBroadcast = false;
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -50,7 +52,9 @@ public class TimeTickRelay extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             Intent tickIntent = new Intent(context, TimeDisplayWidget.class);
-            tickIntent.setAction(TimeDisplayWidget.RELAYED_TIME_TICK);
+            String action = (sentUpdateBroadcast ? TimeDisplayWidget.RELAYED_TIME_TICK : TimeDisplayWidget.UPDATE_ALL_WIDGETS );
+            if (!sentUpdateBroadcast) { sentUpdateBroadcast = true; }
+            tickIntent.setAction(action);
             tickIntent.setPackage(context.getPackageName());
             context.sendBroadcast(tickIntent);
         }

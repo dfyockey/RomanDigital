@@ -42,7 +42,6 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 
-import androidx.core.util.Pair;
 import androidx.preference.PreferenceManager;
 
 import java.util.Map;
@@ -65,7 +64,8 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     };
 
     public static final String RELAYED_TIME_TICK = "net.diffengine.romandigitalclock.RELAYED_TIME_TICK";
-    public static final String SETTINGS_CHANGED = "net.diffengine.romandigitalclock.SETTINGS_CHANGED";
+    public static final String WIDGET_SETTINGS_CHANGED = "net.diffengine.romandigitalclock.WIDGET_SETTINGS_CHANGED";
+    public static final String UPDATE_ALL_WIDGETS = "net.diffengine.romandigitalclock.UPDATE_ALL_WIDGETS";
 
     ///////
     // Convertion to indices obviates need to do string comparisons to set up both layout and
@@ -87,7 +87,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     private static int appwidget_clock;
 
     private RemoteViews updateAppWidget(Context context, int appWidgetId, boolean clockOnly) {
-        Log.d("ROMANDIGITAL", "updateAppWidget called");
+        Log.d("ROMANDIGITAL", "updateAppWidget " + appWidgetId + " called");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm          = sp.getBoolean("switch_format" + appWidgetId, false);
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
@@ -217,9 +217,17 @@ public class TimeDisplayWidget extends AppWidgetProvider {
             onTick(context);
         }
         else if (
-            action.equals(SETTINGS_CHANGED)
+            action.equals(WIDGET_SETTINGS_CHANGED)
         ) {
             onSettingsChanged(context, intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID));
+        }
+        else if (
+            action.equals(UPDATE_ALL_WIDGETS)
+        ) {
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            ComponentName widgetName = new ComponentName(context.getPackageName(), TimeDisplayWidget.class.getName());
+            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(widgetName);
+            onUpdate(context, appWidgetManager, appWidgetIds);
         }
     }
 
