@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
     int text_resize_attempt_count = 0;
 
-    private void updateTimeDisplay() {
+    private void updateDisplay() {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
         String now = romantime.now( !getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID() );
@@ -169,17 +169,31 @@ public class MainActivity extends AppCompatActivity {
         setKeepScreenOn();
     }
 
+    private void updateTimeDisplay() {
+        // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
+        // a/b switches, where false/true states depend on chosen left/right positions
+        String now = romantime.now( !getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID() );
+        TimeDisplay.setText(now);
+    }
+
     //---------------------------------------------------------------
 
-    private class BroadcastReceiverEx extends BroadcastReceiver {
+    private class TimeTickBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateTimeDisplay();
         }
     }
 
+    private class BroadcastReceiverEx extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateDisplay();
+        }
+    }
+
     // Receiver instance to be registered as exported for receiving system-broadcast ACTION_TIME_TICK intent
-    private final BroadcastReceiverEx broadcastReceiver = new BroadcastReceiverEx();
+    private final TimeTickBroadcastReceiver timeTickBroadcastReceiver = new TimeTickBroadcastReceiver();
 
     // Receiver instance to be registered as RECEIVER_NOT_EXPORTED for receiving app-broadcast UPDATE_DISPLAY intent
     private final BroadcastReceiverEx updateReceiver = new BroadcastReceiverEx();
@@ -390,7 +404,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onPause() {
         unregisterReceiver(updateReceiver);
-        unregisterReceiver(broadcastReceiver);
+        unregisterReceiver(timeTickBroadcastReceiver);
         findViewById(R.id.my_toolbar).setVisibility(View.INVISIBLE);
 
         // Broadcast an intent immediately after either Close or Save is pressed
@@ -422,7 +436,7 @@ public class MainActivity extends AppCompatActivity {
         setDisplayColorFromPref();
         setDisplayFont("roboto");
 
-        registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+        registerReceiver(timeTickBroadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
         ContextCompat.registerReceiver(context, updateReceiver, new IntentFilter(UPDATE_DISPLAY), ContextCompat.RECEIVER_NOT_EXPORTED);
         text_resize_attempt_count = 0;
         sendBroadcast(makeIntent(UPDATE_DISPLAY));
