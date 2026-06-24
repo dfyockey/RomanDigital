@@ -89,7 +89,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         boolean ampm          = sp.getBoolean("switch_format" + appWidgetId, false);
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
         boolean alignment     = sp.getBoolean("switch_alignment" + appWidgetId, false);
-        boolean vertLayout    = true;
+        boolean vertLayout    = sp.getBoolean("switch_layout" + appWidgetId, false);
         String  tzId          = sp.getString("list_timezone" + appWidgetId, TimeZone.getDefault().getID());
         String layoutMoniker  = sp.getString("list_widget_layout" + appWidgetId, "no_label" );
         int layoutId          = R.layout.time_display_widget;
@@ -280,12 +280,23 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         return loSize;
     }
 
-    private int calcTimeDisplayTextSize(Context context, int appWidgetId, Bundle bundle) {
+    private int calcTimeDisplayTextSize(Context context, RemoteViews views, int appWidgetId, Bundle bundle) {
         // Get text of max length equal to the clock's max width display
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm = sp.getBoolean("switch_format" + appWidgetId, false);
-        String maxlengthText = context.getString((ampm == MainActivity.left) ? R.string.civ_fill : R.string.mil_fill);
-        maxlengthText = "XXXXXXX";
+
+        boolean vertLayout = sp.getBoolean("switch_layout" + appWidgetId, false);
+        String maxlengthText;
+        int lines;
+        if (vertLayout) {
+            lines = 2;
+            maxlengthText = "XXXXXXX";
+        } else {
+            lines = 1;
+            maxlengthText = context.getString((ampm == MainActivity.left) ? R.string.civ_fill : R.string.mil_fill);
+        }
+        views.setInt(appwidget_clock, "setLines", lines);
+
         int widgetWidth;
         int widgetHeight;
 
@@ -315,7 +326,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     }
 
     private void setTimeTextSize(Context context, RemoteViews views, int appWidgetId, Bundle widgetOptions) {
-        int textsize = calcTimeDisplayTextSize(context, appWidgetId, widgetOptions);
+        int textsize = calcTimeDisplayTextSize(context, views, appWidgetId, widgetOptions);
         int fudgefactor = 3;    // Conservative value for compensation of possible error in calculated text size
                                 // (observed on a Nexus 6 AVD running API 24; value of 1 was sufficent to compensate)
         views.setTextViewTextSize(appwidget_clock, TypedValue.COMPLEX_UNIT_DIP, textsize-fudgefactor);

@@ -118,6 +118,7 @@ public class TimeFormatFragment extends PreferenceFragmentCompat {
         screen.addPreference(category);
 
         addABSwitchPreference("switch_format", "12 Hour", "24 Hour");
+        addABSwitchPreference("switch_layout", "XI:LV", "XI\nLV");
         addABSwitchPreference("switch_alignment", "Align to Center", "Align to Divider");
         addABSwitchPreference("switch_separator", ": for All", "· for AM\n: for PM");
 
