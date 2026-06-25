@@ -138,7 +138,12 @@ public class MainActivity extends AppCompatActivity {
     private void updateTimeDisplay() {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
-        String now = romantime.now( !getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID() );
+        String now;
+        if (getPref("switch_layout") == left) {
+            now = romantime.now(!getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID());
+        } else {
+            now = romantime.now(!getPref(ampm), TimeZone.getDefault().getID());
+        }
 
         // IMPORTANT:
         // For the String returned by romantime.now to be correctly aligned in TimeDisplay textview,
@@ -415,10 +420,22 @@ public class MainActivity extends AppCompatActivity {
         Toolbar vToolbar = findViewById(R.id.my_toolbar);
         vToolbar.setVisibility(View.INVISIBLE);
 
-        String maxtime_fill = getString((getPref(ampm) == left) ? R.string.civ_fill : R.string.mil_fill);
+        int lines;
+        String maxtime_fill;
+        if ( getPref("switch_layout") == left ) {
+            lines = 1;
+            maxtime_fill = getString((getPref(ampm) == left) ? R.string.civ_fill : R.string.mil_fill);
+        } else {
+            lines = 2;
+            maxtime_fill = getString(R.string.vert_fill);
+        }
+
         TimeDisplaySizeControl = findViewById(R.id.timedisplay_size_control);
+        TimeDisplaySizeControl.setLines(lines);
         TimeDisplaySizeControl.setText(maxtime_fill);
+        TimeDisplay.setLines(lines);
         TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
+
         setDisplayColorFromPref();
         setDisplayFont("roboto");
 
