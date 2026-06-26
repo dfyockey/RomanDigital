@@ -372,6 +372,9 @@ public class MainActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
 
                 if(itemId == R.id.item_settings) {
+                    TimeDisplaySizeControl.setText("");
+                    int maxPx = androidx.core.widget.TextViewCompat.getAutoSizeMaxTextSize(TimeDisplaySizeControl);
+                    TimeDisplaySizeControl.setTextSize(TypedValue.COMPLEX_UNIT_PX, maxPx);
                     showActivity(AppSettingsActivity.class);
                 } else if (itemId == R.id.item_about) {
                     showActivity(AboutActivity.class);
