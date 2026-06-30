@@ -49,6 +49,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
@@ -134,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     int text_resize_attempt_count = 0;
+    float displayLineSpacing = 0;
 
     private void updateTimeDisplay() {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
@@ -154,6 +157,10 @@ public class MainActivity extends AppCompatActivity {
         if (TimeDisplay.getVisibility() == View.INVISIBLE) {
             float pxDefaultControlTextSize = getResources().getDimension(R.dimen.timedisplay_size_control_default_textsize);
 
+            // Clear previously set line spacing;
+            // otherwise, the value returned by TimeDisplay.getLineHeight() will be mucked up.
+            TimeDisplay.setLineSpacing(0, 1);
+
             /*/////
             //  Check of updateCount prevents infinitely sending broadcasts if an unforeseen
             //  occurrence keeps pxCurrentControlTextSize from falling below
@@ -165,11 +172,25 @@ public class MainActivity extends AppCompatActivity {
             if ( (int)pxCurrentControlTextSize >= (int)pxDefaultControlTextSize && text_resize_attempt_count++ < R.dimen.text_resize_attempt_limit ) {
                 sendBroadcast(makeIntent(UPDATE_DISPLAY));
             } else {
+
+                // Set TimeDisplay's text size before
+                TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, pxCurrentControlTextSize);
+
+                Paint paint = new Paint();
+                paint.setTypeface(TimeDisplay.getTypeface());
+                paint.setTextSize(TimeDisplay.getTextSize());
+                Rect rect = new Rect();
+                String s = TimeDisplaySizeControl.getText().toString();
+                paint.getTextBounds(s, 0, s.length(), rect);
+                float textHeight = rect.height();
+                int tdLineHeight = TimeDisplay.getLineHeight();
+                displayLineSpacing = (textHeight * 1.4f) - tdLineHeight;
+
                 TimeDisplay.setVisibility(VISIBLE);
             }
         }
 
-        TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, pxCurrentControlTextSize);
+        TimeDisplay.setLineSpacing(displayLineSpacing, 1);
         TimeDisplay.setText(now);
         setKeepScreenOn();
     }
@@ -214,10 +235,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
-        TimeDisplay = findViewById(R.id.TimeDisplay);
-
         bkgndView = findViewById(R.id.main_activity_bkgnd);
         bkgndView.setOnClickListener(bkgndOCL);
+    }
+
+    private void findTimeDisplayViews() {
+        TimeDisplaySizeControl = findViewById(R.id.timedisplay_size_control);
+        TimeDisplay = findViewById(R.id.TimeDisplay);
     }
 
     private void modToolbarMenu(Toolbar myToolbar, @ColorInt int color) {
@@ -331,6 +355,7 @@ public class MainActivity extends AppCompatActivity {
         windowInsetsControllerCompat.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
 
         setListeners();
+        findTimeDisplayViews();
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         myToolbar.setVisibility(View.INVISIBLE);
