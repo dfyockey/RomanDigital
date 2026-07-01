@@ -232,7 +232,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         context.stopService(serviceIntent);
     }
 
-    private int findMaxTextSize(Context context, Rect maxRect, String refText, boolean vertLayout) {
+    private int findMaxTextSize(Context context, Rect maxRect, String refText, int layoutConfigId, boolean vertLayout) {
         /*
             Use a binary search to find the largest TextSize such that the provided reference text
             refText fits within the provided rectangle maxRect, where the variable loSize will
@@ -246,11 +246,32 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         */
         Rect clockTextBounds = new Rect();
         Paint paint = new Paint();
+
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+
+        int labelHeight = 0;
+
+        if (layoutConfigId != 1) {
+            paint.setTypeface(Typeface.SANS_SERIF);
+            int textSize = 14;  // 14sp
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+                // Convert midSize, in DIP units, to PX units to set the paint text size so that
+                // getTextBounds will generate an accurate rectangle
+                textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, textSize, displayMetrics);
+            }
+            paint.setTextSize(textSize);
+            String t = "TEXT";
+            Rect tzlabelTextBounds = new Rect();
+            paint.getTextBounds(t, 0, t.length(), tzlabelTextBounds);
+            labelHeight = tzlabelTextBounds.height();
+            Log.d("BLEH", String.valueOf(labelHeight));
+        }
+
         paint.setTypeface(Typeface.MONOSPACE);
 
         int loSize = 0;
         int hiSize = 1024;   // Arbitrarily selected largest permissible text size
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+//        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 
         while (loSize + 1 < hiSize) {
             int midSize = (hiSize + loSize) / 2;
@@ -267,7 +288,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
             paint.setTextSize(textSize);
             paint.getTextBounds(refText, 0, refText.length(), clockTextBounds);
             float lineSpacing = paint.getFontSpacing();
-            clockTextBounds.bottom += (vertLayout) ? (int) ((2 * lineSpacing) + clockTextBounds.bottom) : (int) lineSpacing;
+            clockTextBounds.bottom += (vertLayout) ? (int) ((2 * lineSpacing) + clockTextBounds.bottom + labelHeight) : (int) lineSpacing;
 
             if ((clockTextBounds.width() >= maxRect.width()) || (clockTextBounds.height() >= maxRect.height())) {
                 // Make the next size Smaller!
@@ -325,7 +346,10 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         }
         Rect maxRect = new Rect(0, 0, widgetWidth-1, widgetHeight-1);
 
-        return findMaxTextSize(context, maxRect, maxlengthText, vertLayout);
+        String layoutMoniker  = sp.getString("list_widget_layout" + appWidgetId, "no_label" );
+        int layoutConfigId = getLayoutConfigId(layoutMoniker);
+
+        return findMaxTextSize(context, maxRect, maxlengthText, layoutConfigId, vertLayout);
     }
 
     private void setTimeTextSize(Context context, RemoteViews views, int appWidgetId, Bundle widgetOptions) {
