@@ -244,7 +244,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                 smaller rectangle around text the size of loSize, i.e the search result, will still
                 fit within the max width and height of the maxRect.
         */
-        Rect clockTextBounds = new Rect();
+        Rect textBounds = new Rect();
         Paint paint = new Paint();
 
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
@@ -253,29 +253,33 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 
         if (layoutConfigId != 1) {
             paint.setTypeface(Typeface.SANS_SERIF);
-            int textSize = 14;  // 14sp
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-                // Convert midSize, in DIP units, to PX units to set the paint text size so that
-                // getTextBounds will generate an accurate rectangle
-                textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, textSize, displayMetrics);
-            }
+
+            // Convert the intended 14sp text size to PX units for use in setting
+            // the paint text size to use in getting the text height.
+            int textSize = 14;  // sp
+            textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, textSize, displayMetrics);
+
             paint.setTextSize(textSize);
             String t = "TEXT";
-            Rect tzlabelTextBounds = new Rect();
-            paint.getTextBounds(t, 0, t.length(), tzlabelTextBounds);
-            labelHeight = tzlabelTextBounds.height();
-            Log.d("BLEH", String.valueOf(labelHeight));
+            paint.getTextBounds(t, 0, t.length(), textBounds);
+            labelHeight = textBounds.height();
         }
+        Log.d("BLEH", String.valueOf(labelHeight));
+        textBounds.setEmpty();  // Clear textBounds to preclude any interference with later reuse
 
         paint.setTypeface(Typeface.MONOSPACE);
 
         int loSize = 0;
         int hiSize = 1024;   // Arbitrarily selected largest permissible text size
-//        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
 
         while (loSize + 1 < hiSize) {
             int midSize = (hiSize + loSize) / 2;
 
+            // Okay, here's the thing... I worked this out through trial and error a long time back,
+            // and it works fine; the problem is that I haven't figured out *why* midSize needs to
+            // be treated as PX for some versions and as DIP for others. I just know that if it's
+            // DIP for later versions, then the clock text will be somewhat smaller than it should
+            // be; and if it's PX for earlier versions, then the clock text will be WAY too big.
             int textSize;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 textSize = midSize;
@@ -284,22 +288,19 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                 // getTextBounds will generate an accurate rectangle
                 textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, midSize, displayMetrics);
             }
-
             paint.setTextSize(textSize);
-            paint.getTextBounds(refText, 0, refText.length(), clockTextBounds);
-            float lineSpacing = paint.getFontSpacing();
-            clockTextBounds.bottom += (vertLayout) ? (int) ((2 * lineSpacing) + clockTextBounds.bottom + labelHeight) : (int) lineSpacing;
 
-            if ((clockTextBounds.width() >= maxRect.width()) || (clockTextBounds.height() >= maxRect.height())) {
+            paint.getTextBounds(refText, 0, refText.length(), textBounds);
+            float lineSpacing = paint.getFontSpacing();
+            textBounds.bottom += (vertLayout) ? (int) ((2 * lineSpacing) + textBounds.bottom + labelHeight) : (int) lineSpacing;
+
+            if ((textBounds.width() >= maxRect.width()) || (textBounds.height() >= maxRect.height())) {
                 // Make the next size Smaller!
                 hiSize = midSize;
             } else {
                 // Make the next size Larger!
                 loSize = midSize;
             }
-
-            String vLayout = (vertLayout) ? "V" : "H";
-            Log.d("PAINTRECT",  vLayout + clockTextBounds.width() + "," + clockTextBounds.height() + " -- max: " + maxRect.width() + "," + maxRect.height());
         }
         return loSize;
     }
@@ -354,7 +355,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 
     private void setTimeTextSize(Context context, RemoteViews views, int appWidgetId, Bundle widgetOptions) {
         int textsize = calcTimeDisplayTextSize(context, views, appWidgetId, widgetOptions);
-        int fudgefactor = 3;    // Conservative value for compensation of possible error in calculated text size
+        int fudgefactor = 2;    // Conservative value for compensation of possible error in calculated text size
                                 // (observed on a Nexus 6 AVD running API 24; value of 1 was sufficent to compensate)
         views.setTextViewTextSize(appwidget_clock, TypedValue.COMPLEX_UNIT_DIP, textsize-fudgefactor);
     }
