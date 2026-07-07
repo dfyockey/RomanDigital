@@ -40,15 +40,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class RelayManager {
-    static int triesCount = 1;
-    static int delay = 0;
+    private static int triesCount = 1;
+    private static int delay = 0;
 
-    static void initCounts() {
-        triesCount = 1;
-        delay = 0;
-    }
-
-    public static void startRelayIfWidgets(Context context) {
+    static void startRelayIfWidgets(Context context) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, TimeDisplayWidget.class));
         if (appWidgetIds.length > 0) {
@@ -78,7 +73,7 @@ public class RelayManager {
         }
     }
 
-    static Handler mHandler = new Handler(Looper.getMainLooper()) {
+    private static final Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message message) {
             Context context = (Context) message.obj;
@@ -134,7 +129,8 @@ public class RelayManager {
     }
 
     private static void startRelayAfterInitCounts(Context context) {
-        initCounts();
+        triesCount = 1;
+        delay = 0;
         startRelayIfWidgets(context);
     }
 
@@ -144,7 +140,7 @@ public class RelayManager {
         }
     }
 
-    public static boolean isTimeTickRelayRunning(AppCompatActivity activity) {
+    private static boolean isTimeTickRelayRunning(AppCompatActivity activity) {
         boolean isRelayRunning = false;
         String relayProcessName = activity.getPackageName() + ":timetickrelay";
         ActivityManager activityManager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
