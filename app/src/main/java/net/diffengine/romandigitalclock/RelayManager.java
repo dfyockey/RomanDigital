@@ -26,6 +26,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -33,44 +36,128 @@ import android.util.Log;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class RelayManager {
+    static int triesCount = 1;
+    static int delay = 750;
+//    private static boolean crashOnFail = false;
+
+    static void initCounts() {
+        triesCount = 1;
+        delay = 750;
+    }
+
     public static void startRelayIfWidgets(Context context) {
-        String dbl_br = "<br /><br />";
+//        String dbl_br = "<br /><br />";
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, TimeDisplayWidget.class));
         if (appWidgetIds.length > 0) {
             Intent serviceIntent = new Intent(context, TimeTickRelay.class);
             try {
+                Log.d("RELAYMANAGER", "startForegndSvc try " + triesCount + ", delay = " + delay);
                 startForegndSvc(context, serviceIntent);
             } catch (Exception e) {
-                new AlertDialog.Builder(context)
-                        .setTitle(conjureFromHtml(
-                                "<font color='#"
-                                + MainActivity.getHexFromColorRes(context, R.color.clock_red)
-                                + "'>" + context.getString(R.string.fgnd_svc_err_title)
-                                + "</font>")
-                        )
-                        .setMessage(conjureFromHtml(
-                                context.getString(R.string.fgnd_svc_err_1) + dbl_br
-                                + context.getString(R.string.fgnd_svc_err_2) + dbl_br
-                                + context.getString(R.string.fgnd_svc_err_3))
-                        )
-                        .setPositiveButton("Yes", (dialogInterface, i) -> startRelayIfWidgets(context))
-                        .setNeutralButton("Yes (crash on fail)", (dialogInterface, i) -> {
-                            try {
-                                startForegndSvc(context, serviceIntent);
-                            } catch (Exception ex) {
-                                throw new RuntimeException(ex);
-                            }
-                        })
-                        .setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel())
-                        .create()
-                        .show();
+                if (triesCount < 5) {
+                    ++triesCount;
+                    delay += 750;
+                    new Timer().schedule(
+                            new TimerTask() {
+                                @Override
+                                public void run() {
+                                    Log.d("RELAYMANAGER", "Retry...");
+                                    startRelayIfWidgets(context);
+                                }
+                            }, delay);
+                } else {
+                    Log.d("RELAYMANAGER", "Else...");
+                    Message completeMessage = mHandler.obtainMessage(R.dimen.unused_dummy_value, context);
+                    completeMessage.sendToTarget();
+
+
+//                    initCounts();   // Reset the count in case the user chooses to try again.
+//                    Log.d("RELAYMANAGER", "Reset...");
+
+//                    AppCompatActivity activity = (AppCompatActivity)context;
+
+//                    context.getMainExecutor().runOnUiThread(() -> {
+//                        new AlertDialog.Builder(context)
+//                                .setTitle(conjureFromHtml(
+//                                        "<font color='#"
+//                                                + MainActivity.getHexFromColorRes(context, R.color.clock_red)
+//                                                + "'>" + context.getString(R.string.fgnd_svc_err_title)
+//                                                + "</font>")
+//                                )
+//                                .setMessage(conjureFromHtml(
+//                                        context.getString(R.string.fgnd_svc_err_1) + dbl_br
+//                                                + context.getString(R.string.fgnd_svc_err_2) + dbl_br
+//                                                + context.getString(R.string.fgnd_svc_err_3))
+//                                )
+//                                .setPositiveButton("Yes", (dialogInterface, i) -> {
+//                                    initCounts();
+//                                    startRelayIfWidgets(context);
+//                                })
+//                                .setNeutralButton("Yes (crash on fail)", (dialogInterface, i) -> {
+//                                    try {
+//                                        startForegndSvc(context, serviceIntent);
+//                                    } catch (Exception ex) {
+//                                        throw new RuntimeException(ex);
+//                                    }
+//                                })
+//                                .setNegativeButton("No", (dialogInterface, i) -> {
+//                                    initCounts();
+//                                    dialogInterface.cancel();
+//                                })
+//                                .create()
+//                                .show();
+//                    });
+                }
             }
         }
     }
 
+    static Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message message) {
+            Context context = (Context) message.obj;
+            String dbl_br = "<br /><br />";
+            Intent serviceIntent = new Intent(context, TimeTickRelay.class);
+
+            new AlertDialog.Builder(context)
+                    .setTitle(conjureFromHtml(
+                            "<font color='#"
+                                    + MainActivity.getHexFromColorRes(context, R.color.clock_red)
+                                    + "'>" + context.getString(R.string.fgnd_svc_err_title)
+                                    + "</font>")
+                    )
+                    .setMessage(conjureFromHtml(
+                            context.getString(R.string.fgnd_svc_err_1) + dbl_br
+                                    + context.getString(R.string.fgnd_svc_err_2) + dbl_br
+                                    + context.getString(R.string.fgnd_svc_err_3))
+                    )
+                    .setPositiveButton("Yes", (dialogInterface, i) -> {
+                        initCounts();
+                        startRelayIfWidgets(context);
+                    })
+                    .setNeutralButton("Yes (crash on fail)", (dialogInterface, i) -> {
+                        try {
+                            startForegndSvc(context, serviceIntent);
+                        } catch (Exception ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    })
+                    .setNegativeButton("No", (dialogInterface, i) -> {
+                        initCounts();
+                        dialogInterface.cancel();
+                    })
+                    .create()
+                    .show();
+        }
+    };
+
     private static void startForegndSvc(Context context, Intent serviceIntent) {
+//        throw (new RuntimeException());       // For Testing! (comment out remainder of method)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(serviceIntent);
         } else {
@@ -89,6 +176,8 @@ public class RelayManager {
 
     public static void startRelayIfNeeded(AppCompatActivity activity) {
         if(!isTimeTickRelayRunning(activity)) {
+            initCounts();   // Apparently fixed uncontrolled start tries.
+                            // Needs investigation.
             Log.d("ROMANDIGITAL", "Starting Relay");
             startRelayIfWidgets(activity);
         }

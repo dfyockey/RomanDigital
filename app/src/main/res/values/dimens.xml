@@ -49,6 +49,8 @@
     -->
     <dimen name="widget_margin">0dp</dimen>
 
+    <dimen name="unused_dummy_value">0</dimen>
+
     <!-- Color Dialog Dimens -->
     <dimen name="color_seekbar_track_background_height">2dp</dimen>
     <dimen name="color_seekbar_track_progress_height">2dp</dimen>
