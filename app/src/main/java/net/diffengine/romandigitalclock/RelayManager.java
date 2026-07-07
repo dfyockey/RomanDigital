@@ -42,7 +42,6 @@ import java.util.TimerTask;
 public class RelayManager {
     static int triesCount = 1;
     static int delay = 750;
-//    private static boolean crashOnFail = false;
 
     static void initCounts() {
         triesCount = 1;
@@ -50,7 +49,6 @@ public class RelayManager {
     }
 
     public static void startRelayIfWidgets(Context context) {
-//        String dbl_br = "<br /><br />";
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, TimeDisplayWidget.class));
         if (appWidgetIds.length > 0) {
@@ -74,44 +72,6 @@ public class RelayManager {
                     Log.d("RELAYMANAGER", "Else...");
                     Message completeMessage = mHandler.obtainMessage(R.dimen.unused_dummy_value, context);
                     completeMessage.sendToTarget();
-
-
-//                    initCounts();   // Reset the count in case the user chooses to try again.
-//                    Log.d("RELAYMANAGER", "Reset...");
-
-//                    AppCompatActivity activity = (AppCompatActivity)context;
-
-//                    context.getMainExecutor().runOnUiThread(() -> {
-//                        new AlertDialog.Builder(context)
-//                                .setTitle(conjureFromHtml(
-//                                        "<font color='#"
-//                                                + MainActivity.getHexFromColorRes(context, R.color.clock_red)
-//                                                + "'>" + context.getString(R.string.fgnd_svc_err_title)
-//                                                + "</font>")
-//                                )
-//                                .setMessage(conjureFromHtml(
-//                                        context.getString(R.string.fgnd_svc_err_1) + dbl_br
-//                                                + context.getString(R.string.fgnd_svc_err_2) + dbl_br
-//                                                + context.getString(R.string.fgnd_svc_err_3))
-//                                )
-//                                .setPositiveButton("Yes", (dialogInterface, i) -> {
-//                                    initCounts();
-//                                    startRelayIfWidgets(context);
-//                                })
-//                                .setNeutralButton("Yes (crash on fail)", (dialogInterface, i) -> {
-//                                    try {
-//                                        startForegndSvc(context, serviceIntent);
-//                                    } catch (Exception ex) {
-//                                        throw new RuntimeException(ex);
-//                                    }
-//                                })
-//                                .setNegativeButton("No", (dialogInterface, i) -> {
-//                                    initCounts();
-//                                    dialogInterface.cancel();
-//                                })
-//                                .create()
-//                                .show();
-//                    });
                 }
             }
         }
