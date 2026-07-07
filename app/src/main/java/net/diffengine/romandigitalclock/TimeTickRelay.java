@@ -67,9 +67,6 @@ public class TimeTickRelay extends Service {
         Notification notification = createNotification(CHANNEL_ID, createClickPendingIntent());
         ServiceCompat.startForeground(this, NOTIFICATION_ID, notification, getServiceType());
 
-        RelayManager.initCounts();  // If we get here...starting the service was successful!
-                                    // So, reset start tries count and delay for a possible restart later.
-
         registerReceiver(tickReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
     }
 

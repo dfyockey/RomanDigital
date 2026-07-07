@@ -41,11 +41,11 @@ import java.util.TimerTask;
 
 public class RelayManager {
     static int triesCount = 1;
-    static int delay = 750;
+    static int delay = 0;
 
     static void initCounts() {
         triesCount = 1;
-        delay = 750;
+        delay = 0;
     }
 
     public static void startRelayIfWidgets(Context context) {
@@ -54,12 +54,13 @@ public class RelayManager {
         if (appWidgetIds.length > 0) {
             Intent serviceIntent = new Intent(context, TimeTickRelay.class);
             try {
-                Log.d("RELAYMANAGER", "startForegndSvc try " + triesCount + ", delay = " + delay);
+                Log.d("RELAYMANAGER", "startForegndSvc try " + triesCount);
                 startForegndSvc(context, serviceIntent);
             } catch (Exception e) {
                 if (triesCount < 5) {
                     ++triesCount;
                     delay += 750;
+                    Log.d("RELAYMANAGER", "delay = " + delay);
                     new Timer().schedule(
                             new TimerTask() {
                                 @Override
@@ -97,8 +98,7 @@ public class RelayManager {
                                     + context.getString(R.string.fgnd_svc_err_3))
                     )
                     .setPositiveButton("Yes", (dialogInterface, i) -> {
-                        initCounts();
-                        startRelayIfWidgets(context);
+                        startRelayAfterInitCounts(context);
                     })
                     .setNeutralButton("Yes (crash on fail)", (dialogInterface, i) -> {
                         try {
@@ -108,7 +108,6 @@ public class RelayManager {
                         }
                     })
                     .setNegativeButton("No", (dialogInterface, i) -> {
-                        initCounts();
                         dialogInterface.cancel();
                     })
                     .create()
@@ -134,12 +133,14 @@ public class RelayManager {
         }
     }
 
+    private static void startRelayAfterInitCounts(Context context) {
+        initCounts();
+        startRelayIfWidgets(context);
+    }
+
     public static void startRelayIfNeeded(AppCompatActivity activity) {
         if(!isTimeTickRelayRunning(activity)) {
-            initCounts();   // Apparently fixed uncontrolled start tries.
-                            // Needs investigation.
-            Log.d("ROMANDIGITAL", "Starting Relay");
-            startRelayIfWidgets(activity);
+            startRelayAfterInitCounts(activity);
         }
     }
 
