@@ -22,11 +22,14 @@ package net.diffengine.romandigitalclock;
 
 import static android.content.Intent.ACTION_BOOT_COMPLETED;
 
+import static net.diffengine.romandigitalclock.RelayManager.startRelay;
+import static net.diffengine.romandigitalclock.RelayManager.startRelayAfterInitCounts;
 import static net.diffengine.romandigitalclock.RelayManager.startRelayIfWidgets;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 public class BootCompletedBroadcastReceiver extends BroadcastReceiver {
 
@@ -35,8 +38,20 @@ public class BootCompletedBroadcastReceiver extends BroadcastReceiver {
         String action = intent.getAction();
 
         if (action != null && action.equals(ACTION_BOOT_COMPLETED)) {
-            // Relay's never running on boot completion, so call function to start it directly
-            startRelayIfWidgets(context);
+            Log.d("ROMANDIGITAL", "startRelay in BootCompletedBroadcastReceiver");
+            startRelay(context);
+
+//            // Relay's never running on boot completion, so call function to start it directly
+//            Log.d("ROMANDIGITAL", "startRelayAfterInitCounts in BootCompletedBroadcastReceiver");
+//            Log.d("ROMANDIGITAL", "inStartRelayProcess = " + RelayManager.inStartRelayProcess);
+//            if (!RelayManager.inStartRelayProcess) {
+//                Log.d("ROMANDIGITAL", "In `if...`");
+//                RelayManager.inStartRelayProcess = true;
+//                startRelayAfterInitCounts(context);
+//            } else {
+//                Log.d("ROMANDIGITAL", "In `else...`");
+//                Log.d("ROMANDIGITAL", "BootCompletedBroadcastReceiver start aborted");
+//            }
         }
     }
 }

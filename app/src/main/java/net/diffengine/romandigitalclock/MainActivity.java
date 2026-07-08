@@ -54,6 +54,7 @@ import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -427,6 +428,7 @@ public class MainActivity extends AppCompatActivity {
         text_resize_attempt_count = 0;
         sendBroadcast(makeIntent(UPDATE_DISPLAY));
 
+        Log.d("ROMANDIGITAL", "startRelayIfNeeded in MainActivity");
         startRelayIfNeeded(this);
     }
 }

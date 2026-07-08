@@ -20,6 +20,8 @@
 
 package net.diffengine.romandigitalclock;
 
+import static net.diffengine.romandigitalclock.RelayManager.inStartRelayProcess;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -66,6 +68,8 @@ public class TimeTickRelay extends Service {
         createNotificationChannel(CHANNEL_ID);
         Notification notification = createNotification(CHANNEL_ID, createClickPendingIntent());
         ServiceCompat.startForeground(this, NOTIFICATION_ID, notification, getServiceType());
+
+        inStartRelayProcess = false;
 
         registerReceiver(tickReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
     }

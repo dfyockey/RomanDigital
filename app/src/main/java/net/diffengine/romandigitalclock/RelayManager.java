@@ -42,11 +42,31 @@ import java.util.TimerTask;
 public class RelayManager {
     private static int triesCount = 1;
     private static int delay = 0;
+    static boolean inStartRelayProcess = false;
 
-    static void startRelayIfWidgets(Context context) {
+    private static boolean areWidgets(Context context) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, TimeDisplayWidget.class));
-        if (appWidgetIds.length > 0) {
+        return (appWidgetIds.length > 0);
+    }
+
+    // Only intended to be called from BootCompletedBroadcastReceiver...
+    static void startRelay(Context context) {
+//        try {
+//            Log.d("ROMANDIGITAL", "startRelay... try");
+            if (areWidgets(context)) {
+                Log.d("ROMANDIGITAL", "startRelay... there are widgets");
+                Intent serviceIntent = new Intent(context, TimeTickRelay.class);
+                Log.d("ROMANDIGITAL", "startRelay... startForegndSvc");
+                startForegndSvc(context, serviceIntent);
+            }
+//        } catch (Exception e) {
+//            Log.d("ROMANDIGITAL", "startRelay... catch");
+//        }
+    }
+
+    static void startRelayIfWidgets(Context context) {
+        if (areWidgets(context)) {
             Intent serviceIntent = new Intent(context, TimeTickRelay.class);
             try {
                 Log.d("RELAYMANAGER", "startForegndSvc try " + triesCount);
@@ -61,7 +81,13 @@ public class RelayManager {
                                 @Override
                                 public void run() {
                                     Log.d("RELAYMANAGER", "Retry...");
+                                    Log.d("ROMANDIGITAL", "startRelayIfWidgets in RelayManager");
                                     startRelayIfWidgets(context);
+                                    /*
+                                        When start is successful, inStartRelayProcess
+                                        will be set to false in TimeTickRelay.onCreate()
+                                    */
+
                                 }
                             }, delay);
                 } else {
@@ -80,6 +106,8 @@ public class RelayManager {
             String dbl_br = "<br /><br />";
             Intent serviceIntent = new Intent(context, TimeTickRelay.class);
 
+            inStartRelayProcess = false;
+
             new AlertDialog.Builder(context)
                     .setTitle(conjureFromHtml(
                             "<font color='#"
@@ -93,6 +121,7 @@ public class RelayManager {
                                     + context.getString(R.string.fgnd_svc_err_3))
                     )
                     .setPositiveButton("Yes", (dialogInterface, i) -> {
+                        Log.d("ROMANDIGITAL", "startRelayAfterInitCounts in RelayManager.mHandler");
                         startRelayAfterInitCounts(context);
                     })
                     .setNeutralButton("Yes (crash on fail)", (dialogInterface, i) -> {
@@ -111,12 +140,12 @@ public class RelayManager {
     };
 
     private static void startForegndSvc(Context context, Intent serviceIntent) {
-//        throw (new RuntimeException());       // For Testing! (comment out remainder of method)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(serviceIntent);
-        } else {
-            context.startService(serviceIntent);
-        }
+        throw (new RuntimeException());       // For Testing! (comment out remainder of method)
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            context.startForegroundService(serviceIntent);
+//        } else {
+//            context.startService(serviceIntent);
+//        }
     }
 
     private static Spanned conjureFromHtml(String htm) {
@@ -128,10 +157,12 @@ public class RelayManager {
         }
     }
 
-    private static void startRelayAfterInitCounts(Context context) {
-        triesCount = 1;
-        delay = 0;
-        startRelayIfWidgets(context);
+    static void startRelayAfterInitCounts(Context context) {
+        if(!inStartRelayProcess) {
+            triesCount = 1;
+            delay = 0;
+            startRelayIfWidgets(context);
+        }
     }
 
     public static void startRelayIfNeeded(AppCompatActivity activity) {

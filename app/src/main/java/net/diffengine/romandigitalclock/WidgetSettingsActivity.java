@@ -39,6 +39,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import net.diffengine.romandigitalclock.fragment.preference.TimeFormatFragment;
@@ -175,6 +176,7 @@ public class WidgetSettingsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         AboutActivity.showAboutOnUpgrade(this, BuildConfig.VERSION_CODE);
+        Log.d("ROMANDIGITAL", "startRelayIfNeeded in WidgetSettingsActivity");
         startRelayIfNeeded(this);
     }
 
