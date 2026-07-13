@@ -34,14 +34,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RelayManager {
-    public static void startRelayIfWidgets(Context context) {
+    static void startRelayIfWidgets(Context context) {
         String dbl_br = "<br /><br />";
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, TimeDisplayWidget.class));
         if (appWidgetIds.length > 0) {
-            Intent serviceIntent = new Intent(context, TimeTickRelay.class);
             try {
-                startForegndSvc(context, serviceIntent);
+                startRelay(context);
             } catch (Exception e) {
                 new AlertDialog.Builder(context)
                         .setTitle(conjureFromHtml(
@@ -58,7 +57,7 @@ public class RelayManager {
                         .setPositiveButton("Yes", (dialogInterface, i) -> startRelayIfWidgets(context))
                         .setNeutralButton("Yes (crash on fail)", (dialogInterface, i) -> {
                             try {
-                                startForegndSvc(context, serviceIntent);
+                                startRelay(context);
                             } catch (Exception ex) {
                                 throw new RuntimeException(ex);
                             }
@@ -70,7 +69,8 @@ public class RelayManager {
         }
     }
 
-    private static void startForegndSvc(Context context, Intent serviceIntent) {
+    static void startRelay(Context context) {
+        Intent serviceIntent = new Intent(context, TimeTickRelay.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(serviceIntent);
         } else {
@@ -87,14 +87,14 @@ public class RelayManager {
         }
     }
 
-    public static void startRelayIfNeeded(AppCompatActivity activity) {
+    static void startRelayIfNeeded(AppCompatActivity activity) {
         if(!isTimeTickRelayRunning(activity)) {
             Log.d("ROMANDIGITAL", "Starting Relay");
             startRelayIfWidgets(activity);
         }
     }
 
-    public static boolean isTimeTickRelayRunning(AppCompatActivity activity) {
+    private static boolean isTimeTickRelayRunning(AppCompatActivity activity) {
         boolean isRelayRunning = false;
         String relayProcessName = activity.getPackageName() + ":timetickrelay";
         ActivityManager activityManager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
