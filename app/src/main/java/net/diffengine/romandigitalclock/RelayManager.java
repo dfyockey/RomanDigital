@@ -26,71 +26,36 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.text.Html;
-import android.text.Spanned;
+//import android.text.Html;
+//import android.text.Spanned;
 import android.util.Log;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RelayManager {
-    static void startRelayIfWidgets(Context context) {
-        String dbl_br = "<br /><br />";
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(context, TimeDisplayWidget.class));
+
+    static void startRelayIfWidgets(Context appContext) {
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(appContext);
+        int[] appWidgetIds = appWidgetManager.getAppWidgetIds(new ComponentName(appContext, TimeDisplayWidget.class));
         if (appWidgetIds.length > 0) {
-            try {
-                startRelay(context);
-            } catch (Exception e) {
-                new AlertDialog.Builder(context)
-                        .setTitle(conjureFromHtml(
-                                "<font color='#"
-                                + MainActivity.getHexFromColorRes(context, R.color.clock_red)
-                                + "'>" + context.getString(R.string.fgnd_svc_err_title)
-                                + "</font>")
-                        )
-                        .setMessage(conjureFromHtml(
-                                context.getString(R.string.fgnd_svc_err_1) + dbl_br
-                                + context.getString(R.string.fgnd_svc_err_2) + dbl_br
-                                + context.getString(R.string.fgnd_svc_err_3))
-                        )
-                        .setPositiveButton("Yes", (dialogInterface, i) -> startRelayIfWidgets(context))
-                        .setNeutralButton("Yes (crash on fail)", (dialogInterface, i) -> {
-                            try {
-                                startRelay(context);
-                            } catch (Exception ex) {
-                                throw new RuntimeException(ex);
-                            }
-                        })
-                        .setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel())
-                        .create()
-                        .show();
-            }
+            Log.d("RELAYMANAGER", "In startRelayIfWidgets");
+            startRelay(appContext);
         }
     }
 
-    static void startRelay(Context context) {
-        Intent serviceIntent = new Intent(context, TimeTickRelay.class);
+    static void startRelay(Context appContext) {
+        Intent serviceIntent = new Intent(appContext, TimeTickRelay.class);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(serviceIntent);
+            appContext.startForegroundService(serviceIntent);
         } else {
-            context.startService(serviceIntent);
-        }
-    }
-
-    private static Spanned conjureFromHtml(String htm) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return Html.fromHtml(htm, Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            //noinspection deprecation
-            return Html.fromHtml(htm);
+            appContext.startService(serviceIntent);
         }
     }
 
     static void startRelayIfNeeded(AppCompatActivity activity) {
         if(!isTimeTickRelayRunning(activity)) {
-            Log.d("ROMANDIGITAL", "Starting Relay");
-            startRelayIfWidgets(activity);
+            Log.d("RELAYMANAGER", "Starting Relay");
+            startRelayIfWidgets(activity.getApplicationContext());
         }
     }
 
@@ -99,12 +64,23 @@ public class RelayManager {
         String relayProcessName = activity.getPackageName() + ":timetickrelay";
         ActivityManager activityManager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningAppProcessInfo processInfo : activityManager.getRunningAppProcesses()) {
-            Log.d("ROMANDIGITAL", processInfo.processName);
+            Log.d("RELAYMANAGER", processInfo.processName);
             if (processInfo.processName.equals(relayProcessName)) {
                 isRelayRunning = true;
-                Log.d("ROMANDIGITAL", "Relay is Running");
+                Log.d("RELAYMANAGER", "Relay is Already Running");
             }
         }
         return isRelayRunning;
     }
+
+    // utility methods ////////////////////////////////////////////////////
+
+//    private static Spanned conjureFromHtml(String htm) {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//            return Html.fromHtml(htm, Html.FROM_HTML_MODE_LEGACY);
+//        } else {
+//            //noinspection deprecation
+//            return Html.fromHtml(htm);
+//        }
+//    }
 }
