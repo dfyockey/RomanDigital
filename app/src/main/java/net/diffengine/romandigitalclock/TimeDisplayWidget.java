@@ -38,6 +38,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 
@@ -193,6 +194,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                 action.equals(Intent.ACTION_DATE_CHANGED)
             )
         ) {
+            Log.d("WIDGET", action + " received!");
             onTick(context);
         }
     }
