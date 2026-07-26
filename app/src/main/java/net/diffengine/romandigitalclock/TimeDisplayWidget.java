@@ -64,6 +64,8 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     };
 
     public static final String RELAYED_TIME_TICK = "net.diffengine.romandigitalclock.RELAYED_TIME_TICK";
+    public static final String WIDGET_SETTINGS_CHANGED = "net.diffengine.romandigitalclock.WIDGET_SETTINGS_CHANGED";
+    public static final String UPDATE_ALL_WIDGETS = "net.diffengine.romandigitalclock.UPDATE_ALL_WIDGETS";
 
     ///////
     // Convertion to indices obviates need to do string comparisons to set up both layout and
@@ -84,22 +86,38 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 
     private static int appwidget_clock;
 
-    private RemoteViews updateTimeDisplay(Context context, int appWidgetId) {
+    private RemoteViews updateAppWidget(Context context, int appWidgetId, boolean clockOnly) {
+        Log.d("ROMANDIGITAL", "updateAppWidget " + appWidgetId + " called");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm          = sp.getBoolean("switch_format" + appWidgetId, false);
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
         boolean alignment     = sp.getBoolean("switch_alignment" + appWidgetId, false);
+        boolean vertLayout    = sp.getBoolean("switch_layout" + appWidgetId, false);
         String  tzId          = sp.getString("list_timezone" + appWidgetId, TimeZone.getDefault().getID());
-        String layoutMoniker  = sp.getString("list_widget_layout" + appWidgetId, "no_label" );
         int layoutId          = R.layout.time_display_widget;
-        int layoutConfigId    = getLayoutConfigId(layoutMoniker);
         appwidget_clock       = typefaceIds[Integer.parseInt(sp.getString("list_typeface" + appWidgetId, "0"))];
 
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
-        CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzId);
-//        widgetText = "VIII:XXXVIII";      // Test text; uncomment for constant full-width 12-hour display
+        CharSequence widgetText;
+        if (vertLayout) {
+            widgetText = romantime.now(!ampm, tzId);
+        } else {
+            widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzId);
+        }
+        // Test text; uncomment for constant full-width 12-hour display
+//        widgetText = (vertLayout) ? "VIII\nXXXVIII" : "VIII:XXXVIII";
+
         RemoteViews views = new RemoteViews(context.getPackageName(), layoutId);
+
+        /* ***** EARLY RETURN ***** */
+        if (clockOnly) {
+            views.setTextViewText(appwidget_clock, widgetText);
+            return views;
+        }
+
+        String layoutMoniker  = sp.getString("list_widget_layout" + appWidgetId, "no_label" );
+        int layoutConfigId    = getLayoutConfigId(layoutMoniker);
 
         // Setup layout
             // Clear all typefaces
@@ -169,12 +187,22 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         return views;
     }
 
+    private RemoteViews updateAppWidgetById(Context context, int appWidgetId) {
+        return updateAppWidget(context, appWidgetId, false);
+    }
+
+    private RemoteViews updateAppWidgetTimeDisplayById(Context context, int appWidgetId) {
+        return updateAppWidget(context, appWidgetId, true);
+    }
+
     private void onTick (Context context) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         ComponentName widgetName = new ComponentName(context.getPackageName(), TimeDisplayWidget.class.getName());
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(widgetName);
 
-        onUpdate(context, appWidgetManager, appWidgetIds);
+        for (int appWidgetId : appWidgetIds) {
+            appWidgetManager.updateAppWidget(appWidgetId, updateAppWidgetTimeDisplayById(context, appWidgetId));
+        }
     }
 
     @Override
@@ -182,20 +210,40 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         String action = intent.getAction();
+        if (action == null) {
+            return;
+        }
 
         // Treating changes in either system date, time, or timezone
         // as a time tick insures immediate update of time display on such changes
         if (
-            action != null &&
-            (
-                action.equals(RELAYED_TIME_TICK) ||
-                action.equals(Intent.ACTION_TIMEZONE_CHANGED) ||
-                action.equals(Intent.ACTION_TIME_CHANGED) ||
-                action.equals(Intent.ACTION_DATE_CHANGED)
-            )
+            action.equals(RELAYED_TIME_TICK) ||
+            action.equals(Intent.ACTION_TIMEZONE_CHANGED) ||
+            action.equals(Intent.ACTION_TIME_CHANGED) ||
+            action.equals(Intent.ACTION_DATE_CHANGED)
         ) {
             Log.d("WIDGET", action + " received!");
             onTick(context);
+        }
+        else if (
+            action.equals(WIDGET_SETTINGS_CHANGED)
+        ) {
+            onSettingsChanged(context, intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID));
+        }
+        else if (
+            action.equals(UPDATE_ALL_WIDGETS)
+        ) {
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            ComponentName widgetName = new ComponentName(context.getPackageName(), TimeDisplayWidget.class.getName());
+            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(widgetName);
+            onUpdate(context, appWidgetManager, appWidgetIds);
+        }
+    }
+
+    private void onSettingsChanged(Context context, int appWidgetId) {
+        if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            appWidgetManager.updateAppWidget(appWidgetId, updateAppWidgetById(context, appWidgetId));
         }
     }
 
@@ -203,7 +251,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
-            appWidgetManager.updateAppWidget(appWidgetId, updateTimeDisplay(context, appWidgetId));
+            appWidgetManager.updateAppWidget(appWidgetId, updateAppWidgetById(context, appWidgetId));
         }
     }
 
@@ -225,7 +273,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         context.stopService(serviceIntent);
     }
 
-    private int findMaxTextSize(Context context, Rect maxRect, String refText) {
+    private int findMaxTextSize(Context context, Rect maxRect, String refText, int layoutConfigId, boolean vertLayout) {
         /*
             Use a binary search to find the largest TextSize such that the provided reference text
             refText fits within the provided rectangle maxRect, where the variable loSize will
@@ -237,16 +285,42 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                 smaller rectangle around text the size of loSize, i.e the search result, will still
                 fit within the max width and height of the maxRect.
         */
-        Rect rect = new Rect();
+        Rect textBounds = new Rect();
         Paint paint = new Paint();
+
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+
+        int labelHeight = 0;
+
+        if (layoutConfigId != 1) {
+            paint.setTypeface(Typeface.SANS_SERIF);
+
+            // Convert the intended 14sp text size to PX units for use in setting
+            // the paint text size to use in getting the text height.
+            int textSize = 14;  // sp
+            textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, textSize, displayMetrics);
+
+            paint.setTextSize(textSize);
+            String t = "TEXT";
+            paint.getTextBounds(t, 0, t.length(), textBounds);
+            labelHeight = textBounds.height();
+        }
+        Log.d("BLEH", String.valueOf(labelHeight));
+        textBounds.setEmpty();  // Clear textBounds to preclude any interference with later reuse
+
         paint.setTypeface(Typeface.MONOSPACE);
 
         int loSize = 0;
         int hiSize = 1024;   // Arbitrarily selected largest permissible text size
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+
         while (loSize + 1 < hiSize) {
             int midSize = (hiSize + loSize) / 2;
 
+            // Okay, here's the thing... I worked this out through trial and error a long time back,
+            // and it works fine; the problem is that I haven't figured out *why* midSize needs to
+            // be treated as PX for some versions and as DIP for others. I just know that if it's
+            // DIP for later versions, then the clock text will be somewhat smaller than it should
+            // be; and if it's PX for earlier versions, then the clock text will be WAY too big.
             int textSize;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 textSize = midSize;
@@ -255,29 +329,40 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                 // getTextBounds will generate an accurate rectangle
                 textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, midSize, displayMetrics);
             }
-
             paint.setTextSize(textSize);
-            paint.getTextBounds(refText, 0, refText.length(), rect);
 
-            int orientation = context.getResources().getConfiguration().orientation;
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                rect.bottom += (int) paint.getFontSpacing();
-            }
+            paint.getTextBounds(refText, 0, refText.length(), textBounds);
+            float lineSpacing = paint.getFontSpacing();
+            textBounds.bottom += (vertLayout) ? (int) ((2 * lineSpacing) + textBounds.bottom + labelHeight) : (int) lineSpacing;
 
-            if ((rect.width() >= maxRect.width()) || (rect.height() >= maxRect.height())) {
+            if ((textBounds.width() >= maxRect.width()) || (textBounds.height() >= maxRect.height())) {
+                // Make the next size Smaller!
                 hiSize = midSize;
             } else {
+                // Make the next size Larger!
                 loSize = midSize;
             }
         }
         return loSize;
     }
 
-    private int calcTimeDisplayTextSize(Context context, int appWidgetId, Bundle bundle) {
+    private int calcTimeDisplayTextSize(Context context, RemoteViews views, int appWidgetId, Bundle bundle) {
         // Get text of max length equal to the clock's max width display
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm = sp.getBoolean("switch_format" + appWidgetId, false);
-        String maxlengthText = context.getString((ampm == MainActivity.left) ? R.string.civ_fill : R.string.mil_fill);
+
+        boolean vertLayout = sp.getBoolean("switch_layout" + appWidgetId, false);
+        String maxlengthText;
+        int lines;
+        if (vertLayout) {
+            lines = 2;
+            maxlengthText = "XXXXXXX";
+        } else {
+            lines = 1;
+            maxlengthText = context.getString((ampm == MainActivity.left) ? R.string.civ_fill : R.string.mil_fill);
+        }
+        views.setInt(appwidget_clock, "setLines", lines);
+
         int widgetWidth;
         int widgetHeight;
 
@@ -303,12 +388,15 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         }
         Rect maxRect = new Rect(0, 0, widgetWidth-1, widgetHeight-1);
 
-        return findMaxTextSize(context, maxRect, maxlengthText);
+        String layoutMoniker  = sp.getString("list_widget_layout" + appWidgetId, "no_label" );
+        int layoutConfigId = getLayoutConfigId(layoutMoniker);
+
+        return findMaxTextSize(context, maxRect, maxlengthText, layoutConfigId, vertLayout);
     }
 
     private void setTimeTextSize(Context context, RemoteViews views, int appWidgetId, Bundle widgetOptions) {
-        int textsize = calcTimeDisplayTextSize(context, appWidgetId, widgetOptions);
-        int fudgefactor = 3;    // Conservative value for compensation of possible error in calculated text size
+        int textsize = calcTimeDisplayTextSize(context, views, appWidgetId, widgetOptions);
+        int fudgefactor = 2;    // Conservative value for compensation of possible error in calculated text size
                                 // (observed on a Nexus 6 AVD running API 24; value of 1 was sufficent to compensate)
         views.setTextViewTextSize(appwidget_clock, TypedValue.COMPLEX_UNIT_DIP, textsize-fudgefactor);
     }
@@ -316,12 +404,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
                                           int appWidgetId, Bundle newOptions) {
-
-        // This call needs to be here rather than just instantiating a new RemoteViews
-        // object so the display will be updated for each of the multiple calls to
-        // onAppWidgetOptionsChanged that may occur while the user is resizing a widget
-        RemoteViews views = updateTimeDisplay(context, appWidgetId);
-
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
         setTimeTextSize(context, views, appWidgetId, newOptions);
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }

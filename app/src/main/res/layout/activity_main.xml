@@ -6,7 +6,7 @@
  * - This file is part of the Android app RomanDigital
  *   and is a layout resource
  *
- * Copyright 2024 David Yockey
+ * Copyright © 2024, 2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,11 +49,14 @@
         android:id="@+id/timedisplay_size_control"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/timedisplay_margin"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         android:background="@color/black"
         android:clickable="false"
         android:gravity="center"
-        android:maxLines="1"
+        android:includeFontPadding="false"
+        android:lines="1"
         android:text="@string/civ_fill"
         android:textColor="@color/black"
         android:textSize="@dimen/timedisplay_size_control_default_textsize"
@@ -74,11 +77,14 @@
         android:id="@+id/TimeDisplay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/timedisplay_margin"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         android:background="@color/black"
         android:clickable="false"
         android:gravity="center"
-        android:maxLines="1"
+        android:includeFontPadding="false"
+        android:lines="1"
         android:textColor="@color/clock_red"
         android:textSize="@dimen/timedisplay_size_control_default_textsize"
         android:typeface="monospace"

@@ -49,6 +49,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
@@ -134,11 +136,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     int text_resize_attempt_count = 0;
+    float displayLineSpacing = 0;
 
-    private void updateTimeDisplay() {
+    private void updateDisplay() {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
-        String now = romantime.now( !getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID() );
+        String now;
+        if (getPref("switch_layout") == left) {
+            now = romantime.now(!getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID());
+        } else {
+            now = romantime.now(!getPref(ampm), TimeZone.getDefault().getID());
+        }
 
         // IMPORTANT:
         // For the String returned by romantime.now to be correctly aligned in TimeDisplay textview,
@@ -148,6 +156,10 @@ public class MainActivity extends AppCompatActivity {
 
         if (TimeDisplay.getVisibility() == View.INVISIBLE) {
             float pxDefaultControlTextSize = getResources().getDimension(R.dimen.timedisplay_size_control_default_textsize);
+
+            // Clear previously set line spacing;
+            // otherwise, the value returned by TimeDisplay.getLineHeight() will be mucked up.
+            TimeDisplay.setLineSpacing(0, 1);
 
             /*/////
             //  Check of updateCount prevents infinitely sending broadcasts if an unforeseen
@@ -160,26 +172,54 @@ public class MainActivity extends AppCompatActivity {
             if ( (int)pxCurrentControlTextSize >= (int)pxDefaultControlTextSize && text_resize_attempt_count++ < R.dimen.text_resize_attempt_limit ) {
                 sendBroadcast(makeIntent(UPDATE_DISPLAY));
             } else {
+
+                // Set TimeDisplay's text size before
+                TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, pxCurrentControlTextSize);
+
+                Paint paint = new Paint();
+                paint.setTypeface(TimeDisplay.getTypeface());
+                paint.setTextSize(TimeDisplay.getTextSize());
+                Rect rect = new Rect();
+                String s = TimeDisplaySizeControl.getText().toString();
+                paint.getTextBounds(s, 0, s.length(), rect);
+                float textHeight = rect.height();
+                int tdLineHeight = TimeDisplay.getLineHeight();
+                displayLineSpacing = (textHeight * 1.4f) - tdLineHeight;
+
                 TimeDisplay.setVisibility(VISIBLE);
             }
         }
 
-        TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, pxCurrentControlTextSize);
+        TimeDisplay.setLineSpacing(displayLineSpacing, 1);
         TimeDisplay.setText(now);
         setKeepScreenOn();
     }
 
+    private void updateTimeDisplay() {
+        // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
+        // a/b switches, where false/true states depend on chosen left/right positions
+        String now = romantime.now( !getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID() );
+        TimeDisplay.setText(now);
+    }
+
     //---------------------------------------------------------------
 
-    private class BroadcastReceiverEx extends BroadcastReceiver {
+    private class TimeTickBroadcastReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             updateTimeDisplay();
         }
     }
 
+    private class BroadcastReceiverEx extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateDisplay();
+        }
+    }
+
     // Receiver instance to be registered as exported for receiving system-broadcast ACTION_TIME_TICK intent
-    private final BroadcastReceiverEx broadcastReceiver = new BroadcastReceiverEx();
+    private final TimeTickBroadcastReceiver timeTickBroadcastReceiver = new TimeTickBroadcastReceiver();
 
     // Receiver instance to be registered as RECEIVER_NOT_EXPORTED for receiving app-broadcast UPDATE_DISPLAY intent
     private final BroadcastReceiverEx updateReceiver = new BroadcastReceiverEx();
@@ -209,10 +249,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
-        TimeDisplay = findViewById(R.id.TimeDisplay);
-
         bkgndView = findViewById(R.id.main_activity_bkgnd);
         bkgndView.setOnClickListener(bkgndOCL);
+    }
+
+    private void findTimeDisplayViews() {
+        TimeDisplaySizeControl = findViewById(R.id.timedisplay_size_control);
+        TimeDisplay = findViewById(R.id.TimeDisplay);
     }
 
     private void modToolbarMenu(Toolbar myToolbar, @ColorInt int color) {
@@ -326,6 +369,7 @@ public class MainActivity extends AppCompatActivity {
         windowInsetsControllerCompat.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
 
         setListeners();
+        findTimeDisplayViews();
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         myToolbar.setVisibility(View.INVISIBLE);
@@ -367,6 +411,9 @@ public class MainActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
 
                 if(itemId == R.id.item_settings) {
+                    TimeDisplaySizeControl.setText("");
+                    int maxPx = androidx.core.widget.TextViewCompat.getAutoSizeMaxTextSize(TimeDisplaySizeControl);
+                    TimeDisplaySizeControl.setTextSize(TypedValue.COMPLEX_UNIT_PX, maxPx);
                     showActivity(AppSettingsActivity.class);
                 } else if (itemId == R.id.item_about) {
                     showActivity(AboutActivity.class);
@@ -390,7 +437,7 @@ public class MainActivity extends AppCompatActivity {
 
     protected void onPause() {
         unregisterReceiver(updateReceiver);
-        unregisterReceiver(broadcastReceiver);
+        unregisterReceiver(timeTickBroadcastReceiver);
         findViewById(R.id.my_toolbar).setVisibility(View.INVISIBLE);
 
         // Broadcast an intent immediately after either Close or Save is pressed
@@ -415,14 +462,26 @@ public class MainActivity extends AppCompatActivity {
         Toolbar vToolbar = findViewById(R.id.my_toolbar);
         vToolbar.setVisibility(View.INVISIBLE);
 
-        String maxtime_fill = getString((getPref(ampm) == left) ? R.string.civ_fill : R.string.mil_fill);
+        int lines;
+        String maxtime_fill;
+        if ( getPref("switch_layout") == left ) {
+            lines = 1;
+            maxtime_fill = getString((getPref(ampm) == left) ? R.string.civ_fill : R.string.mil_fill);
+        } else {
+            lines = 2;
+            maxtime_fill = getString(R.string.vert_fill);
+        }
+
         TimeDisplaySizeControl = findViewById(R.id.timedisplay_size_control);
+        TimeDisplaySizeControl.setLines(lines);
         TimeDisplaySizeControl.setText(maxtime_fill);
+        TimeDisplay.setLines(lines);
         TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
+
         setDisplayColorFromPref();
         setDisplayFont("roboto");
 
-        registerReceiver(broadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+        registerReceiver(timeTickBroadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
         ContextCompat.registerReceiver(context, updateReceiver, new IntentFilter(UPDATE_DISPLAY), ContextCompat.RECEIVER_NOT_EXPORTED);
         text_resize_attempt_count = 0;
         sendBroadcast(makeIntent(UPDATE_DISPLAY));
