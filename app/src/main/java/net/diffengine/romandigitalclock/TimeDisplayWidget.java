@@ -222,6 +222,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
             action.equals(Intent.ACTION_TIME_CHANGED) ||
             action.equals(Intent.ACTION_DATE_CHANGED)
         ) {
+            Log.d("WIDGET", action + " received!");
             onTick(context);
         }
         else if (
