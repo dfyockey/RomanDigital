@@ -30,7 +30,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ServiceInfo;
+import android.content.res.Configuration;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
@@ -38,6 +40,8 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.ServiceCompat;
 
 public class TimeTickRelay extends Service {
+
+    private boolean sentUpdateBroadcast = false;
 
     @Nullable
     @Override
@@ -50,12 +54,45 @@ public class TimeTickRelay extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             Intent tickIntent = new Intent(context, TimeDisplayWidget.class);
-            tickIntent.setAction(TimeDisplayWidget.RELAYED_TIME_TICK);
+
+            // Set tickIntent's action to UPDATE_ALL_WIDGETS for the first tick received after
+            // the service is created to insure that the widgets are all up to date, and set it to
+            // RELAYED_TIME_TICK for ticks received thereafter.
+            String action = (sentUpdateBroadcast ? TimeDisplayWidget.RELAYED_TIME_TICK : TimeDisplayWidget.UPDATE_ALL_WIDGETS );
+            if (!sentUpdateBroadcast) { sentUpdateBroadcast = true; }
+            tickIntent.setAction(action);
+
             tickIntent.setPackage(context.getPackageName());
             context.sendBroadcast(tickIntent);
         }
     }
     TickReceiver tickReceiver = new TickReceiver();
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        Context context = getApplicationContext();
+        Intent updateIntent = new Intent(context, TimeDisplayWidget.class);
+        updateIntent.setAction(TimeDisplayWidget.UPDATE_ALL_WIDGETS);
+        updateIntent.setPackage(context.getPackageName());
+        context.sendBroadcast(updateIntent);
+
+        // Broadcast updateIntent multiple times to update the widgets as soon as possible while
+        // increasing the probability that they actually exist by the time an attempt is made to
+        // update them. (Yes, this will cause five updates to be attempted. But at least it works.)
+        new CountDownTimer(1000, 250) {
+
+            @Override
+            public void onTick(long l) {
+                context.sendBroadcast(updateIntent);
+            }
+
+            @Override
+            public void onFinish() {
+            }
+        }.start();
+    }
 
     @Override
     public void onCreate() {

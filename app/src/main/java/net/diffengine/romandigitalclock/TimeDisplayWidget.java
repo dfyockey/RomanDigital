@@ -64,6 +64,8 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     };
 
     public static final String RELAYED_TIME_TICK = "net.diffengine.romandigitalclock.RELAYED_TIME_TICK";
+    public static final String WIDGET_SETTINGS_CHANGED = "net.diffengine.romandigitalclock.WIDGET_SETTINGS_CHANGED";
+    public static final String UPDATE_ALL_WIDGETS = "net.diffengine.romandigitalclock.UPDATE_ALL_WIDGETS";
 
     ///////
     // Convertion to indices obviates need to do string comparisons to set up both layout and
@@ -84,16 +86,15 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 
     private static int appwidget_clock;
 
-    private RemoteViews updateTimeDisplay(Context context, int appWidgetId) {
+    private RemoteViews updateAppWidget(Context context, int appWidgetId, boolean clockOnly) {
+        Log.d("ROMANDIGITAL", "updateAppWidget " + appWidgetId + " called");
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm          = sp.getBoolean("switch_format" + appWidgetId, false);
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
         boolean alignment     = sp.getBoolean("switch_alignment" + appWidgetId, false);
         boolean vertLayout    = sp.getBoolean("switch_layout" + appWidgetId, false);
         String  tzId          = sp.getString("list_timezone" + appWidgetId, TimeZone.getDefault().getID());
-        String layoutMoniker  = sp.getString("list_widget_layout" + appWidgetId, "no_label" );
         int layoutId          = R.layout.time_display_widget;
-        int layoutConfigId    = getLayoutConfigId(layoutMoniker);
         appwidget_clock       = typefaceIds[Integer.parseInt(sp.getString("list_typeface" + appWidgetId, "0"))];
 
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
@@ -108,6 +109,15 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 //        widgetText = (vertLayout) ? "VIII\nXXXVIII" : "VIII:XXXVIII";
 
         RemoteViews views = new RemoteViews(context.getPackageName(), layoutId);
+
+        /* ***** EARLY RETURN ***** */
+        if (clockOnly) {
+            views.setTextViewText(appwidget_clock, widgetText);
+            return views;
+        }
+
+        String layoutMoniker  = sp.getString("list_widget_layout" + appWidgetId, "no_label" );
+        int layoutConfigId    = getLayoutConfigId(layoutMoniker);
 
         // Setup layout
             // Clear all typefaces
@@ -177,12 +187,22 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         return views;
     }
 
+    private RemoteViews updateAppWidgetById(Context context, int appWidgetId) {
+        return updateAppWidget(context, appWidgetId, false);
+    }
+
+    private RemoteViews updateAppWidgetTimeDisplayById(Context context, int appWidgetId) {
+        return updateAppWidget(context, appWidgetId, true);
+    }
+
     private void onTick (Context context) {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         ComponentName widgetName = new ComponentName(context.getPackageName(), TimeDisplayWidget.class.getName());
         int[] appWidgetIds = appWidgetManager.getAppWidgetIds(widgetName);
 
-        onUpdate(context, appWidgetManager, appWidgetIds);
+        for (int appWidgetId : appWidgetIds) {
+            appWidgetManager.updateAppWidget(appWidgetId, updateAppWidgetTimeDisplayById(context, appWidgetId));
+        }
     }
 
     @Override
@@ -190,19 +210,39 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         super.onReceive(context, intent);
 
         String action = intent.getAction();
+        if (action == null) {
+            return;
+        }
 
         // Treating changes in either system date, time, or timezone
         // as a time tick insures immediate update of time display on such changes
         if (
-            action != null &&
-            (
-                action.equals(RELAYED_TIME_TICK) ||
-                action.equals(Intent.ACTION_TIMEZONE_CHANGED) ||
-                action.equals(Intent.ACTION_TIME_CHANGED) ||
-                action.equals(Intent.ACTION_DATE_CHANGED)
-            )
+            action.equals(RELAYED_TIME_TICK) ||
+            action.equals(Intent.ACTION_TIMEZONE_CHANGED) ||
+            action.equals(Intent.ACTION_TIME_CHANGED) ||
+            action.equals(Intent.ACTION_DATE_CHANGED)
         ) {
             onTick(context);
+        }
+        else if (
+            action.equals(WIDGET_SETTINGS_CHANGED)
+        ) {
+            onSettingsChanged(context, intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID));
+        }
+        else if (
+            action.equals(UPDATE_ALL_WIDGETS)
+        ) {
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            ComponentName widgetName = new ComponentName(context.getPackageName(), TimeDisplayWidget.class.getName());
+            int[] appWidgetIds = appWidgetManager.getAppWidgetIds(widgetName);
+            onUpdate(context, appWidgetManager, appWidgetIds);
+        }
+    }
+
+    private void onSettingsChanged(Context context, int appWidgetId) {
+        if (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) {
+            AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+            appWidgetManager.updateAppWidget(appWidgetId, updateAppWidgetById(context, appWidgetId));
         }
     }
 
@@ -210,7 +250,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
-            appWidgetManager.updateAppWidget(appWidgetId, updateTimeDisplay(context, appWidgetId));
+            appWidgetManager.updateAppWidget(appWidgetId, updateAppWidgetById(context, appWidgetId));
         }
     }
 
@@ -363,12 +403,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
                                           int appWidgetId, Bundle newOptions) {
-
-        // This call needs to be here rather than just instantiating a new RemoteViews
-        // object so the display will be updated for each of the multiple calls to
-        // onAppWidgetOptionsChanged that may occur while the user is resizing a widget
-        RemoteViews views = updateTimeDisplay(context, appWidgetId);
-
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.time_display_widget);
         setTimeTextSize(context, views, appWidgetId, newOptions);
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
