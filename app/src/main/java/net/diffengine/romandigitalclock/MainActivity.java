@@ -139,14 +139,7 @@ public class MainActivity extends AppCompatActivity {
     float displayLineSpacing = 0;
 
     private void updateDisplay() {
-        // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
-        // a/b switches, where false/true states depend on chosen left/right positions
-        String now;
-        if (getPref("switch_layout") == left) {
-            now = romantime.now(!getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID());
-        } else {
-            now = romantime.now(!getPref(ampm), TimeZone.getDefault().getID());
-        }
+        String now = getCurrentRomanTime();
 
         // IMPORTANT:
         // For the String returned by romantime.now to be correctly aligned in TimeDisplay textview,
@@ -196,10 +189,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateTimeDisplay() {
+        TimeDisplay.setText(getCurrentRomanTime());
+    }
+
+    private String getCurrentRomanTime() {
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
-        String now = romantime.now( !getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID() );
-        TimeDisplay.setText(now);
+        String now;
+        if (getPref("switch_layout") == left) {
+            now = romantime.now(!getPref(ampm), getPref(ampmSeparator), !getPref(alignment), TimeZone.getDefault().getID());
+        } else {
+            now = romantime.now(!getPref(ampm), TimeZone.getDefault().getID());
+        }
+        return now;
     }
 
     //---------------------------------------------------------------
