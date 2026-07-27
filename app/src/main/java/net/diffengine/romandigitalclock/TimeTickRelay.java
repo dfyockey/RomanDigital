@@ -33,6 +33,7 @@ import android.content.IntentFilter;
 import android.content.pm.ServiceInfo;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -44,9 +45,10 @@ import androidx.core.app.ServiceCompat;
 
 public class TimeTickRelay extends Service {
 
-
     private int triesCount; // Only used in a debug build
     private int delay;
+
+    private boolean sentUpdateBroadcast = false;
 
     @Nullable
     @Override
@@ -58,31 +60,36 @@ public class TimeTickRelay extends Service {
     private class TickReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            broadcastTimeTick(context);
+            String action = (sentUpdateBroadcast ? TimeDisplayWidget.RELAYED_TIME_TICK : TimeDisplayWidget.UPDATE_ALL_WIDGETS );
+            if (!sentUpdateBroadcast) { sentUpdateBroadcast = true; }
+            broadcastTimeTick(context, action);
         }
     }
     TickReceiver tickReceiver = new TickReceiver();
 
-    private void broadcastTimeTick(Context context) {
+    private Intent buildTickIntent(Context context, String action) {
         Intent tickIntent = new Intent(context, TimeDisplayWidget.class);
-        tickIntent.setAction(TimeDisplayWidget.RELAYED_TIME_TICK);
+        tickIntent.setAction(action);
         tickIntent.setPackage(context.getPackageName());
-        context.sendBroadcast(tickIntent);
+        return tickIntent;
+    }
+
+    private void broadcastTimeTick(Context context, String action) {
+        context.sendBroadcast(buildTickIntent(context, action));
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
+        // Do this rather than calling broadcastTimeTick inside the CountDownTimer
+        // to avoid building the same intent multiple times within a second.
         Context context = getApplicationContext();
-        Intent updateIntent = new Intent(context, TimeDisplayWidget.class);
-        updateIntent.setAction(TimeDisplayWidget.UPDATE_ALL_WIDGETS);
-        updateIntent.setPackage(context.getPackageName());
-        context.sendBroadcast(updateIntent);
+        Intent updateIntent = buildTickIntent(context, TimeDisplayWidget.UPDATE_ALL_WIDGETS);
 
         // Broadcast updateIntent multiple times to update the widgets as soon as possible while
         // increasing the probability that they actually exist by the time an attempt is made to
-        // update them. (Yes, this will cause five updates to be attempted. But at least it works.)
+        // update them. (Yes, this will cause four updates to be attempted. But at least it works.)
         new CountDownTimer(1000, 250) {
 
             @Override
@@ -137,7 +144,7 @@ public class TimeTickRelay extends Service {
 
                 Log.d("TIME_TICK_RELAY", "Broadcast an unsynchronized RELAYED_TIME_TICK");
                 // Send a tick to the widgets to keep them fairly on time while trying to restart the Relay
-                broadcastTimeTick(getApplicationContext());
+                broadcastTimeTick(getApplicationContext(), TimeDisplayWidget.RELAYED_TIME_TICK);
 
                 if (delay < 32000) {
                     delay *= 2;
