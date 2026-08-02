@@ -46,7 +46,7 @@
     -->
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/timedisplay_size_control"
+        android:id="@+id/horizontal_timedisplay_size_control"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
@@ -73,8 +73,36 @@
         app:layout_constraintVertical_bias=".5"
         tools:ignore="VisualLintOverlap,TextContrastCheck" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/vertical_timedisplay_size_control"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:background="@color/black"
+        android:clickable="false"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:lines="2"
+        android:text="@string/vert_fill"
+        android:textColor="@color/black"
+        android:textSize="@dimen/timedisplay_size_control_default_textsize"
+        android:typeface="monospace"
+        android:visibility="invisible"
+        app:autoSizeMaxTextSize="@dimen/timedisplay_size_control_default_textsize"
+        app:autoSizeStepGranularity="1sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".5"
+        tools:ignore="VisualLintOverlap,TextContrastCheck" />
+
     <TextView
-        android:id="@+id/TimeDisplay"
+        android:id="@+id/horizontal_TimeDisplay"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="15dp"
@@ -85,6 +113,29 @@
         android:gravity="center"
         android:includeFontPadding="false"
         android:lines="1"
+        android:textColor="@color/clock_red"
+        android:textSize="@dimen/timedisplay_size_control_default_textsize"
+        android:typeface="monospace"
+        app:autoSizeTextType="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias=".5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias=".5" />
+
+    <TextView
+        android:id="@+id/vertical_TimeDisplay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:background="@color/black"
+        android:clickable="false"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:lines="2"
         android:textColor="@color/clock_red"
         android:textSize="@dimen/timedisplay_size_control_default_textsize"
         android:typeface="monospace"

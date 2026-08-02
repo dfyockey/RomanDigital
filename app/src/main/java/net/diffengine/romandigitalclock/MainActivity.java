@@ -20,6 +20,7 @@
 
 package net.diffengine.romandigitalclock;
 
+import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 import static net.diffengine.romandigitalclock.RelayManager.startRelayIfNeeded;
@@ -56,6 +57,7 @@ import android.graphics.drawable.Drawable;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -72,6 +74,8 @@ import java.util.TimeZone;
 /** @noinspection Convert2Lambda, SpellCheckingInspection */
 public class MainActivity extends AppCompatActivity {
     private TextView TimeDisplay;
+    private TextView TimeDisplay_Horizontal;
+    private TextView TimeDisplay_Vertical;
     private AppCompatTextView TimeDisplaySizeControl;
     private View     bkgndView;
 
@@ -153,9 +157,13 @@ public class MainActivity extends AppCompatActivity {
         // TextDisplay.typeface MUST be set in activity_main.xml to 'monospace'
 
         float pxCurrentControlTextSize = TimeDisplaySizeControl.getTextSize();
+        Log.d("RD_APP", "updateTimeDisplay : pxCurrentControlTextSize = " + pxCurrentControlTextSize);
 
+        Log.d("RD_APP", "updateTimeDisplay : TimeDisplay Visibility = " + TimeDisplay.getVisibility());
         if (TimeDisplay.getVisibility() == View.INVISIBLE) {
             float pxDefaultControlTextSize = getResources().getDimension(R.dimen.timedisplay_size_control_default_textsize);
+
+            Log.d("RD_APP", "updateTimeDisplay : pxDefaultControlTextSize = " + pxDefaultControlTextSize);
 
             // Clear previously set line spacing;
             // otherwise, the value returned by TimeDisplay.getLineHeight() will be mucked up.
@@ -240,8 +248,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void findTimeDisplayViews() {
-        TimeDisplaySizeControl = findViewById(R.id.timedisplay_size_control);
-        TimeDisplay = findViewById(R.id.TimeDisplay);
+//        if ( getPref("switch_layout") == left ) {
+//            TimeDisplaySizeControl = findViewById(R.id.horizontal_timedisplay_size_control);
+//        } else {
+//            TimeDisplaySizeControl = findViewById(R.id.vertical_timedisplay_size_control);
+//        }
+        TimeDisplay_Horizontal = findViewById(R.id.horizontal_TimeDisplay);
+        TimeDisplay_Vertical = findViewById(R.id.vertical_TimeDisplay);
+//        TimeDisplay = (getPref("switch_layout") == left) ? TimeDisplay_Horizontal : TimeDisplay_Vertical;
     }
 
     private void modToolbarMenu(Toolbar myToolbar, @ColorInt int color) {
@@ -285,8 +299,15 @@ public class MainActivity extends AppCompatActivity {
 
         modToolbarMenu(toolbar, color);
 
-        TextView textView = findViewById(R.id.TimeDisplay);
-        textView.setTextColor(color);
+//        TextView textView = findViewById(R.id.TimeDisplay);
+//        textView.setTextColor(color);
+
+        setTimeDisplayTextColor(color);
+    }
+
+    private void setTimeDisplayTextColor(@ColorInt int color) {
+        TimeDisplay_Horizontal.setTextColor(color);
+        TimeDisplay_Vertical.setTextColor(color);
     }
 
     public static String getHexColor(Context context, SharedPreferences sp, String key) {
@@ -329,8 +350,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            TimeDisplay.setTypeface(typeface);
+//            TimeDisplay.setTypeface(typeface);
+            setTimeDisplayTypeface(typeface);
         }
+    }
+
+    private void setTimeDisplayTypeface(Typeface typeface) {
+        TimeDisplay_Horizontal.setTypeface(typeface);
+        TimeDisplay_Vertical.setTypeface(typeface);
     }
 
     @Override
@@ -397,9 +424,9 @@ public class MainActivity extends AppCompatActivity {
                 int itemId = item.getItemId();
 
                 if(itemId == R.id.item_settings) {
-                    TimeDisplaySizeControl.setText("");
-                    int maxPx = androidx.core.widget.TextViewCompat.getAutoSizeMaxTextSize(TimeDisplaySizeControl);
-                    TimeDisplaySizeControl.setTextSize(TypedValue.COMPLEX_UNIT_PX, maxPx);
+//                    TimeDisplaySizeControl.setText("");
+//                    int maxPx = androidx.core.widget.TextViewCompat.getAutoSizeMaxTextSize(TimeDisplaySizeControl);
+//                    TimeDisplaySizeControl.setTextSize(TypedValue.COMPLEX_UNIT_PX, maxPx);
                     showActivity(AppSettingsActivity.class);
                 } else if (itemId == R.id.item_about) {
                     showActivity(AboutActivity.class);
@@ -444,25 +471,32 @@ public class MainActivity extends AppCompatActivity {
 
         windowInsetsControllerCompat.hide(WindowInsetsCompat.Type.systemBars());
 
-        TimeDisplay.setVisibility(View.INVISIBLE);
+//        TimeDisplay.setVisibility(View.INVISIBLE);
+        setTimeDisplayVisibility();
         Toolbar vToolbar = findViewById(R.id.my_toolbar);
         vToolbar.setVisibility(View.INVISIBLE);
 
         int lines;
         String maxtime_fill;
         if ( getPref("switch_layout") == left ) {
-            lines = 1;
+//            lines = 1;
             maxtime_fill = getString((getPref(ampm) == left) ? R.string.civ_fill : R.string.mil_fill);
+            TimeDisplaySizeControl = findViewById(R.id.horizontal_timedisplay_size_control);
+            TimeDisplay = TimeDisplay_Horizontal;
         } else {
-            lines = 2;
+//            lines = 2;
             maxtime_fill = getString(R.string.vert_fill);
+            TimeDisplaySizeControl = findViewById(R.id.vertical_timedisplay_size_control);
+            TimeDisplay = TimeDisplay_Vertical;
         }
 
-        TimeDisplaySizeControl = findViewById(R.id.timedisplay_size_control);
-        TimeDisplaySizeControl.setLines(lines);
+//        TimeDisplaySizeControl.setLines(lines);
         TimeDisplaySizeControl.setText(maxtime_fill);
-        TimeDisplay.setLines(lines);
+//        TimeDisplay.setLines(lines);
         TimeDisplay.setTextSize(TypedValue.COMPLEX_UNIT_PX, TimeDisplaySizeControl.getTextSize());
+
+        Log.d("RD_APP", "onResume : TimeDisplaySizeControl Text Size = " + TimeDisplaySizeControl.getTextSize());
+        Log.d("RD_APP", "onResume : TimeDisplay Text Size = " + TimeDisplay.getTextSize());
 
         setDisplayColorFromPref();
         setDisplayFont("roboto");
@@ -473,5 +507,10 @@ public class MainActivity extends AppCompatActivity {
         sendBroadcast(makeIntent(UPDATE_DISPLAY));
 
         startRelayIfNeeded(this);
+    }
+
+    private void setTimeDisplayVisibility() {
+        TimeDisplay_Horizontal.setVisibility(INVISIBLE);
+        TimeDisplay_Vertical.setVisibility(INVISIBLE);
     }
 }
