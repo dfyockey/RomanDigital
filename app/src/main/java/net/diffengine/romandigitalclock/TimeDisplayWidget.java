@@ -49,7 +49,7 @@ import java.util.TimeZone;
 
 /** @noinspection SpellCheckingInspection*/
 public class TimeDisplayWidget extends AppWidgetProvider {
-    static int[] opacity = {
+    static final int[] opacity = {
             (R.drawable.appwidget_bkgnd_0),
             (R.drawable.appwidget_bkgnd_10),
             (R.drawable.appwidget_bkgnd_20),

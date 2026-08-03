@@ -162,7 +162,9 @@ public class TimeFormatFragment extends PreferenceFragmentCompat {
             pSeparator.setChecked(MainActivity.left);
         }
 
+        //noinspection RedundantIfStatement
         if (formatRight || layoutRight) {
+            //noinspection DataFlowIssue
             pSeparator.setEnabled(false);
         } else {
             //noinspection DataFlowIssue

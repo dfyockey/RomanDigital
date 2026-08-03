@@ -52,14 +52,13 @@ public class TimeTickRelay extends Service {
         return null;
     }
 
-    @SuppressWarnings("InnerClassMayBeStatic")
     private class TickReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             broadcastTimeTick(context);
         }
     }
-    TickReceiver tickReceiver = new TickReceiver();
+    final TickReceiver tickReceiver = new TickReceiver();
 
     private void broadcastTimeTick(Context context) {
         Intent tickIntent = new Intent(context, TimeDisplayWidget.class);
