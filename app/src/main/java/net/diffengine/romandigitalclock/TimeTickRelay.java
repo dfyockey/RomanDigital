@@ -168,7 +168,7 @@ public class TimeTickRelay extends Service {
     void initDelay() {
         delay = 250;    // 0.5 of intended first delay since it's multiplied by 2 before use
 
-        // Note: delay should not exceed 320000 to insure that two ticks at most are provided
+        // Note: delay should not exceed 32000 to insure that two ticks at most are provided
         // per minute when the delay reaches a maximum while the service is trying to get started.
         // That way, the system won't be too effected by the repeated attempts to start the service.
 
