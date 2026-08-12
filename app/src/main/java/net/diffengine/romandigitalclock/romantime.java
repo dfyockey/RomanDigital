@@ -41,25 +41,30 @@ public class romantime {
 	}
 
 	/** @noinspection ReassignedVariable*/
-	private static String getSeparator (boolean ampm, boolean ampmSeparator) {
+	private static String getSeparator (Calendar cal, boolean ampm, boolean ampmSeparator) {
 		String separator = ":";
 		if (ampm) {
-			separator = ( (ampmSeparator && (Calendar.getInstance().get(Calendar.AM_PM) == Calendar.AM) ) ? "·" : ":" );
+			separator = ( (ampmSeparator && (cal.get(Calendar.AM_PM) == Calendar.AM) ) ? "·" : ":" );
 		}
 		return separator;
 	}
 
-    private static Pair<String,String> getTime(boolean ampm, String tzId) {
+    private static Pair<String,String> getTime(Calendar cal, boolean ampm) {
 		/* GET TIME */
-		Calendar cal = Calendar.getInstance();
-		cal.setTimeZone(TimeZone.getTimeZone(tzId));
 		String rHours	 = getHours(cal, ampm);
 		String rMinutes  = itor(cal.get(Calendar.MINUTE));
         return Pair.create(rHours,rMinutes);
     }
 
+    private static Calendar getCalendar(String tzId) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(TimeZone.getTimeZone(tzId));
+        return cal;
+    }
+
     public static String now(boolean ampm, String tzId) {
-        Pair<String, String> rTime = getTime(ampm, tzId);
+        Calendar cal = getCalendar(tzId);
+        Pair<String, String> rTime = getTime(cal, ampm);
         return rTime.first + "\n" + rTime.second;
     }
 
@@ -70,9 +75,11 @@ public class romantime {
 		// T		F 				12 hr / constant separator
 		// F		- 				24 hr / constant separator
 
-        Pair<String, String> rTime = getTime(ampm, tzId);
+        Calendar cal = getCalendar(tzId);
 
-		String separator = getSeparator(ampm, ampmSeparator);
+        Pair<String, String> rTime = getTime(cal, ampm);
+
+		String separator = getSeparator(cal, ampm, ampmSeparator);
 		String rtime = rTime.first + separator + rTime.second;
 
 		if (!center) {
