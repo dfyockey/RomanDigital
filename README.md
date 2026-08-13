@@ -149,7 +149,7 @@ The 'Align to Divider' option does not correctly align the display when a variab
 > Notes:
 > 
 > * I get nothing if you click on the "Widgets Anywhere" link and/or buy the app, and my purchase and use of it are not meant as an endorsement. There may be other such apps that would work as well or better.
-> * Widgets Anywhere is also freely available as an APK from [the Widgets Anywhere GitHub site](https://github.com/zacharee/LockscreenWidgets). And it's MIT-licensed FOSS. :slightly_smiling_face:
+> * Widgets Anywhere is also freely available as an APK from [the Widgets Anywhere GitHub site](https://github.com/zacharee/LockscreenWidgets). And it's MIT-licensed FOSS.
 > * RomanDigital 2.x didn't work so well when on the lock screen on Android 15 with its more aggressive power management :slightly_frowning_face: But with RomanDigital 3.0.0's overhauled widget updating code, it works great. :slightly_smiling_face:
 > * The default lock screen clock's font color is set to transparent to completely hide it, since it couldn't be removed, so that RomanDigital could be used in its place. Something similar may be necessary on other devices as well.
 > * Please note that I cannot provide support with regard to any problems resulting from placing a RomanDigital widget on your lock screen unless your device natively supports such placement.
