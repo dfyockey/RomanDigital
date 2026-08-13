@@ -25,13 +25,12 @@ height="80" align="left">](https://github.com/dfyockey/RomanDigital/releases/lat
 RomanDigital is a digital clock app that displays the current time in
 Roman numerals. It can be used to repurpose an old Android device that's
 sitting around collecting dust, or to provide a clock of unique style on
-a current phone or tablet.
+a current phone or tablet. RomanDigital also includes a widget that can
+be added to a device's Home screen.
 
-![Landscape screenshot of phone showing RomanDigital app displaying time as VIII:LVII](/.github/images/Screenshot_20240809_205721_RomanDigital.png)
-
-RomanDigital also includes a widget that can be added to a device's Home screen.
-
-![Portion of a portrait screenshot of a phone Home page showing RomanDigital widget displaying time as XVII:XV, the screenshot portion having a torn-paper-effect bottom edge](/.github/images/Torn_Screenshot_Showing_Widget.png)
+<div align="center">
+    <img alt="Two landscape screenshots of phone showing RomanDigital app, one displaying time horizontally as II:XXXV and the other vertically with hour II above minute XXXV" align="middle" src="/.github/images/Screenshots_app_time_layouts.png"><img alt="Portrait screenshot of a phone Home page including four different-sized RomanDigital widgets showing horizontal and vertical layouts of the time IV:XIV (12hr-format) or XVI:XIV (24hr-format)" align="middle" src="/.github/images/Screenshot_20260806_161414_One_UI_Home.jpg"/>
+</div>
 
 ## Features
 
@@ -47,8 +46,8 @@ RomanDigital includes several common clock app features, including:
 
 RomanDigital further includes:
 
-* Choice between centered display and display aligned with a fixed divider
-* AM/PM indicator integrated into the time display, such that the divider is displayed as "·" for AM and ":" for PM:
+* Choice between centered display and display aligned with a fixed divider (only applies to horizontal time display layout)
+* AM/PM indicator integrated into the time display, such that the divider is displayed as "·" for AM and ":" for PM (only applies to horizontal time display layout):
 
 ![Landscape screenshot of phone showing RomanDigital app displaying time as XI·XXXIV](/.github/images/Screenshot_20240809_113408_RomanDigital.png)
 
@@ -58,6 +57,7 @@ RomanDigital further includes:
 
 ![Portrait screenshot of phone cropped to show a Time Color dialog enabling setting of app display color by 6-character hex code or by setting red, green, and blue sliders, and including a clock display preview](/.github/images/Screenshot_20250603_104752_RomanDigital.jpg)
 
+* Choice of app and widget horizontal or vertical time display layouts
 * Choice of app and widget clock display typefaces between monospace, sans-serif, and serif:
 
 ![Three partial phone home screen diagonally-overlapping screenshots, each including a RomanDigital widget showing the time XII:LVIII in different one of monospace, sans-serif, or serif typeface](/.github/images/RD_Widgets_Composite_Image.png)
@@ -66,7 +66,7 @@ RomanDigital further includes:
 
 * Independent setting of widget background transparency, time zone, and other settings:
 
-![Portrait screenshot of a second phone Home screen showing four RomanDigital widgets with center-aligned Continental U.S. time zone times, time zone labels below times, and different transparency backgrounds](/.github/images/Screenshot_20250219_115336_One_UI_Home_scaled.jpg) ![Portrait screenshot of a third phone Home screen showing six RomanDigital widgets with fixed-divider-aligned international location time zone times and time zone labels above times](/.github/images/Screenshot_20250219_120411_One_UI_Home_scaled.jpg)
+![Portrait screenshot of a second phone Home screen showing four RomanDigital widgets with center-aligned Continental U.S. time zone times, time zone labels below times, and different transparency backgrounds](/.github/images/Screenshot_20260806_115309_One_UI_Home_scaled.jpg) ![Portrait screenshot of a third phone Home screen showing six RomanDigital widgets with fixed-divider-aligned international location time zone times and time zone labels above times](/.github/images/Screenshot_20260806_130408_One_UI_Home_scaled.jpg)
 
 * And... RomanDigital is Apache-2.0-licensed open source :slightly_smiling_face:
 
@@ -93,20 +93,20 @@ The RECEIVE_BOOT_COMPLETED permission is set by this app. This permission is nec
 In addition, net.diffengine.romandigitalclock.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
 is set by this app. This was set during the app build process by use of a particular Android
 library required to enable the app to function as expected on versions of Android 12 and earlier
-(i.e. prior to API 33). It cannot be disabled without modifying the source code. As noted in
-an fdroidserver commit, "it's basically just an internal hack, rather than a real permission." For
-a more technical explanation of this "permission", see the full commit message at
+(i.e. prior to API 33). It cannot be disabled without modifying that library's source code. As noted
+in an fdroidserver commit, "it's basically just an internal hack, rather than a real permission."
+For a more technical explanation of this "permission", see the full commit message at
 https://gitlab.com/fdroid/fdroidserver/-/merge_requests/1336/diffs?commit_id=71697f9c88ec73980f63be5955f36cdc3ba7a02c
 
 ## Known Issues
 
-Widgets will likely stop running after an update because the update stops the TimeTickRelay service (see Permissions above). They can be restarted easily by just opening the main app or any widget settings activity, which may be closed at any time thereafter.
+Widgets may stop running after an update because the update stops the TimeTickRelay service (see Permissions above). They can be restarted easily by just opening the main app or any widget settings activity, which may be closed at any time thereafter.
 
 After rebooting a device, the widget(s) will not start running until the app finishes restarting the relay service and then receives an ACTION_TIME_TICK from the system, which may be a couple of minutes. This delay is normal.
 
-Text of a widget rotated between portrait and landscape may not be incorrectly sized until the next widget update, which may be up to a minute after the rotation. This is not an issue for devices that do not support home screen rotation or that are set not to rotate the home screen. It is also not an issue for any device having a UI/launcher rendering the device's home screen on which the widget is installed that notifies widgets when the device is rotated (e.g. Samsung One UI 6.1 and 7.0).
+Text of a widget may appear incorrectly sized until the next widget update if the device configuration changes between portrait and landscape where the device allows home screen rotation. This issue is planned to be addressed in the next release.
 
-Also, text of a widget may appear incorrectly sized until the next widget update if a widget's settings screen is open while the device is rotated and closed after rotation.
+The clock provided on the Time Color dialog allowing preview of the selected color currently has a horizontal time display layout regardless of the app's display layout setting. Nevertheless, the selected color will be applied to the app's clock display even if set to a vertical time display layout.
 
 On Android 5.0, the widget(s) typeface cannot be changed.
 
@@ -120,7 +120,7 @@ The 'Align to Divider' option does not correctly align the display when a variab
 
 > Q: "Why does the position of the divider change when 'Align to Divider' is selected? Isn't it supposed to stay in one place?"
 >
-> A: Yes, it's supposed to stay in one place, but the positioning was designed with the expectation of using a monospace font. Shortsighted of me, I know, but implementation for variable width fonts would be _really hard_. If you've changed a device setting effecting the font used, e.g. your system-wide font, to something that doesn't provide for monospace, then the calculated display position based on expected equal-width characters, and thus the divider position, will unfortunately be off.
+> A: Yes, it's supposed to stay in one place, but the positioning was designed with the expectation of using a monospace font, and implementation for variable width fonts would be _really hard_. In particular, if you've changed your system-wide font to something that's not monospace and you've set the typeface to "default", then the calculated display position is based on expected equal-width characters, which causes the divider position to be incorrect.
 
 > Q: "Will there ever be an alarm feature?"
 > 
@@ -144,14 +144,17 @@ The 'Align to Divider' option does not correctly align the display when a variab
 
 > Q: "Can I put the widget on my phone's lock screen?"
 >
-> A: Maybe. I was able to on my Samsung Galaxy A14 5G by purchasing the awkwardly-named [Lockscreen Widgets and Drawer](https://play.google.com/store/apps/details?id=tk.zwander.lockscreenwidgets) app for the low, low price of $1.49. YMMV. Here's what my lock screen looks like:
-
-![Portrait screenshot of phone lock screen showing RomanDigital widget](/.github/images/Screenshot_20260309_Lockscreen.jpg)
-
-> Note:
+> A: Maybe. I was able to on my Samsung Galaxy A14 5G by purchasing the excellent [Widgets Anywhere](https://play.google.com/store/apps/details?id=tk.zwander.lockscreenwidgets) app (formerly entitled "Lockscreen Widgets and Drawer") for the low, low price of $1.49. YMMV. Here's what my lock screen looks like:
+>
+> ![Portrait screenshot of phone lock screen showing RomanDigital widget](/.github/images/Screenshot_20260309_Lockscreen.jpg)
+>
+> Notes:
 > 
-> * I get nothing if you click on the "Lock Screen Widgets and Drawer" link and/or buy the app, and my purchase and use of it are not meant as an endorsement. There may be other such apps that would work as well or better.
-> * This didn't work so well with RomanDigital 2.x on Android 15 and its more aggressive power management :slightly_frowning_face: But with RomanDigital 3.0.0's overhauled widget updating code, it works great. :slightly_smiling_face: 
+> * I get nothing if you click on the "Widgets Anywhere" link and/or buy the app, and my purchase and use of it are not meant as an endorsement. There may be other such apps that would work as well or better.
+> * Widgets Anywhere is also freely available as an APK from [the Widgets Anywhere GitHub site](https://github.com/zacharee/LockscreenWidgets). And it's MIT-licensed FOSS. :slightly_smiling_face:
+> * RomanDigital 2.x didn't work so well when on the lock screen on Android 15 with its more aggressive power management :slightly_frowning_face: But with RomanDigital 3.0.0's overhauled widget updating code, it works great. :slightly_smiling_face:
+> * The default lock screen clock's font color is set to transparent to completely hide it, since it couldn't be removed, so that RomanDigital could be used in its place. Something similar may be necessary on other devices as well.
+> * Please note that I cannot provide support with regard to any problems resulting from placing a RomanDigital widget on your lock screen unless your device natively supports such placement.
 
 > Q: "Why no version specifically for a watch?"
 > 
