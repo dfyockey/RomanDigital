@@ -46,6 +46,10 @@
 
     <string name="civ_fill">XXXXXXXXXXXX</string>
     <string name="mil_fill">XXXXXXXXXXXXX</string>
+    <string name="vert_fill">
+"XXXXX
+XXXXXXX"
+    </string>
 
     <string name="menuitem_settings">Settings</string>
     <string name="menuitem_about">About</string>
@@ -66,14 +70,17 @@ Unless required by applicable law or agreed to in writing, software distributed 
     <string name="bullet">"* "</string>
 
     <string name="whats_new">"<b>WHAT\'S NEW IN THIS VERSION</b>"</string>
-    <string name="new_item_5">Fix for crash on start or restart of widget update service occurring in an unforeseen circumstance</string>
 
-    <!-- Strings for About activity's What's New section -->
-    <string name="whats_old">NEW IN VERSIONS 3.0.0 &amp; 3.0.1</string>
-    <string name="new_item_4">Fix to prevent possible crash on start of widget update service</string>
-    <string name="new_item_1">About activity pop-up on installation and update</string>
-    <string name="new_item_2">Clock typeface selection for app and each widget</string>
-    <string name="new_item_3">More reliable and lower power consuming updates of widget time display</string>
+        <!-- Headings -->
+        <string name="added">Added:</string>
+        <string name="changed">Changed:</string>
+        <string name="fixed">Fixed:</string>
+
+        <!-- Bullet Points -->
+        <string name="new_item_1">Vertical time display layout (hours above minutes), independently selectable for the app and each widget</string>
+        <string name="new_item_2">Minimum widget cell size to 1x1</string>
+        <string name="new_item_3">Crash resulting from ForegroundServiceStartNotAllowedException being thrown. The fix in version 3.0.2 was found to only be effective under test conditions. Apologies to users who have experienced a crash due to this issue.</string>
+        <string name="new_item_4">Lack of sufficient space on a widget, under some circumstances, for a time zone label to be properly displayed.</string>
 
     <string name="solicitation">
 "If you like RomanDigital and would like to tangibly express your thanks, dropping the value of a coffee of the quality of your choice at https://paypal.me/dfyockey would be greatly appreciated 🙂"

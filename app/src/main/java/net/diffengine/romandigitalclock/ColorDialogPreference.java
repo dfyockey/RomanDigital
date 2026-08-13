@@ -339,7 +339,7 @@ public class ColorDialogPreference extends Preference implements Preference.OnPr
             outState.putString("hexcolor", hexcolor);
         }
 
-        public static String TAG = "ColorDialogFragment";
+        public static final String TAG = "ColorDialogFragment";
     }
     //////////////////////////////////////////////////////////////////////////////////////////
 }

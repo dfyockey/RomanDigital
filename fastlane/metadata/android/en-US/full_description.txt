@@ -10,6 +10,7 @@ RomanDigital includes features expected in an ordinary digital clock, such as:
 
 RomanDigital also includes:
 * Independent configuration of app and widgets.
+* Selectable app and widget time display layout between horizontal and vertical.
 * Selectable app and widget time display typeface (monospace, sans-serif, or serif).
 * Variable widget background opacity that can be set from 0% to 100% by tens.
 * Selectable widget time zone.
@@ -17,6 +18,8 @@ RomanDigital also includes:
 * Selectable app time display color.
 
 For more detailed information including a FAQ list, please see the README.md file accompanying the RomanDigital source code.
+
+For those interested in placing RomanDigital on their phone's lock screen in the case where the phone doesn't support placing custom widgets there, please see the aforementioned FAQ for a possible workaround.
 
 Source code for RomanDigital is available at:
 https://github.com/dfyockey/RomanDigital

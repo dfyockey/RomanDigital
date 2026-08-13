@@ -53,21 +53,12 @@ public class TimeFormatFragment extends PreferenceFragmentCompat {
         postfix = ( (appWidgetId != AppWidgetManager.INVALID_APPWIDGET_ID) ? String.valueOf(appWidgetId) : "" );
     }
 
-    private void setSeparatorEnableState(SwitchPreferenceCompat pFormat) {
-        SwitchPreferenceCompat pSeparator = findPreference("switch_separator" + postfix);
-        if (pFormat.isChecked() == MainActivity.right) {
-            //noinspection DataFlowIssue
-            pSeparator.setChecked(MainActivity.left);
-            pSeparator.setEnabled(false);
-        } else {
-            //noinspection DataFlowIssue
-            pSeparator.setEnabled(true);
-        }
-    }
-
     Context prefManagerContext;
     PreferenceCategory category;
-    SwitchPreferenceCompat pAlignment = null;
+    SharedPreferences sp = null;
+    private SwitchPreferenceCompat pAlignment = null;
+    private SwitchPreferenceCompat pFormat = null;
+    private SwitchPreferenceCompat pLayout = null;
 
     private void addABSwitchPreference (String key, String aText, String bText) {
         SwitchPreferenceCompat pref = new SwitchPreferenceCompat(prefManagerContext);
@@ -118,6 +109,7 @@ public class TimeFormatFragment extends PreferenceFragmentCompat {
         screen.addPreference(category);
 
         addABSwitchPreference("switch_format", "12 Hour", "24 Hour");
+        addABSwitchPreference("switch_layout", "XI:LV", "XI\nLV");
         addABSwitchPreference("switch_alignment", "Align to Center", "Align to Divider");
         addABSwitchPreference("switch_separator", ": for All", "· for AM\n: for PM");
 
@@ -135,18 +127,15 @@ public class TimeFormatFragment extends PreferenceFragmentCompat {
 
         setPreferenceScreen(screen);
 
-        // At start of the activity, ensure that the separator switch is disabled and set to
-        // left if the format switch is set to right (i.e. 24 hour format).
-        //
-        SwitchPreferenceCompat pFormat = findPreference("switch_format" + postfix);
+        // At start of the activity, ensure that the switches are set appropriately.
         //noinspection DataFlowIssue
-        setSeparatorEnableState(pFormat);
-
-        //noinspection DataFlowIssue
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         String typefaceValue = sp.getString("list_typeface" + postfix, "0");
         pAlignment = findPreference("switch_alignment" + postfix);
+        pFormat = findPreference("switch_format" + postfix);
+        pLayout = findPreference("switch_layout" + postfix);
         setAlignmentEnableState(typefaceValue);
+        setSeparatorEnableState();
     }
 
     public void setAlignmentEnableState(String typefaceValue) {
@@ -154,7 +143,7 @@ public class TimeFormatFragment extends PreferenceFragmentCompat {
         boolean monoInApp = (typefaceValue.equals("1") && pfEmpty);
         boolean monoInWidgetOrDefaultInApp = typefaceValue.equals("0");
 
-        if ( monoInWidgetOrDefaultInApp || monoInApp ) {
+        if ( (monoInWidgetOrDefaultInApp || monoInApp) && pLayout.isChecked() == MainActivity.left ) {
             pAlignment.setEnabled(true);
         } else {
             pAlignment.setChecked(MainActivity.left);
@@ -162,17 +151,40 @@ public class TimeFormatFragment extends PreferenceFragmentCompat {
         }
     }
 
+    private void setSeparatorEnableState() {
+        SwitchPreferenceCompat pSeparator = findPreference("switch_separator" + postfix);
+
+        Boolean formatRight = pFormat.isChecked();
+        Boolean layoutRight = pLayout.isChecked();
+
+        if (formatRight) {
+            //noinspection DataFlowIssue
+            pSeparator.setChecked(MainActivity.left);
+        }
+
+        //noinspection RedundantIfStatement
+        if (formatRight || layoutRight) {
+            //noinspection DataFlowIssue
+            pSeparator.setEnabled(false);
+        } else {
+            //noinspection DataFlowIssue
+            pSeparator.setEnabled(true);
+        }
+    }
+
     @Override
     public boolean onPreferenceTreeClick(@NonNull Preference preference) {
-        if (preference.getKey().equals("switch_format" + postfix)) {
+        String key = preference.getKey();
+        String typefaceValue = sp.getString("list_typeface" + postfix, "0");
+        if (key.equals("switch_format" + postfix) || key.equals("switch_layout" + postfix)) {
             //
             // Set separator switch enable and check states based on whether format switch state
             // is left or right (i.e. whether format is 12 or 24 hour). Implementation in code
             // of the enable/disable operation is needed because it is opposite to that provided
             // by the normal preference dependency attribute.
             //
-            SwitchPreferenceCompat pFormat = (SwitchPreferenceCompat)preference;
-            setSeparatorEnableState(pFormat);
+            setAlignmentEnableState(typefaceValue);
+            setSeparatorEnableState();
         }
         return super.onPreferenceTreeClick(preference);
     }

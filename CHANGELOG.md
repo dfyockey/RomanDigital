@@ -8,6 +8,23 @@ This project aims to adhere to [Semantic Versioning](https://server.org).
 
 Regarding project commits: As of 2024-08-23, this project aims to adhere to the [Conventional Commits](https://www.conventionalcommits.org) standard. While the standard makes recommendations, it does not limit commit type or scope; consequently, neither type nor scope is limited to those recommendations in the project commits.
 
+## [3.1.0] - 2026-08-13
+
+### Fixed
+* Insufficiently effective fix from [3.0.2], which was found to only be effective under test conditions.
+	* Moved exception catching into the TimeTickRelay service class to enable catching under real conditions. In the event that the exception is thrown, this fix will catch the exception to prevent a crash and, after a delay, will call again to restart the service while also sending a tick intent to the widgets. Restart calls will repeat indefinitely with increasing delay up to an arbitrary maximum until the service starts successfully. In the mean time, the widgets will continue to be updated, although they may be appear to be a minute slow on occasion if the service is never able to successfully start.
+* Lack of sufficient space for time zone display by reducing the time display size in accordance with the time zone label height when needed.
+
+### Added
+* Vertical time display layout (hours above minutes) and accompanying preference to select between horizontal and vertical layouts. Allows independent time layout selection for app and each widget.
+* The two layouts were implemented by providing TextViews for each of time display and the time display size control for each of the horizontal and vertical layouts, addressing the appropriate pair corresponding to the selected layout, and making only the selected layout's time display TextView visible.
+* Automatic enabling/disabling and switching of other time preferences in accordance with time display layout selection.
+* An additional now(...) method to the romantime class for getting the current time formatted for vertical time display.
+
+### Changed
+* Method from which to implement foreground service start configuration, particularly the calling of ServiceCompat.startForeground(...), from onCreate() to onStartCommand(...) so that the foreground service start configuration code will be executed each time an attempt is made to start the foreground service.
+* Minimum widget cell size to 1x1 since the vertical display layout makes that size more practical.
+
 ## [3.0.2] - 2026-05-28
 
 ### Fixed

@@ -38,6 +38,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.widget.RemoteViews;
 
@@ -48,7 +49,7 @@ import java.util.TimeZone;
 
 /** @noinspection SpellCheckingInspection*/
 public class TimeDisplayWidget extends AppWidgetProvider {
-    static int[] opacity = {
+    static final int[] opacity = {
             (R.drawable.appwidget_bkgnd_0),
             (R.drawable.appwidget_bkgnd_10),
             (R.drawable.appwidget_bkgnd_20),
@@ -88,6 +89,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         boolean ampm          = sp.getBoolean("switch_format" + appWidgetId, false);
         boolean ampmSeparator = sp.getBoolean("switch_separator" + appWidgetId, false);
         boolean alignment     = sp.getBoolean("switch_alignment" + appWidgetId, false);
+        boolean vertLayout    = sp.getBoolean("switch_layout" + appWidgetId, false);
         String  tzId          = sp.getString("list_timezone" + appWidgetId, TimeZone.getDefault().getID());
         String layoutMoniker  = sp.getString("list_widget_layout" + appWidgetId, "no_label" );
         int layoutId          = R.layout.time_display_widget;
@@ -96,8 +98,15 @@ public class TimeDisplayWidget extends AppWidgetProvider {
 
         // Negate romantime.now arguments where needed to accommodate chosen state arrangement of
         // a/b switches, where false/true states depend on chosen left/right positions
-        CharSequence widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzId);
-//        widgetText = "VIII:XXXVIII";      // Test text; uncomment for constant full-width 12-hour display
+        CharSequence widgetText;
+        if (vertLayout) {
+            widgetText = romantime.now(!ampm, tzId);
+        } else {
+            widgetText = romantime.now(!ampm, ampmSeparator, !alignment, tzId);
+        }
+        // Test text; uncomment for constant full-width 12-hour display
+//        widgetText = (vertLayout) ? "VIII\nXXXVIII" : "VIII:XXXVIII";
+
         RemoteViews views = new RemoteViews(context.getPackageName(), layoutId);
 
         // Setup layout
@@ -193,6 +202,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                 action.equals(Intent.ACTION_DATE_CHANGED)
             )
         ) {
+            Log.d("WIDGET", action + " received!");
             onTick(context);
         }
     }
@@ -209,10 +219,10 @@ public class TimeDisplayWidget extends AppWidgetProvider {
     public void onEnabled(Context context) {
         /*
             Don't start the TimeTickRelay service here because the widget may not be in the
-            foreground yet, in which case it throws an exception. Instead, start it in the onCreate
+            foreground yet, in which case it throws an exception. Instead, start it in the onResume
             method of each of MainActivity and WidgetSettingsActivity. That way, it will be started
             when the widget is added but while the AppSettingsActivity is still in the foreground
-            or, if it hadn't been started or had been stopped, when either the main activity or a
+            or if it hadn't been started or had been stopped when either the main activity or a
             widget settings activity is started.
         */
     }
@@ -223,7 +233,7 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         context.stopService(serviceIntent);
     }
 
-    private int findMaxTextSize(Context context, Rect maxRect, String refText) {
+    private int findMaxTextSize(Context context, Rect maxRect, String refText, int layoutConfigId, boolean vertLayout) {
         /*
             Use a binary search to find the largest TextSize such that the provided reference text
             refText fits within the provided rectangle maxRect, where the variable loSize will
@@ -235,16 +245,42 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                 smaller rectangle around text the size of loSize, i.e the search result, will still
                 fit within the max width and height of the maxRect.
         */
-        Rect rect = new Rect();
+        Rect textBounds = new Rect();
         Paint paint = new Paint();
+
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+
+        int labelHeight = 0;
+
+        if (layoutConfigId != 1) {
+            paint.setTypeface(Typeface.SANS_SERIF);
+
+            // Convert the intended 14sp text size to PX units for use in setting
+            // the paint text size to use in getting the text height.
+            int textSize = 14;  // sp
+            textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, textSize, displayMetrics);
+
+            paint.setTextSize(textSize);
+            String t = "TEXT";
+            paint.getTextBounds(t, 0, t.length(), textBounds);
+            labelHeight = textBounds.height();
+        }
+        Log.d("BLEH", String.valueOf(labelHeight));
+        textBounds.setEmpty();  // Clear textBounds to preclude any interference with later reuse
+
         paint.setTypeface(Typeface.MONOSPACE);
 
         int loSize = 0;
         int hiSize = 1024;   // Arbitrarily selected largest permissible text size
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+
         while (loSize + 1 < hiSize) {
             int midSize = (hiSize + loSize) / 2;
 
+            // Okay, here's the thing... I worked this out through trial and error a long time back,
+            // and it works fine; the problem is that I haven't figured out *why* midSize needs to
+            // be treated as PX for some versions and as DIP for others. I just know that if it's
+            // DIP for later versions, then the clock text will be somewhat smaller than it should
+            // be; and if it's PX for earlier versions, then the clock text will be WAY too big.
             int textSize;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 textSize = midSize;
@@ -253,29 +289,40 @@ public class TimeDisplayWidget extends AppWidgetProvider {
                 // getTextBounds will generate an accurate rectangle
                 textSize = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, midSize, displayMetrics);
             }
-
             paint.setTextSize(textSize);
-            paint.getTextBounds(refText, 0, refText.length(), rect);
 
-            int orientation = context.getResources().getConfiguration().orientation;
-            if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-                rect.bottom += (int) paint.getFontSpacing();
-            }
+            paint.getTextBounds(refText, 0, refText.length(), textBounds);
+            float lineSpacing = paint.getFontSpacing();
+            textBounds.bottom += (vertLayout) ? (int) ((2 * lineSpacing) + textBounds.bottom + labelHeight) : (int) lineSpacing;
 
-            if ((rect.width() >= maxRect.width()) || (rect.height() >= maxRect.height())) {
+            if ((textBounds.width() >= maxRect.width()) || (textBounds.height() >= maxRect.height())) {
+                // Make the next size Smaller!
                 hiSize = midSize;
             } else {
+                // Make the next size Larger!
                 loSize = midSize;
             }
         }
         return loSize;
     }
 
-    private int calcTimeDisplayTextSize(Context context, int appWidgetId, Bundle bundle) {
+    private int calcTimeDisplayTextSize(Context context, RemoteViews views, int appWidgetId, Bundle bundle) {
         // Get text of max length equal to the clock's max width display
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         boolean ampm = sp.getBoolean("switch_format" + appWidgetId, false);
-        String maxlengthText = context.getString((ampm == MainActivity.left) ? R.string.civ_fill : R.string.mil_fill);
+
+        boolean vertLayout = sp.getBoolean("switch_layout" + appWidgetId, false);
+        String maxlengthText;
+        int lines;
+        if (vertLayout) {
+            lines = 2;
+            maxlengthText = "XXXXXXX";
+        } else {
+            lines = 1;
+            maxlengthText = context.getString((ampm == MainActivity.left) ? R.string.civ_fill : R.string.mil_fill);
+        }
+        views.setInt(appwidget_clock, "setLines", lines);
+
         int widgetWidth;
         int widgetHeight;
 
@@ -301,12 +348,15 @@ public class TimeDisplayWidget extends AppWidgetProvider {
         }
         Rect maxRect = new Rect(0, 0, widgetWidth-1, widgetHeight-1);
 
-        return findMaxTextSize(context, maxRect, maxlengthText);
+        String layoutMoniker  = sp.getString("list_widget_layout" + appWidgetId, "no_label" );
+        int layoutConfigId = getLayoutConfigId(layoutMoniker);
+
+        return findMaxTextSize(context, maxRect, maxlengthText, layoutConfigId, vertLayout);
     }
 
     private void setTimeTextSize(Context context, RemoteViews views, int appWidgetId, Bundle widgetOptions) {
-        int textsize = calcTimeDisplayTextSize(context, appWidgetId, widgetOptions);
-        int fudgefactor = 3;    // Conservative value for compensation of possible error in calculated text size
+        int textsize = calcTimeDisplayTextSize(context, views, appWidgetId, widgetOptions);
+        int fudgefactor = 2;    // Conservative value for compensation of possible error in calculated text size
                                 // (observed on a Nexus 6 AVD running API 24; value of 1 was sufficent to compensate)
         views.setTextViewTextSize(appwidget_clock, TypedValue.COMPLEX_UNIT_DIP, textsize-fudgefactor);
     }

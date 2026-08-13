@@ -115,7 +115,7 @@
             <!--
                 Start of Content
 
-                Note: constraintStart_toStartOf of the following TextViews except @id/tvLicense are
+                Note: Start and End constraints of the following TextViews except @id/tvLicense are
                 set to the same @id/tvLicense's Start and End so that all content TextViews float
                 horizontally as a block centered on the screen.
             -->
@@ -200,6 +200,7 @@
                 android:paddingBottom="@dimen/txtblk_vert_padding"
                 android:textColor="#00000000"
                 app:layout_constraintEnd_toEndOf="@id/tvLicense"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@id/tvLicense"
                 app:layout_constraintTop_toBottomOf="@id/after_notice_re_google">
 
@@ -208,43 +209,11 @@
                     android:layout_height="wrap_content"
                     android:text="@string/whats_new" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/bullet" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/new_item_5" />
-                </LinearLayout>
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/whats_old"
-                    android:paddingTop="@dimen/txtblk_vert_padding"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/bullet" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/new_item_4" />
-                </LinearLayout>
+                    android:paddingTop="@dimen/item_group_vert_padding"
+                    android:text="@string/added" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -262,6 +231,12 @@
                         android:text="@string/new_item_1" />
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/item_group_vert_padding"
+                    android:text="@string/changed" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -278,6 +253,12 @@
                         android:text="@string/new_item_2" />
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/item_group_vert_padding"
+                    android:text="@string/fixed" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -292,6 +273,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/new_item_3" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bullet" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/new_item_4" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -436,6 +433,7 @@
                 android:background="#16A0A0A0"
                 android:ellipsize="end"
                 android:linksClickable="true"
+                android:maxWidth="600dp"
                 android:paddingLeft="@dimen/license_horiz_padding"
                 android:paddingRight="@dimen/license_horiz_padding"
                 android:paddingBottom="@dimen/txtblk_vert_padding"

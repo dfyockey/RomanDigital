@@ -2,7 +2,7 @@
  * romantime.java
  * - This file is part of the Android app RomanDigital
  *
- * Copyright 2024-2025 David Yockey
+ * Copyright 2024-2026 David Yockey
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@
  */
 
 package net.diffengine.romandigitalclock;
+
+import androidx.core.util.Pair;
 
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -42,10 +44,29 @@ public class romantime {
 	private static String getSeparator (Calendar cal, boolean ampm, boolean ampmSeparator) {
 		String separator = ":";
 		if (ampm) {
-			separator = ( (ampmSeparator && (cal.get(Calendar.AM_PM) == Calendar.AM) ) ? "·" : ":");
+			separator = ( (ampmSeparator && (cal.get(Calendar.AM_PM) == Calendar.AM) ) ? "·" : ":" );
 		}
 		return separator;
 	}
+
+    private static Pair<String,String> getTime(Calendar cal, boolean ampm) {
+		/* GET TIME */
+		String rHours	 = getHours(cal, ampm);
+		String rMinutes  = itor(cal.get(Calendar.MINUTE));
+        return Pair.create(rHours,rMinutes);
+    }
+
+    private static Calendar getCalendar(String tzId) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeZone(TimeZone.getTimeZone(tzId));
+        return cal;
+    }
+
+    public static String now(boolean ampm, String tzId) {
+        Calendar cal = getCalendar(tzId);
+        Pair<String, String> rTime = getTime(cal, ampm);
+        return rTime.first + "\n" + rTime.second;
+    }
 
 	public static String now(boolean ampm, boolean ampmSeparator, boolean center, String tzId) {
 
@@ -54,14 +75,12 @@ public class romantime {
 		// T		F 				12 hr / constant separator
 		// F		- 				24 hr / constant separator
 
-		/* GET TIME */
-		Calendar cal = Calendar.getInstance();
-		cal.setTimeZone(TimeZone.getTimeZone(tzId));
-		String rHours	 = getHours(cal, ampm);
-		String rMinutes  = itor(cal.get(Calendar.MINUTE));
+        Calendar cal = getCalendar(tzId);
+
+        Pair<String, String> rTime = getTime(cal, ampm);
+
 		String separator = getSeparator(cal, ampm, ampmSeparator);
-		//noinspection ReassignedVariable
-		String rtime     = rHours + separator + rMinutes;
+		String rtime = rTime.first + separator + rTime.second;
 
 		if (!center) {
 			/* ADD PADDING */
@@ -72,8 +91,8 @@ public class romantime {
 			// even though none will then be used for VIII o'clock, because the substring method to
 			// retrieve the appropriate length of padding will throw an exception due to reading
 			// past the end of the string if only three are used. As is, it returns "" for VIII.
-			String lpad = ("    " + ((ampm) ? "" : " ")).substring(rHours.length());
-			String rpad = "       ".substring(rMinutes.length());
+			String lpad = ("    " + ((ampm) ? "" : " ")).substring(rTime.first.length());
+			String rpad = "       ".substring(rTime.second.length());
 			rtime = lpad + rtime + rpad;
 		}
 
