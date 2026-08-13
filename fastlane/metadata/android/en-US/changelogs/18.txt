@@ -1,0 +1,9 @@
+Added:
+* Vertical time display layout (hours above minutes), independently selectable for the app and each widget.
+
+Changed:
+* Minimum widget cell size to 1x1.
+
+Fixed:
+* Crash resulting from ForegroundServiceStartNotAllowedException being thrown. The fix in version 3.0.2 was found to only be effective under test conditions. Apologies to users who have experienced a crash due to this issue.
+* Lack of sufficient space on a widget, under some circumstances, for a time zone label to be properly displayed.
