@@ -29,7 +29,7 @@ a current phone or tablet. RomanDigital also includes a widget that can
 be added to a device's Home screen.
 
 <div align="center">
-    <img alt="Two landscape screenshots of phone showing RomanDigital app, one displaying time horizontally as II:XXXV and the other vertically with hour II above minute XXXV" align="middle" src="/.github/images/Screenshots_app_time_layouts.png"><img alt="Portrait screenshot of a phone Home page including four different-sized RomanDigital widgets showing horizontal and vertical layouts of the time IV:XIV (12hr-format) or XVI:XIV (24hr-format)" align="middle" src="/.github/images/Screenshot_20260806_161414_One_UI_Home.jpg"/>
+    <img alt="Two landscape screenshots of phone showing RomanDigital app, one displaying time horizontally as II:XXXV and the other vertically with hour II above minute XXXV" align="middle" src="/.github/images/Screenshots_app_time_layouts.png">&nbsp;&nbsp;&nbsp;&nbsp;<img alt="Portrait screenshot of a phone Home page including four different-sized RomanDigital widgets showing horizontal and vertical layouts of the time IV:XIV (12hr-format) or XVI:XIV (24hr-format)" align="middle" src="/.github/images/Screenshot_20260806_161414_One_UI_Home.jpg"/>&nbsp;&nbsp;&nbsp;&nbsp;
 </div>
 
 ## Features
@@ -142,11 +142,9 @@ The 'Align to Divider' option does not correctly align the display when a variab
 > 
 > A: Not right now, but it should be added at some point since I'd like having that option myself and it should be easy to implement.
 
-> Q: "Can I put the widget on my phone's lock screen?"
+> Q: "Can I put the widget on my phone's lock screen?"<img alt="Portrait screenshot of phone lock screen showing RomanDigital widget" align="right" src="/.github/images/Screenshot_20260309_Lockscreen.jpg">
 >
 > A: Maybe. I was able to on my Samsung Galaxy A14 5G by purchasing the excellent [Widgets Anywhere](https://play.google.com/store/apps/details?id=tk.zwander.lockscreenwidgets) app (formerly entitled "Lockscreen Widgets and Drawer") for the low, low price of $1.49. YMMV. Here's what my lock screen looks like:
->
-> ![Portrait screenshot of phone lock screen showing RomanDigital widget](/.github/images/Screenshot_20260309_Lockscreen.jpg)
 >
 > Notes:
 > 
